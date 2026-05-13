@@ -9,23 +9,29 @@
     /*
       AURORA NEST - ZERO-POINT CONTROL PAGE
       -------------------------------------
-      Put this file into the Aurora Nest repository as index.html.
-      The hamburger menu links to separate future GitHub Pages repositories.
-      Missing pages may show 404 until each future repository is created.
+      This is the MASTER LANDING ROUTER.
+      Menu links go to separate GitHub Pages repositories.
+      Missing pages may 404 until each future repo exists.
+
+      EXPAND HERE:
+      1. Change GitHub owner in JS: githubOwner
+      2. Change future repo names in JS: navLinks
+      3. Change social URLs in JS: socialLinks
+      4. Copy the topbar/menu/footer into future pages for consistent navigation.
     */
 
     :root {
       --bg: #030506;
-      --panel: rgba(8, 14, 18, 0.78);
-      --panel-solid: rgba(5, 9, 12, 0.96);
+      --panel: rgba(8,14,18,.78);
+      --panel2: rgba(5,9,12,.96);
       --neon: #76ff7a;
       --yellow: #ffe95a;
       --red: #ff3159;
       --cyan: #37e7ff;
       --white: #ecfff3;
-      --muted: rgba(236, 255, 243, 0.72);
-      --line: rgba(118, 255, 122, 0.25);
-      --shadow: 0 0 38px rgba(118, 255, 122, 0.14), 0 0 90px rgba(55, 231, 255, 0.07);
+      --muted: rgba(236,255,243,.72);
+      --line: rgba(118,255,122,.25);
+      --shadow: 0 0 38px rgba(118,255,122,.14), 0 0 90px rgba(55,231,255,.07);
       --radius: 24px;
       --max: 1180px;
     }
@@ -43,7 +49,6 @@
         radial-gradient(circle at 50% 90%, rgba(255,49,89,.13), transparent 32%),
         linear-gradient(135deg, #020303 0%, #071015 48%, #030403 100%);
     }
-
     body::before {
       content: "";
       position: fixed;
@@ -56,7 +61,6 @@
       mask-image: radial-gradient(circle at center, black, transparent 82%);
       z-index: 0;
     }
-
     a { color: inherit; text-decoration: none; }
     button { font: inherit; color: inherit; }
 
@@ -74,6 +78,7 @@
     @keyframes pulse { 50% { transform: scale(.9); opacity: .68; } }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes marquee { to { transform: translateX(-50%); } }
+    @keyframes floaty { 50% { transform: translateY(-8px); } }
 
     .wrap { width: min(var(--max), calc(100% - 28px)); margin: 0 auto; position: relative; z-index: 2; }
 
@@ -88,31 +93,23 @@
       gap: 16px;
       padding: 12px clamp(14px, 3vw, 32px);
       border-bottom: 1px solid rgba(118,255,122,.2);
-      background: rgba(3, 5, 7, 0.72);
+      background: rgba(3,5,7,.72);
       backdrop-filter: blur(18px) saturate(150%);
       transition: .25s ease;
     }
     .topbar.scrolled { background: rgba(3,5,7,.92); box-shadow: 0 14px 50px rgba(0,0,0,.45); }
-
     .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .mark {
-      width: 46px;
-      height: 46px;
-      flex: 0 0 auto;
+      width: 46px; height: 46px; flex: 0 0 auto;
       border-radius: 16px;
       border: 1px solid rgba(118,255,122,.42);
       background: radial-gradient(circle, rgba(118,255,122,.18), rgba(55,231,255,.08), transparent 70%);
       box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
     .mark::before {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border: 2px solid var(--neon);
-      border-left-color: var(--yellow);
-      border-bottom-color: var(--cyan);
+      content: ""; position: absolute; inset: 8px;
+      border: 2px solid var(--neon); border-left-color: var(--yellow); border-bottom-color: var(--cyan);
       clip-path: polygon(50% 0,100% 88%,50% 68%,0 88%);
       filter: drop-shadow(0 0 8px rgba(118,255,122,.7));
       animation: pulse 2.8s ease-in-out infinite;
@@ -121,28 +118,17 @@
     .brand small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; }
 
     .hamburger {
-      margin-left: auto;
-      width: 54px;
-      height: 48px;
+      margin-left: auto; width: 54px; height: 48px;
       border: 1px solid rgba(118,255,122,.36);
-      border-radius: 16px;
-      background: rgba(8,14,18,.84);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
+      border-radius: 16px; background: rgba(8,14,18,.84);
+      cursor: pointer; display: grid; place-items: center;
       box-shadow: 0 0 24px rgba(118,255,122,.08);
     }
     .hamburger span,
     .hamburger span::before,
     .hamburger span::after {
-      content: "";
-      width: 24px;
-      height: 2px;
-      display: block;
-      border-radius: 99px;
-      background: var(--neon);
-      box-shadow: 0 0 10px var(--neon);
-      transition: .25s ease;
+      content: ""; width: 24px; height: 2px; display: block;
+      border-radius: 99px; background: var(--neon); box-shadow: 0 0 10px var(--neon); transition: .25s ease;
     }
     .hamburger span::before { transform: translateY(-8px); }
     .hamburger span::after { transform: translateY(6px); }
@@ -151,36 +137,19 @@
     .hamburger.open span::after { transform: translateY(0) rotate(-45deg); }
 
     .menu {
-      position: fixed;
-      top: 82px;
-      right: clamp(12px, 3vw, 30px);
-      z-index: 60;
-      width: min(92vw, 420px);
-      max-height: calc(100vh - 96px);
-      overflow: auto;
-      padding: 14px;
-      border-radius: 24px;
-      border: 1px solid rgba(118,255,122,.28);
+      position: fixed; top: 82px; right: clamp(12px, 3vw, 30px); z-index: 60;
+      width: min(92vw, 430px); max-height: calc(100vh - 96px); overflow: auto;
+      padding: 14px; border-radius: 24px; border: 1px solid rgba(118,255,122,.28);
       background: linear-gradient(180deg, rgba(8,14,18,.97), rgba(5,8,11,.97));
       box-shadow: 0 22px 80px rgba(0,0,0,.65), var(--shadow);
-      transform: translateX(120%) scale(.96);
-      opacity: 0;
-      pointer-events: none;
-      transition: .28s ease;
+      transform: translateX(120%) scale(.96); opacity: 0; pointer-events: none; transition: .28s ease;
     }
     .menu.open { transform: translateX(0) scale(1); opacity: 1; pointer-events: all; }
     .menu-title { color: var(--yellow); font-weight: 900; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; margin: 8px 8px 12px; }
     .menu a {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 14px;
-      margin: 7px 0;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 16px;
-      background: rgba(255,255,255,.035);
-      transition: .2s ease;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 14px; margin: 7px 0; border: 1px solid rgba(255,255,255,.09);
+      border-radius: 16px; background: rgba(255,255,255,.035); transition: .2s ease;
     }
     .menu a:hover { border-color: rgba(118,255,122,.65); background: rgba(118,255,122,.08); transform: translateX(-4px); }
     .menu a small { color: var(--muted); display: block; margin-top: 4px; line-height: 1.35; }
@@ -189,10 +158,8 @@
 
     .hero {
       min-height: calc(100vh - 72px);
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: clamp(24px, 5vw, 60px);
-      align-items: center;
+      display: grid; grid-template-columns: 1.05fr .95fr;
+      gap: clamp(24px, 5vw, 60px); align-items: center;
       padding: clamp(36px, 6vw, 76px) 0;
     }
     .eyebrow { color: var(--neon); font-weight: 1000; letter-spacing: .18em; text-transform: uppercase; font-size: 12px; }
@@ -203,56 +170,34 @@
     .btn {
       border: 1px solid rgba(118,255,122,.45);
       background: linear-gradient(135deg, rgba(118,255,122,.16), rgba(55,231,255,.06));
-      padding: 14px 18px;
-      border-radius: 16px;
-      font-weight: 1000;
-      cursor: pointer;
-      box-shadow: 0 0 26px rgba(118,255,122,.1);
-      transition: .2s ease;
+      padding: 14px 18px; border-radius: 16px; font-weight: 1000; cursor: pointer;
+      box-shadow: 0 0 26px rgba(118,255,122,.1); transition: .2s ease;
+      display: inline-flex; align-items: center; gap: 8px;
     }
     .btn:hover { transform: translateY(-3px); box-shadow: 0 0 38px rgba(118,255,122,.2); }
     .btn.alt { border-color: rgba(255,233,90,.38); background: rgba(255,233,90,.08); }
 
     .hero-card {
-      border: 1px solid rgba(118,255,122,.24);
-      background: var(--panel);
-      border-radius: 30px;
-      padding: clamp(18px, 3vw, 30px);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-      min-height: 460px;
-      display: grid;
-      place-items: center;
+      border: 1px solid rgba(118,255,122,.24); background: var(--panel);
+      border-radius: 30px; padding: clamp(18px, 3vw, 30px); box-shadow: var(--shadow);
+      position: relative; overflow: hidden; min-height: 460px; display: grid; place-items: center;
     }
     .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
+      content: ""; position: absolute; inset: -2px;
       background: conic-gradient(from 180deg, transparent, rgba(118,255,122,.25), transparent, rgba(255,49,89,.18), transparent);
-      animation: spin 12s linear infinite;
-      opacity: .55;
+      animation: spin 12s linear infinite; opacity: .55;
     }
     .hero-card::after { content:""; position:absolute; inset:1px; border-radius:29px; background: rgba(5,8,11,.89); z-index:1; }
     .hero-card > * { position: relative; z-index: 2; }
 
-    .orb { width: min(100%, 460px); aspect-ratio: 1; border-radius: 50%; position: relative; display: grid; place-items: center; }
-    .orb canvas { width: 100%; height: 100%; display: block; }
+    .node-visual { width: min(100%, 480px); aspect-ratio: 1; position: relative; }
+    .node-visual canvas { width: 100%; height: 100%; display: block; position: absolute; inset: 0; z-index: 3; }
+    .fallback-network { position:absolute; inset:0; z-index:2; filter: drop-shadow(0 0 18px rgba(118,255,122,.22)); }
     .core-label {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: Consolas, monospace;
-      font-size: 11px;
-      color: var(--yellow);
-      letter-spacing: .12em;
-      text-align: center;
-      background: rgba(0,0,0,.42);
-      border: 1px solid rgba(255,233,90,.28);
-      border-radius: 999px;
-      padding: 8px 12px;
-      white-space: nowrap;
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 4;
+      font-family: Consolas, monospace; font-size: 11px; color: var(--yellow); letter-spacing: .12em;
+      text-align: center; background: rgba(0,0,0,.52); border: 1px solid rgba(255,233,90,.28);
+      border-radius: 999px; padding: 8px 12px; white-space: nowrap;
     }
 
     .ticker { overflow: hidden; border-top: 1px solid rgba(118,255,122,.16); border-bottom: 1px solid rgba(118,255,122,.16); background: rgba(0,0,0,.22); padding: 12px 0; white-space: nowrap; }
@@ -263,48 +208,21 @@
     .section-head { margin-bottom: 22px; }
     .section-head h3 { font-size: clamp(30px, 5vw, 56px); line-height: 1; margin-top: 8px; letter-spacing: -.045em; }
     .section-head p { color: var(--muted); line-height: 1.7; max-width: 860px; margin-top: 12px; }
-
     .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-    .card {
-      grid-column: span 4;
-      border: 1px solid rgba(118,255,122,.18);
-      background: linear-gradient(180deg, rgba(12,19,24,.78), rgba(6,9,12,.84));
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.22);
-      position: relative;
-      overflow: hidden;
-    }
+    .card { grid-column: span 4; border: 1px solid rgba(118,255,122,.18); background: linear-gradient(180deg, rgba(12,19,24,.78), rgba(6,9,12,.84)); border-radius: var(--radius); padding: 20px; box-shadow: 0 12px 40px rgba(0,0,0,.22); position: relative; overflow: hidden; }
     .card h4 { color: var(--yellow); font-size: 18px; margin-bottom: 10px; }
     .card p, .card li { color: var(--muted); line-height: 1.6; }
     .card ul { padding-left: 18px; }
     .wide { grid-column: span 8; }
     .full { grid-column: 1 / -1; }
     .half { grid-column: span 6; }
-
     .socket-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 18px; }
-    .socket {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      border: 1px solid rgba(255,233,90,.22);
-      background: rgba(255,233,90,.055);
-      border-radius: 18px;
-      padding: 14px;
-      transition: .2s ease;
-    }
+    .socket { display: flex; justify-content: space-between; gap: 12px; align-items: center; border: 1px solid rgba(255,233,90,.22); background: rgba(255,233,90,.055); border-radius: 18px; padding: 14px; transition: .2s ease; }
     .socket:hover { border-color: rgba(118,255,122,.55); background: rgba(118,255,122,.07); transform: translateY(-2px); }
     .socket b { display: block; color: var(--white); }
     .socket small { color: var(--muted); display:block; margin-top:4px; }
 
-    .terminal {
-      background: #020403;
-      border: 1px solid rgba(118,255,122,.3);
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: inset 0 0 40px rgba(118,255,122,.05), var(--shadow);
-    }
+    .terminal { background: #020403; border: 1px solid rgba(118,255,122,.3); border-radius: 22px; overflow: hidden; box-shadow: inset 0 0 40px rgba(118,255,122,.05), var(--shadow); }
     .term-top { display:flex; gap:8px; align-items:center; padding:12px 14px; border-bottom:1px solid rgba(118,255,122,.18); background: rgba(255,255,255,.035); }
     .dot { width:10px; height:10px; border-radius:50%; background: var(--red); box-shadow:0 0 10px var(--red); }
     .dot:nth-child(2){ background:var(--yellow); box-shadow:0 0 10px var(--yellow); }
@@ -316,10 +234,11 @@
     .footer-grid { display:grid; grid-template-columns: 1fr auto 1fr; gap:18px; align-items:center; }
     .foot-brand h3 { font-size: 20px; letter-spacing:.12em; }
     .foot-brand p, .foot-mini { color:var(--muted); font-size:12px; line-height:1.5; margin-top:6px; }
-    .social-orbit { width: min(48vw, 250px); height: 92px; position: relative; perspective: 800px; }
+    .social-orbit { width: min(48vw, 270px); height: 102px; position: relative; perspective: 800px; }
     .orbit-ring { position:absolute; inset: 16px; border:1px dashed rgba(118,255,122,.22); border-radius:50%; animation: spin 18s linear infinite; }
-    .bubble { position:absolute; top:50%; left:50%; width:44px; height:44px; margin:-22px; border-radius:50%; display:grid; place-items:center; font-size:18px; font-weight:1000; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.24), rgba(55,231,255,.12), rgba(0,0,0,.78)); border:1px solid rgba(118,255,122,.28); box-shadow:0 0 18px rgba(55,231,255,.16); transform: rotate(var(--a)) translateX(96px) rotate(calc(-1 * var(--a))); transition:.25s ease; }
+    .bubble { position:absolute; top:50%; left:50%; width:46px; height:46px; margin:-23px; border-radius:50%; display:grid; place-items:center; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.24), rgba(55,231,255,.12), rgba(0,0,0,.78)); border:1px solid rgba(118,255,122,.28); box-shadow:0 0 18px rgba(55,231,255,.16); transform: rotate(var(--a)) translateX(102px) rotate(calc(-1 * var(--a))); transition:.25s ease; animation: floaty 3.4s ease-in-out infinite; animation-delay: var(--d); }
     .bubble:hover { scale:1.15; border-color:var(--yellow); box-shadow:0 0 28px rgba(255,233,90,.25); }
+    .bubble svg { width: 22px; height: 22px; fill: var(--white); filter: drop-shadow(0 0 6px rgba(118,255,122,.5)); }
     .status-pill { display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border:1px solid rgba(118,255,122,.24); border-radius:999px; color:var(--neon); font-size:12px; font-weight:900; }
     .status-pill i { width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow:0 0 12px var(--neon); }
 
@@ -329,7 +248,7 @@
       .grid, .socket-grid { grid-template-columns: 1fr; }
       .card, .wide, .half, .full { grid-column: 1; }
       .footer-grid { grid-template-columns: 1fr; text-align:center; }
-      .social-orbit { margin:0 auto; width:250px; }
+      .social-orbit { margin:0 auto; width:270px; }
       .footer-grid > div:last-child { text-align:center !important; }
     }
     @media (max-width: 560px) {
@@ -337,7 +256,9 @@
       .hero h2 { font-size: 43px; }
       .hero-card { min-height: 330px; }
       .term-screen { font-size: 12px; }
-      .bubble { width:38px; height:38px; margin:-19px; transform: rotate(var(--a)) translateX(82px) rotate(calc(-1 * var(--a))); }
+      .bubble { width:40px; height:40px; margin:-20px; transform: rotate(var(--a)) translateX(88px) rotate(calc(-1 * var(--a))); }
+      .bubble svg { width: 19px; height: 19px; }
+      .core-label { font-size: 9px; }
     }
   </style>
 </head>
@@ -352,12 +273,16 @@
         <small>Zero-Point Federated HTML Router</small>
       </div>
     </a>
-    <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false"><span></span></button>
+    <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" type="button"><span></span></button>
   </header>
 
   <nav class="menu" id="menu" aria-label="Zero-point navigation menu">
     <div class="menu-title">External Page Sockets</div>
-    <div id="menuItems"></div>
+    <div id="menuItems">
+      <a href="./index.html"><span><b>Aurora Nest Home</b><small>Master landing router and zero-point control page.</small></span><span class="pill">LIVE</span></a>
+      <a href="https://aol83.github.io/aurora-bridge-civic-response/"><span><b>Civic Response Upgrade</b><small>Future service page. May 404 until built.</small></span><span class="pill pending">SOCKET</span></a>
+      <a href="https://aol83.github.io/aurora-bridge-drone-towers/"><span><b>Drone Tower Infrastructure</b><small>Future service page. May 404 until built.</small></span><span class="pill pending">SOCKET</span></a>
+    </div>
   </nav>
 
   <section class="wrap hero">
@@ -366,8 +291,8 @@
       <h2>Zero-Point <span>Control</span> Nest.</h2>
       <p>
         This is the master HTML landing router for a federated multi-repository website.
-        The hamburger menu does not scroll to hidden service sections. It opens external service pages.
-        If a page does not exist yet, GitHub Pages may show 404. That is a future expansion socket waiting to be built.
+        The hamburger menu opens external service pages. If a page does not exist yet, GitHub Pages may show 404.
+        That is a future expansion socket waiting to be built.
       </p>
       <div class="hero-actions">
         <a class="btn" href="#page-sockets">View Page Sockets</a>
@@ -377,7 +302,31 @@
     </div>
 
     <div class="hero-card">
-      <div class="orb">
+      <div class="node-visual">
+        <svg class="fallback-network" viewBox="0 0 600 600" aria-hidden="true">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ecfff3" stop-opacity="1"/>
+              <stop offset="35%" stop-color="#76ff7a" stop-opacity=".8"/>
+              <stop offset="100%" stop-color="#76ff7a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="300" cy="300" r="230" fill="none" stroke="rgba(118,255,122,.18)" stroke-width="2"/>
+          <circle cx="300" cy="300" r="175" fill="none" stroke="rgba(55,231,255,.16)" stroke-width="2"/>
+          <circle cx="300" cy="300" r="120" fill="none" stroke="rgba(255,233,90,.15)" stroke-width="2"/>
+          <line x1="300" y1="300" x2="120" y2="180" stroke="rgba(118,255,122,.55)" stroke-width="2"/>
+          <line x1="300" y1="300" x2="480" y2="180" stroke="rgba(118,255,122,.55)" stroke-width="2"/>
+          <line x1="300" y1="300" x2="120" y2="430" stroke="rgba(55,231,255,.45)" stroke-width="2"/>
+          <line x1="300" y1="300" x2="480" y2="430" stroke="rgba(55,231,255,.45)" stroke-width="2"/>
+          <line x1="120" y1="180" x2="480" y2="180" stroke="rgba(255,233,90,.3)" stroke-width="2" stroke-dasharray="8 9"/>
+          <line x1="120" y1="430" x2="480" y2="430" stroke="rgba(255,233,90,.3)" stroke-width="2" stroke-dasharray="8 9"/>
+          <circle cx="300" cy="300" r="78" fill="url(#coreGlow)"/>
+          <circle cx="300" cy="300" r="11" fill="#ecfff3"/>
+          <circle cx="120" cy="180" r="16" fill="#ffe95a"/>
+          <circle cx="480" cy="180" r="16" fill="#76ff7a"/>
+          <circle cx="120" cy="430" r="16" fill="#37e7ff"/>
+          <circle cx="480" cy="430" r="16" fill="#ff3159"/>
+        </svg>
         <canvas id="orbCanvas" width="640" height="640" aria-label="Animated Aurora federated node visual"></canvas>
         <div class="core-label">AURORA-NEST / INDEX.HTML</div>
       </div>
@@ -396,10 +345,7 @@
       <div class="section-head">
         <div class="eyebrow">Federated Architecture</div>
         <h3>Each service is its own page, repo, and expansion module.</h3>
-        <p>
-          The menu links are deliberately external. The first Aurora Nest page is the gateway.
-          Every service page can later become its own full website while keeping the same zero-point hamburger navigation spine.
-        </p>
+        <p>The menu links are deliberately external. Every service page can later become its own full website while keeping the same zero-point hamburger navigation spine.</p>
       </div>
       <div class="socket-grid" id="socketGrid"></div>
     </section>
@@ -408,29 +354,21 @@
       <div class="grid">
         <article class="card wide">
           <h4>Repository Structure</h4>
-          <p>The master repository is <b>Aurora Nest</b>. Future service repositories are separate GitHub Pages sites. The master menu points to them before they exist. A temporary 404 is expected until each repository is created and published.</p>
+          <p>The master repository is <b>Aurora Nest</b>. Future service repositories are separate GitHub Pages sites. The master menu points to them before they exist.</p>
         </article>
         <article class="card">
           <h4>Why this works</h4>
-          <p>Each module can be built independently, audited independently, deployed independently and still feel like one coherent website through the shared hamburger navigation.</p>
+          <p>Each module can be built independently, audited independently, deployed independently and still feel like one coherent website.</p>
         </article>
         <article class="card half">
           <h4>Build Order</h4>
-          <ul>
-            <li>Create <b>Aurora Nest</b> repo.</li>
-            <li>Add this file as <b>index.html</b>.</li>
-            <li>Enable GitHub Pages.</li>
-            <li>Open the live URL.</li>
-            <li>Create each missing service repo when ready.</li>
-          </ul>
+          <ul><li>Create Aurora Nest repo.</li><li>Add this as index.html.</li><li>Enable GitHub Pages.</li><li>Create each missing service repo when ready.</li></ul>
         </article>
         <article class="card half">
           <h4>Expansion Rule</h4>
-          <p>Copy the same topbar and hamburger menu into every future service page. That keeps the zero-point navigation consistent across the entire federated website.</p>
+          <p>Copy the same topbar and hamburger menu into every future service page to preserve the zero-point navigation layer.</p>
         </article>
-        <article class="card full">
-          <div class="audit-note"><b>Audit note:</b> The menu uses real external URLs generated in JavaScript. Update the GitHub owner and repository slugs before deployment if your GitHub username or repo names differ.</div>
-        </article>
+        <article class="card full"><div class="audit-note"><b>Audit note:</b> Buttons now use ordinary anchors so they work even if JavaScript partially fails. The hamburger and generated cards use JavaScript enhancement.</div></article>
       </div>
     </section>
 
@@ -442,256 +380,231 @@
       </div>
       <section class="terminal">
         <div class="term-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><strong style="margin-left:8px;color:var(--muted)">aurora-nest://zero-point-router</strong></div>
-        <div class="term-screen" id="termScreen"></div>
+        <div class="term-screen" id="termScreen">Terminal booting...</div>
       </section>
     </section>
   </main>
 
   <footer>
     <div class="wrap footer-grid">
-      <div class="foot-brand">
-        <h3>AURORA NEST</h3>
-        <p>Master HTML router for Aurora Bridge service modules. Compact footer, live social bubbles, no oversized dead space.</p>
-      </div>
-      <div class="social-orbit" id="socialOrbit" aria-label="Social link orbit">
-        <div class="orbit-ring"></div>
-      </div>
-      <div style="text-align:right">
-        <span class="status-pill"><i></i> ROUTER ONLINE</span>
-        <p class="foot-mini">GitHub Pages - Multi-repo - Mobile-first - EdgeRunner theme</p>
-      </div>
+      <div class="foot-brand"><h3>AURORA NEST</h3><p>Master HTML router for Aurora Bridge service modules. Compact footer, live SVG social bubbles.</p></div>
+      <div class="social-orbit" id="socialOrbit" aria-label="Social link orbit"><div class="orbit-ring"></div></div>
+      <div style="text-align:right"><span class="status-pill"><i></i> ROUTER ONLINE</span><p class="foot-mini">GitHub Pages - Multi-repo - Mobile-first - EdgeRunner theme</p></div>
     </div>
   </footer>
 
   <script>
-    var githubOwner = "AOL83";
+    (function () {
+      "use strict";
 
-    var navLinks = [
-      { title: "Aurora Nest Home", tag: "LIVE", repo: "Aurora-Nest", path: "./index.html", description: "Master landing router and zero-point control page." },
-      { title: "Civic Response Upgrade", tag: "SOCKET", repo: "aurora-bridge-civic-response", description: "Police, ambulance, fire, councils, utilities and public-servant emergency support." },
-      { title: "Drone Tower Infrastructure", tag: "SOCKET", repo: "aurora-bridge-drone-towers", description: "Boundary towers, rooftop pads, parcel vaults, drone docks and safe corridors." },
-      { title: "Emergency Event Network", tag: "SOCKET", repo: "aurora-bridge-emergency-network", description: "Mesh communications, SOS routing, first-aid drops, family check-ins and outage resilience." },
-      { title: "Postal and Returns Logistics", tag: "SOCKET", repo: "aurora-bridge-postal-logistics", description: "Postal service, retail returns, last-mile delivery and secure handover flows." },
-      { title: "Control Terminal", tag: "SOCKET", repo: "aurora-bridge-control-terminal", description: "Operational dashboard, node telemetry, route status and deployment command view." },
-      { title: "Business and Partner Portal", tag: "SOCKET", repo: "aurora-bridge-partner-portal", description: "Partner onboarding, contract models, licensing, APIs and service integration." }
-    ];
-
-    var socialLinks = [
-      { name: "GitHub", icon: "GH", url: "https://github.com/AOL83" },
-      { name: "Substack", icon: "S", url: "https://waterfallslt.substack.com" },
-      { name: "LinkedIn", icon: "in", url: "#" },
-      { name: "YouTube", icon: "YT", url: "#" },
-      { name: "X", icon: "X", url: "#" },
-      { name: "Drive", icon: "D", url: "#" }
-    ];
-
-    function qs(selector, root) { return (root || document).querySelector(selector); }
-
-    function pageUrl(link) {
-      if (link.path) { return link.path; }
-      return "https://" + githubOwner.toLowerCase() + ".github.io/" + link.repo + "/";
-    }
-
-    function makeText(tag, text, className) {
-      var el = document.createElement(tag);
-      if (className) { el.className = className; }
-      el.textContent = text;
-      return el;
-    }
-
-    function buildMenu() {
-      var menuItems = qs("#menuItems");
-      menuItems.innerHTML = "";
-      navLinks.forEach(function(link) {
-        var a = document.createElement("a");
-        a.href = pageUrl(link);
-
-        var left = document.createElement("span");
-        var b = makeText("b", link.title);
-        var small = makeText("small", link.description);
-        left.appendChild(b);
-        left.appendChild(small);
-
-        var pill = makeText("span", link.tag, "pill" + (link.tag === "SOCKET" ? " pending" : ""));
-        a.appendChild(left);
-        a.appendChild(pill);
-        menuItems.appendChild(a);
-      });
-    }
-
-    function buildSockets() {
-      var socketGrid = qs("#socketGrid");
-      socketGrid.innerHTML = "";
-      navLinks.forEach(function(link) {
-        if (link.path) { return; }
-        var a = document.createElement("a");
-        a.className = "socket";
-        a.href = pageUrl(link);
-
-        var left = document.createElement("span");
-        left.appendChild(makeText("b", link.title));
-        left.appendChild(makeText("small", link.repo));
-        left.appendChild(makeText("small", link.description));
-
-        var pill = makeText("span", "404 UNTIL BUILT", "pill pending");
-        a.appendChild(left);
-        a.appendChild(pill);
-        socketGrid.appendChild(a);
-      });
-    }
-
-    function initSocials() {
-      var orbit = qs("#socialOrbit");
-      orbit.innerHTML = "";
-      var ring = document.createElement("div");
-      ring.className = "orbit-ring";
-      orbit.appendChild(ring);
-      socialLinks.forEach(function(s, i) {
-        var angle = (360 / socialLinks.length) * i;
-        var a = document.createElement("a");
-        a.className = "bubble";
-        a.style.setProperty("--a", angle + "deg");
-        a.href = s.url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.title = s.name;
-        a.textContent = s.icon;
-        orbit.appendChild(a);
-      });
-    }
-
-    function initTerminal() {
-      var screen = qs("#termScreen");
-      var lines = [
-        "AURORA NEST ZERO-POINT ROUTER v1.0",
-        "Repository role: master landing page / external navigation spine",
-        "Mode: federated multi-repository website",
-        "GitHub owner configured as: " + githubOwner,
-        "Internal scroll routing: disabled for service pages",
-        "External service sockets: enabled",
-        "Expected behaviour: missing repos may return GitHub Pages 404 until created",
-        "Instruction: build each service page as its own repository and keep the hamburger menu consistent",
-        "Router state: ONLINE"
+      var githubOwner = "AOL83";
+      var navLinks = [
+        { title: "Aurora Nest Home", tag: "LIVE", repo: "Aurora-Nest", path: "./index.html", description: "Master landing router and zero-point control page." },
+        { title: "Civic Response Upgrade", tag: "SOCKET", repo: "aurora-bridge-civic-response", description: "Police, ambulance, fire, councils, utilities and public-servant emergency support." },
+        { title: "Drone Tower Infrastructure", tag: "SOCKET", repo: "aurora-bridge-drone-towers", description: "Boundary towers, rooftop pads, parcel vaults, drone docks and safe corridors." },
+        { title: "Emergency Event Network", tag: "SOCKET", repo: "aurora-bridge-emergency-network", description: "Mesh communications, SOS routing, first-aid drops, family check-ins and outage resilience." },
+        { title: "Postal and Returns Logistics", tag: "SOCKET", repo: "aurora-bridge-postal-logistics", description: "Postal service, retail returns, last-mile delivery and secure handover flows." },
+        { title: "Control Terminal", tag: "SOCKET", repo: "aurora-bridge-control-terminal", description: "Operational dashboard, node telemetry, route status and deployment command view." },
+        { title: "Business and Partner Portal", tag: "SOCKET", repo: "aurora-bridge-partner-portal", description: "Partner onboarding, contract models, licensing, APIs and service integration." }
       ];
-      var i = 0;
-      function writeLine() {
-        if (!screen) { return; }
-        if (i < lines.length) {
-          screen.textContent += "> " + lines[i] + "
-";
-          i += 1;
-          window.setTimeout(writeLine, 210);
-        } else {
-          screen.textContent += "
-AURORA-NEST:// awaiting repository expansion";
-        }
-      }
-      writeLine();
-    }
+      var socialLinks = [
+        { name: "GitHub", icon: "github", url: "https://github.com/AOL83" },
+        { name: "Substack", icon: "substack", url: "https://waterfallslt.substack.com" },
+        { name: "LinkedIn", icon: "linkedin", url: "#" },
+        { name: "YouTube", icon: "youtube", url: "#" },
+        { name: "X", icon: "x", url: "#" },
+        { name: "Google Drive", icon: "drive", url: "#" }
+      ];
 
-    function initOrb() {
-      var canvas = qs("#orbCanvas");
-      if (!canvas || !canvas.getContext) { return; }
-      var ctx = canvas.getContext("2d");
-      var nodes = [];
-      for (var i = 0; i < 62; i++) {
-        nodes.push({ x: Math.random(), y: Math.random(), z: Math.random(), vx: (Math.random() - 0.5) * 0.002, vy: (Math.random() - 0.5) * 0.002 });
+      function qs(selector) { return document.querySelector(selector); }
+      function pageUrl(link) { return link.path ? link.path : "https://" + githubOwner.toLowerCase() + ".github.io/" + link.repo + "/"; }
+      function clear(el) { while (el && el.firstChild) { el.removeChild(el.firstChild); } }
+      function text(tag, value, cls) { var el = document.createElement(tag); if (cls) { el.className = cls; } el.textContent = value; return el; }
+      function makeSvgIcon(name) {
+        var paths = {
+          github: "M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.6 1.8 3.4 1.3.1-.7.4-1.2.7-1.5-2.6-.3-5.4-1.3-5.4-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.4 5.9.4.4.8 1.1.8 2.2v3.2c0 .4.2.7.8.6A12 12 0 0 0 12 .5Z",
+          linkedin: "M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.3 8h4.4v14H.3V8Zm7 0h4.2v1.9h.1c.6-1.1 2-2.3 4.2-2.3 4.5 0 5.3 3 5.3 6.8V22h-4.4v-6.8c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V22H7.3V8Z",
+          youtube: "M23.5 6.2s-.2-1.7-.9-2.4c-.9-.9-1.9-.9-2.4-1C16.8 2.5 12 2.5 12 2.5s-4.8 0-8.2.3c-.5.1-1.5.1-2.4 1C.7 4.5.5 6.2.5 6.2S.2 8.2.2 10.3v1.9c0 2.1.3 4.1.3 4.1s.2 1.7.9 2.4c.9.9 2.1.9 2.6 1 1.9.2 8 .3 8 .3s4.8 0 8.2-.3c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.4.9-2.4s.3-2 .3-4.1v-1.9c0-2.1-.3-4.1-.3-4.1ZM9.7 14.8V7.9l6.3 3.5-6.3 3.4Z",
+          x: "M18.2 2h3.4l-7.4 8.5L23 22h-6.9l-5.4-7.1L4.5 22H1.1L9 12.9 1 2h7.1l4.9 6.5L18.2 2Zm-1.2 18h1.9L7.1 3.9h-2L17 20Z",
+          drive: "M8.1 2h7.8l7.9 13.8-3.9 6.2H4.1L.2 15.8 8.1 2Zm1.2 2.2L3.5 14.4h7.4l5.8-10.2H9.3Zm9.1 0-5.8 10.2h11.6L18.4 4.2ZM4.1 16.7 6 19.8h11.9l1.9-3.1H4.1Z",
+          substack: "M3 2h18v3H3V2Zm0 5h18v3H3V7Zm0 5h18v10l-9-5.2L3 22V12Z"
+        };
+        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("aria-hidden", "true");
+        var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", paths[name] || paths.github);
+        svg.appendChild(path);
+        return svg;
       }
-      function draw() {
-        var w = canvas.width;
-        var h = canvas.height;
-        ctx.clearRect(0, 0, w, h);
-        var t = Date.now() * 0.001;
-        var cx = w / 2;
-        var cy = h / 2;
-        var r = w * 0.38;
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(t * 0.08);
-        ctx.strokeStyle = "rgba(118,255,122,.22)";
-        ctx.lineWidth = 2;
-        for (var ring = 0; ring < 5; ring++) {
-          ctx.beginPath();
-          ctx.arc(0, 0, r * (0.24 + ring * 0.16), 0, Math.PI * 2);
-          ctx.stroke();
-        }
-        ctx.restore();
-        var pts = [];
-        nodes.forEach(function(n) {
-          n.x += n.vx;
-          n.y += n.vy;
-          if (n.x < 0 || n.x > 1) { n.vx *= -1; }
-          if (n.y < 0 || n.y > 1) { n.vy *= -1; }
-          var angle = (n.x * Math.PI * 2) + t * 0.12;
-          var rad = r * (0.2 + n.y * 0.78);
-          pts.push({ x: cx + Math.cos(angle) * rad, y: cy + Math.sin(angle) * rad * 0.74, z: n.z });
+
+      function buildMenu() {
+        var menuItems = qs("#menuItems");
+        if (!menuItems) { return; }
+        clear(menuItems);
+        navLinks.forEach(function (link) {
+          var a = document.createElement("a");
+          a.href = pageUrl(link);
+          var left = document.createElement("span");
+          left.appendChild(text("b", link.title));
+          left.appendChild(text("small", link.description));
+          var pill = text("span", link.tag, "pill" + (link.tag === "SOCKET" ? " pending" : ""));
+          a.appendChild(left); a.appendChild(pill); menuItems.appendChild(a);
         });
-        for (var a = 0; a < pts.length; a++) {
-          for (var b = a + 1; b < pts.length; b++) {
-            var dx = pts[a].x - pts[b].x;
-            var dy = pts[a].y - pts[b].y;
-            var d = Math.sqrt(dx * dx + dy * dy);
-            if (d < 110) {
-              ctx.strokeStyle = "rgba(55,231,255," + ((1 - d / 110) * 0.36) + ")";
-              ctx.beginPath();
-              ctx.moveTo(pts[a].x, pts[a].y);
-              ctx.lineTo(pts[b].x, pts[b].y);
-              ctx.stroke();
-            }
+      }
+
+      function buildSockets() {
+        var socketGrid = qs("#socketGrid");
+        if (!socketGrid) { return; }
+        clear(socketGrid);
+        navLinks.forEach(function (link) {
+          if (link.path) { return; }
+          var a = document.createElement("a");
+          a.className = "socket";
+          a.href = pageUrl(link);
+          var left = document.createElement("span");
+          left.appendChild(text("b", link.title));
+          left.appendChild(text("small", link.repo));
+          left.appendChild(text("small", link.description));
+          a.appendChild(left);
+          a.appendChild(text("span", "404 UNTIL BUILT", "pill pending"));
+          socketGrid.appendChild(a);
+        });
+      }
+
+      function initSocials() {
+        var orbit = qs("#socialOrbit");
+        if (!orbit) { return; }
+        clear(orbit);
+        var ring = document.createElement("div");
+        ring.className = "orbit-ring";
+        orbit.appendChild(ring);
+        socialLinks.forEach(function (s, i) {
+          var angle = (360 / socialLinks.length) * i;
+          var a = document.createElement("a");
+          a.className = "bubble";
+          a.style.setProperty("--a", angle + "deg");
+          a.style.setProperty("--d", (i * -0.22) + "s");
+          a.href = s.url;
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.title = s.name;
+          a.setAttribute("aria-label", s.name);
+          a.appendChild(makeSvgIcon(s.icon));
+          orbit.appendChild(a);
+        });
+      }
+
+      function initTerminal() {
+        var screen = qs("#termScreen");
+        if (!screen) { return; }
+        screen.textContent = "";
+        var lines = [
+          "AURORA NEST ZERO-POINT ROUTER v1.1",
+          "Repository role: master landing page / external navigation spine",
+          "Mode: federated multi-repository website",
+          "GitHub owner configured as: " + githubOwner,
+          "Hamburger: active",
+          "Buttons: active anchors",
+          "SVG social emblems: active",
+          "Canvas node visual: active with SVG fallback",
+          "External service sockets: enabled",
+          "Expected behaviour: missing repos may return GitHub Pages 404 until created",
+          "Router state: ONLINE"
+        ];
+        var i = 0;
+        function writeLine() {
+          if (i < lines.length) {
+            screen.textContent += "> " + lines[i] + "\n";
+            i += 1;
+            window.setTimeout(writeLine, 170);
+          } else {
+            screen.textContent += "\nAURORA-NEST:// awaiting repository expansion";
           }
         }
-        pts.forEach(function(p, idx) {
-          ctx.beginPath();
-          ctx.fillStyle = idx % 7 === 0 ? "rgba(255,233,90,.95)" : "rgba(118,255,122,.9)";
-          ctx.arc(p.x, p.y, 3 + p.z * 3, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        var grd = ctx.createRadialGradient(cx, cy, 4, cx, cy, 86);
-        grd.addColorStop(0, "rgba(255,255,255,.95)");
-        grd.addColorStop(0.22, "rgba(118,255,122,.75)");
-        grd.addColorStop(1, "rgba(118,255,122,0)");
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 86, 0, Math.PI * 2);
-        ctx.fill();
-        window.requestAnimationFrame(draw);
+        writeLine();
       }
-      draw();
-    }
 
-    function initMenuToggle() {
-      var hamburger = qs("#hamburger");
-      var menu = qs("#menu");
-      hamburger.addEventListener("click", function() {
-        var isOpen = !menu.classList.contains("open");
-        if (isOpen) {
-          menu.classList.add("open");
-          hamburger.classList.add("open");
-          hamburger.setAttribute("aria-expanded", "true");
-        } else {
-          menu.classList.remove("open");
-          hamburger.classList.remove("open");
-          hamburger.setAttribute("aria-expanded", "false");
+      function initOrb() {
+        var canvas = qs("#orbCanvas");
+        if (!canvas || !canvas.getContext) { return; }
+        var ctx = canvas.getContext("2d");
+        var nodes = [];
+        var i;
+        for (i = 0; i < 62; i += 1) {
+          nodes.push({ x: Math.random(), y: Math.random(), z: Math.random(), vx: (Math.random() - 0.5) * 0.002, vy: (Math.random() - 0.5) * 0.002 });
         }
-      });
-      document.addEventListener("keydown", function(e) {
-        if (e.key === "Escape") {
-          menu.classList.remove("open");
-          hamburger.classList.remove("open");
-          hamburger.setAttribute("aria-expanded", "false");
+        function draw() {
+          var w = canvas.width, h = canvas.height;
+          var t = Date.now() * 0.001;
+          var cx = w / 2, cy = h / 2, r = w * 0.38;
+          ctx.clearRect(0, 0, w, h);
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(t * 0.08);
+          ctx.strokeStyle = "rgba(118,255,122,.22)";
+          ctx.lineWidth = 2;
+          for (var ring = 0; ring < 5; ring += 1) {
+            ctx.beginPath(); ctx.arc(0, 0, r * (0.24 + ring * 0.16), 0, Math.PI * 2); ctx.stroke();
+          }
+          ctx.restore();
+          var pts = [];
+          nodes.forEach(function (n) {
+            n.x += n.vx; n.y += n.vy;
+            if (n.x < 0 || n.x > 1) { n.vx *= -1; }
+            if (n.y < 0 || n.y > 1) { n.vy *= -1; }
+            var angle = (n.x * Math.PI * 2) + t * 0.12;
+            var rad = r * (0.2 + n.y * 0.78);
+            pts.push({ x: cx + Math.cos(angle) * rad, y: cy + Math.sin(angle) * rad * 0.74, z: n.z });
+          });
+          for (var a = 0; a < pts.length; a += 1) {
+            for (var b = a + 1; b < pts.length; b += 1) {
+              var dx = pts[a].x - pts[b].x, dy = pts[a].y - pts[b].y, d = Math.sqrt(dx * dx + dy * dy);
+              if (d < 110) {
+                ctx.strokeStyle = "rgba(55,231,255," + ((1 - d / 110) * 0.36) + ")";
+                ctx.beginPath(); ctx.moveTo(pts[a].x, pts[a].y); ctx.lineTo(pts[b].x, pts[b].y); ctx.stroke();
+              }
+            }
+          }
+          pts.forEach(function (p, idx) {
+            ctx.beginPath(); ctx.fillStyle = idx % 7 === 0 ? "rgba(255,233,90,.95)" : "rgba(118,255,122,.9)";
+            ctx.arc(p.x, p.y, 3 + p.z * 3, 0, Math.PI * 2); ctx.fill();
+          });
+          var grd = ctx.createRadialGradient(cx, cy, 4, cx, cy, 86);
+          grd.addColorStop(0, "rgba(255,255,255,.95)");
+          grd.addColorStop(0.22, "rgba(118,255,122,.75)");
+          grd.addColorStop(1, "rgba(118,255,122,0)");
+          ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(cx, cy, 86, 0, Math.PI * 2); ctx.fill();
+          window.requestAnimationFrame(draw);
         }
-      });
-      window.addEventListener("scroll", function() {
-        qs("#topbar").classList.toggle("scrolled", window.scrollY > 20);
-      });
-    }
+        draw();
+      }
 
-    buildMenu();
-    buildSockets();
-    initSocials();
-    initTerminal();
-    initOrb();
-    initMenuToggle();
+      function initMenuToggle() {
+        var hamburger = qs("#hamburger"), menu = qs("#menu");
+        if (!hamburger || !menu) { return; }
+        hamburger.addEventListener("click", function () {
+          var isOpen = !menu.classList.contains("open");
+          menu.classList.toggle("open", isOpen);
+          hamburger.classList.toggle("open", isOpen);
+          hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            menu.classList.remove("open"); hamburger.classList.remove("open"); hamburger.setAttribute("aria-expanded", "false");
+          }
+        });
+        window.addEventListener("scroll", function () {
+          var topbar = qs("#topbar");
+          if (topbar) { topbar.classList.toggle("scrolled", window.scrollY > 20); }
+        });
+      }
+
+      function start() {
+        buildMenu(); buildSockets(); initSocials(); initTerminal(); initOrb(); initMenuToggle();
+      }
+      if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", start); } else { start(); }
+    }());
   </script>
 </body>
 </html>
