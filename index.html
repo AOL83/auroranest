@@ -1,649 +1,1967 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Aurora Bridge by Aurora Logistical Eco Holdings - modular civic response infrastructure combining drone logistics, emergency mesh communications, rooftop-safe routes, public-service support and postal modernization." />
-  <title>Aurora Bridge | Civil Response Infrastructure</title>
-  <style>
-    /*
-      AURORA BRIDGE - CIVIC RESPONSE INFRASTRUCTURE LANDING PAGE
-      ----------------------------------------------------------
-      This file is designed to be dropped into GitHub Pages as index.html.
-      It keeps your existing working structure, but reframes the page as an advert
-      for the Aurora Logistical Eco Holdings concept, not just a control-nest demo.
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Archive,
+  BookOpen,
+  Camera,
+  CreditCard,
+  Download,
+  FileJson,
+  FolderOpen,
+  Gamepad2,
+  Map,
+  Network,
+  NotebookPen,
+  PackageOpen,
+  Play,
+  Plus,
+  Search,
+  Upload,
+  Wand2,
+} from "lucide-react";
+import JSZip from "jszip";
 
-      It remains a federated router:
-      - The hamburger menu points to future external GitHub Pages service modules.
-      - Missing pages may show 404 until each future repository is created.
-      - Footer social icons are anchored in a fixed row, not floating around.
+const now = () => new Date().toISOString();
 
-      EXPAND HERE:
-      1. Change GitHub owner in JS: githubOwner
-      2. Change future repo names in JS: navLinks
-      3. Change social URLs in JS: socialLinks
-      4. Copy this navigation/footer into future service pages.
-    */
+const seedProject = {
+  project: {
+    id: "ff7-pc-beta",
+    title: "Final Fantasy VII PC Beta Map",
+    subtitle: "Game Load Test Console",
+    type: "game-companion",
+    createdAt: now(),
+    updatedAt: now(),
+  },
 
-    :root {
-      --bg: #030506;
-      --panel: rgba(8,14,18,.78);
-      --panel2: rgba(5,9,12,.96);
-      --neon: #76ff7a;
-      --yellow: #ffe95a;
-      --red: #ff3159;
-      --cyan: #37e7ff;
-      --white: #ecfff3;
-      --muted: rgba(236,255,243,.72);
-      --line: rgba(118,255,122,.25);
-      --shadow: 0 0 38px rgba(118,255,122,.14), 0 0 90px rgba(55,231,255,.07);
-      --radius: 24px;
-      --max: 1180px;
-    }
+  package: {
+    name: "No package loaded",
+    sourceType: "none",
+    runMode: "none",
+    entryCandidates: [],
+    detectedFolders: [],
+    detectedFiles: [],
+    detectedScripts: [],
+    detectedAssets: [],
+    detectedExecutables: [],
+    warnings: [],
+    importReport: null,
+  },
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      color: var(--white);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 12% 8%, rgba(118,255,122,.15), transparent 28%),
-        radial-gradient(circle at 84% 10%, rgba(255,233,90,.11), transparent 26%),
-        radial-gradient(circle at 50% 90%, rgba(255,49,89,.13), transparent 32%),
-        linear-gradient(135deg, #020303 0%, #071015 48%, #030403 100%);
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px);
-      background-size: 34px 34px;
-      mask-image: radial-gradient(circle at center, black, transparent 82%);
-      z-index: 0;
-    }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; color: inherit; }
+  runtime: {
+    status: "idle",
+    runMode: "none",
+    internalHtml: "",
+    internalEntry: "",
+    externalInstructions: [],
+  },
 
-    .scanline {
-      position: fixed;
-      inset: 0;
-      height: 18vh;
-      pointer-events: none;
-      z-index: 1;
-      opacity: .26;
-      background: linear-gradient(to bottom, transparent, rgba(118,255,122,.06), transparent);
-      animation: scan 8s linear infinite;
-    }
-    @keyframes scan { from { transform: translateY(-25vh); } to { transform: translateY(120vh); } }
-    @keyframes pulse { 50% { transform: scale(.94); opacity: .74; } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes marquee { to { transform: translateX(-50%); } }
-    @keyframes shimmer { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
+  currentNodeId: "midgar",
 
-    .wrap { width: min(var(--max), calc(100% - 28px)); margin: 0 auto; position: relative; z-index: 2; }
+  nodes: [
+    {
+      id: "midgar",
+      type: "location",
+      title: "Midgar",
+      description: "Central city hub and opening region.",
+      connections: ["sector-7", "reactor-1", "shinra-building"],
+      characters: ["cloud", "barret", "tifa", "aerith"],
+      items: [],
+      events: ["evt-opening"],
+      screenshots: [],
+      notes: ["Use this as the first palace wing for the beta test."],
+      tags: ["city", "opening", "hub"],
+      createdAt: now(),
+    },
+    {
+      id: "reactor-1",
+      type: "location",
+      title: "Mako Reactor 1",
+      description: "Opening bombing mission area.",
+      connections: ["midgar", "guard-scorpion"],
+      characters: ["cloud", "barret", "biggs", "wedge", "jessie"],
+      items: [],
+      events: ["evt-bombing-mission"],
+      screenshots: [],
+      notes: [],
+      tags: ["reactor", "mission", "midgar"],
+      createdAt: now(),
+    },
+    {
+      id: "sector-7",
+      type: "location",
+      title: "Sector 7",
+      description: "Avalanche base area and early story hub.",
+      connections: ["midgar", "seventh-heaven"],
+      characters: ["cloud", "barret", "tifa"],
+      items: [],
+      events: [],
+      screenshots: [],
+      notes: [],
+      tags: ["slums", "avalanche"],
+      createdAt: now(),
+    },
+    {
+      id: "shinra-building",
+      type: "location",
+      title: "Shinra Building",
+      description: "Major Midgar infiltration sequence.",
+      connections: ["midgar"],
+      characters: ["cloud", "barret", "tifa", "aerith", "red-xiii"],
+      items: [],
+      events: [],
+      screenshots: [],
+      notes: [],
+      tags: ["midgar", "shinra", "infiltration"],
+      createdAt: now(),
+    },
+    {
+      id: "guard-scorpion",
+      type: "battle",
+      title: "Guard Scorpion",
+      description: "First boss encounter. Watch the tail warning.",
+      connections: ["reactor-1"],
+      characters: ["cloud", "barret"],
+      items: [],
+      events: [],
+      screenshots: [],
+      notes: ["Capture battle timing and tutorial dialogue."],
+      tags: ["boss", "tutorial", "reactor-1"],
+      createdAt: now(),
+    },
+  ],
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px clamp(14px, 3vw, 32px);
-      border-bottom: 1px solid rgba(118,255,122,.2);
-      background: rgba(3,5,7,.72);
-      backdrop-filter: blur(18px) saturate(150%);
-      transition: .25s ease;
-    }
-    .topbar.scrolled { background: rgba(3,5,7,.92); box-shadow: 0 14px 50px rgba(0,0,0,.45); }
-    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .mark {
-      width: 46px; height: 46px; flex: 0 0 auto;
-      border-radius: 16px;
-      border: 1px solid rgba(118,255,122,.42);
-      background: radial-gradient(circle, rgba(118,255,122,.18), rgba(55,231,255,.08), transparent 70%);
-      box-shadow: var(--shadow);
-      position: relative; overflow: hidden;
-    }
-    .mark::before {
-      content: ""; position: absolute; inset: 8px;
-      border: 2px solid var(--neon); border-left-color: var(--yellow); border-bottom-color: var(--cyan);
-      clip-path: polygon(50% 0,100% 88%,50% 68%,0 88%);
-      filter: drop-shadow(0 0 8px rgba(118,255,122,.7));
-      animation: pulse 2.8s ease-in-out infinite;
-    }
-    .brand h1 { font-size: clamp(17px, 4vw, 22px); line-height: 1; letter-spacing: .09em; }
-    .brand small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; }
+  edges: [
+    { id: "edge-midgar-reactor", from: "midgar", to: "reactor-1", label: "mission route" },
+    { id: "edge-reactor-boss", from: "reactor-1", to: "guard-scorpion", label: "boss trigger" },
+    { id: "edge-midgar-sector", from: "midgar", to: "sector-7", label: "hub path" },
+  ],
 
-    .hamburger {
-      margin-left: auto; width: 54px; height: 48px;
-      border: 1px solid rgba(118,255,122,.36);
-      border-radius: 16px; background: rgba(8,14,18,.84);
-      cursor: pointer; display: grid; place-items: center;
-      box-shadow: 0 0 24px rgba(118,255,122,.08);
-    }
-    .hamburger:hover { border-color: rgba(255,233,90,.6); box-shadow: 0 0 26px rgba(255,233,90,.12); }
-    .hamburger span,
-    .hamburger span::before,
-    .hamburger span::after {
-      content: ""; width: 24px; height: 2px; display: block;
-      border-radius: 99px; background: var(--neon); box-shadow: 0 0 10px var(--neon); transition: .25s ease;
-    }
-    .hamburger span::before { transform: translateY(-8px); }
-    .hamburger span::after { transform: translateY(6px); }
-    .hamburger.open span { background: transparent; box-shadow: none; }
-    .hamburger.open span::before { transform: translateY(2px) rotate(45deg); }
-    .hamburger.open span::after { transform: translateY(0) rotate(-45deg); }
+  timeline: [
+    {
+      id: "evt-opening",
+      timestamp: now(),
+      nodeId: "midgar",
+      type: "story",
+      title: "Opening sequence",
+      summary: "Begin mapping the first FF7 run as a memory palace.",
+      tags: ["opening"],
+    },
+    {
+      id: "evt-bombing-mission",
+      timestamp: now(),
+      nodeId: "reactor-1",
+      type: "story",
+      title: "Bombing mission begins",
+      summary: "Cloud joins Avalanche during the Reactor 1 mission.",
+      tags: ["mission", "reactor"],
+    },
+  ],
 
-    .menu {
-      position: fixed; top: 82px; right: clamp(12px, 3vw, 30px); z-index: 60;
-      width: min(92vw, 430px); max-height: calc(100vh - 96px); overflow: auto;
-      padding: 14px; border-radius: 24px; border: 1px solid rgba(118,255,122,.28);
-      background: linear-gradient(180deg, rgba(8,14,18,.97), rgba(5,8,11,.97));
-      box-shadow: 0 22px 80px rgba(0,0,0,.65), var(--shadow);
-      transform: translateX(120%) scale(.96); opacity: 0; pointer-events: none; transition: .28s ease;
-    }
-    .menu.open { transform: translateX(0) scale(1); opacity: 1; pointer-events: all; }
-    .menu-title { color: var(--yellow); font-weight: 900; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; margin: 8px 8px 12px; }
-    .menu a {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      padding: 14px; margin: 7px 0; border: 1px solid rgba(255,255,255,.09);
-      border-radius: 16px; background: rgba(255,255,255,.035); transition: .2s ease;
-    }
-    .menu a:hover { border-color: rgba(118,255,122,.65); background: rgba(118,255,122,.08); transform: translateX(-4px); }
-    .menu a small { color: var(--muted); display: block; margin-top: 4px; line-height: 1.35; }
-    .pill { font-size: 10px; color: #071015; background: var(--neon); padding: 4px 7px; border-radius: 99px; font-weight: 1000; white-space: nowrap; }
-    .pill.pending { background: var(--yellow); }
+  inventory: [],
 
-    .hero {
-      min-height: calc(100vh - 72px);
-      display: grid; grid-template-columns: 1.05fr .95fr;
-      gap: clamp(24px, 5vw, 60px); align-items: center;
-      padding: clamp(36px, 6vw, 76px) 0;
-    }
-    .eyebrow { color: var(--neon); font-weight: 1000; letter-spacing: .18em; text-transform: uppercase; font-size: 12px; }
-    .hero h2 { font-size: clamp(42px, 8vw, 92px); line-height: .88; letter-spacing: -.065em; margin: 14px 0 18px; }
-    .hero h2 span { color: var(--yellow); text-shadow: 0 0 24px rgba(255,233,90,.28); }
-    .hero p { font-size: clamp(16px, 2.2vw, 21px); color: var(--muted); max-width: 760px; line-height: 1.65; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-    .btn {
-      border: 1px solid rgba(118,255,122,.45);
-      background: linear-gradient(135deg, rgba(118,255,122,.16), rgba(55,231,255,.06));
-      padding: 14px 18px; border-radius: 16px; font-weight: 1000; cursor: pointer;
-      box-shadow: 0 0 26px rgba(118,255,122,.1); transition: .2s ease;
-      display: inline-flex; align-items: center; gap: 8px;
-    }
-    .btn:hover, .btn:focus-visible { transform: translateY(-3px); box-shadow: 0 0 38px rgba(118,255,122,.2); outline: none; }
-    .btn.alt { border-color: rgba(255,233,90,.38); background: rgba(255,233,90,.08); }
+  characters: [
+    { id: "cloud", name: "Cloud Strife", role: "party", notes: [] },
+    { id: "barret", name: "Barret Wallace", role: "party", notes: [] },
+    { id: "tifa", name: "Tifa Lockhart", role: "party", notes: [] },
+    { id: "aerith", name: "Aerith Gainsborough", role: "party", notes: [] },
+  ],
 
-    .hero-card {
-      border: 1px solid rgba(118,255,122,.24); background: var(--panel);
-      border-radius: 30px; padding: clamp(18px, 3vw, 30px); box-shadow: var(--shadow);
-      position: relative; overflow: hidden; min-height: 460px; display: grid; place-items: center;
-    }
-    .hero-card::before {
-      content: ""; position: absolute; inset: -2px;
-      background: conic-gradient(from 180deg, transparent, rgba(118,255,122,.25), transparent, rgba(255,49,89,.18), transparent);
-      animation: spin 12s linear infinite; opacity: .55;
-    }
-    .hero-card::after { content:""; position:absolute; inset:1px; border-radius:29px; background: rgba(5,8,11,.89); z-index:1; }
-    .hero-card > * { position: relative; z-index: 2; }
+  observations: [],
+  captures: [],
 
-    .node-visual { width: min(100%, 480px); aspect-ratio: 1; position: relative; }
-    .node-visual canvas { width: 100%; height: 100%; display: block; position: absolute; inset: 0; z-index: 3; }
-    .fallback-network { position:absolute; inset:0; z-index:2; filter: drop-shadow(0 0 18px rgba(118,255,122,.22)); }
-    .core-label {
-      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 4;
-      font-family: Consolas, monospace; font-size: 11px; color: var(--yellow); letter-spacing: .12em;
-      text-align: center; background: rgba(0,0,0,.52); border: 1px solid rgba(255,233,90,.28);
-      border-radius: 999px; padding: 8px 12px; white-space: nowrap;
-    }
+  memoryCards: {
+    gameCards: [],
+    palCards: [],
+    pairs: [],
+    activePairId: "",
+  },
 
-    .ticker { overflow: hidden; border-top: 1px solid rgba(118,255,122,.16); border-bottom: 1px solid rgba(118,255,122,.16); background: rgba(0,0,0,.22); padding: 12px 0; white-space: nowrap; }
-    .ticker-track { display: flex; gap: 14px; animation: marquee 26s linear infinite; }
-    .ticker span { color: var(--yellow); font-weight: 1000; letter-spacing: .08em; }
+  progressionDrawers: {
+    drawers: [],
+    activeDrawerId: "",
+    pinnedDrawerIds: [],
+  },
+};
 
-    main { padding: 42px 0; }
-    .section-head { margin-bottom: 22px; }
-    .section-head h3 { font-size: clamp(30px, 5vw, 56px); line-height: 1; margin-top: 8px; letter-spacing: -.045em; }
-    .section-head p { color: var(--muted); line-height: 1.7; max-width: 860px; margin-top: 12px; }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-    .card {
-      grid-column: span 4; border: 1px solid rgba(118,255,122,.18);
-      background: linear-gradient(180deg, rgba(12,19,24,.78), rgba(6,9,12,.84));
-      border-radius: var(--radius); padding: 20px; box-shadow: 0 12px 40px rgba(0,0,0,.22);
-      position: relative; overflow: hidden;
-    }
-    .card::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 8% 0%, rgba(118,255,122,.12), transparent 38%); pointer-events:none; }
-    .card > * { position: relative; z-index: 1; }
-    .card h4 { color: var(--yellow); font-size: 18px; margin-bottom: 10px; }
-    .card p, .card li { color: var(--muted); line-height: 1.6; }
-    .card ul { padding-left: 18px; }
-    .wide { grid-column: span 8; }
-    .full { grid-column: 1 / -1; }
-    .half { grid-column: span 6; }
-    .socket-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 18px; }
-    .socket { display: flex; justify-content: space-between; gap: 12px; align-items: center; border: 1px solid rgba(255,233,90,.22); background: rgba(255,233,90,.055); border-radius: 18px; padding: 14px; transition: .2s ease; }
-    .socket:hover { border-color: rgba(118,255,122,.55); background: rgba(118,255,122,.07); transform: translateY(-2px); }
-    .socket b { display: block; color: var(--white); }
-    .socket small { color: var(--muted); display:block; margin-top:4px; }
+const tabs = [
+  ["load", "Load", PackageOpen],
+  ["inspect", "Inspect", Search],
+  ["play", "Run / Attach", Play],
+  ["cards", "Memory Cards", CreditCard],
+  ["history", "Drawers", Archive],
+  ["palace", "Palace", Map],
+  ["blueprint", "Blueprint", Network],
+  ["timeline", "Timeline", NotebookPen],
+  ["notes", "Notes", BookOpen],
+  ["build", "Build", Wand2],
+];
 
-    .terminal { background: #020403; border: 1px solid rgba(118,255,122,.3); border-radius: 22px; overflow: hidden; box-shadow: inset 0 0 40px rgba(118,255,122,.05), var(--shadow); }
-    .term-top { display:flex; gap:8px; align-items:center; padding:12px 14px; border-bottom:1px solid rgba(118,255,122,.18); background: rgba(255,255,255,.035); }
-    .dot { width:10px; height:10px; border-radius:50%; background: var(--red); box-shadow:0 0 10px var(--red); }
-    .dot:nth-child(2){ background:var(--yellow); box-shadow:0 0 10px var(--yellow); }
-    .dot:nth-child(3){ background:var(--neon); box-shadow:0 0 10px var(--neon); }
-    .term-screen { min-height: 255px; padding: 18px; font-family: Consolas, monospace; color: var(--neon); font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
-    .audit-note { border-left: 4px solid var(--neon); padding: 16px 18px; background: rgba(118,255,122,.06); border-radius: 0 18px 18px 0; color: var(--muted); line-height:1.7; }
+function uid(prefix = "id") {
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+}
 
-    footer { position: relative; z-index: 2; border-top: 1px solid rgba(118,255,122,.2); background: linear-gradient(180deg, rgba(3,5,7,.78), rgba(0,0,0,.94)); padding: 22px 0 20px; }
-    .footer-grid { display:grid; grid-template-columns: 1.2fr auto 1fr; gap:18px; align-items:center; }
-    .foot-brand h3 { font-size: 20px; letter-spacing:.12em; }
-    .foot-brand p, .foot-mini { color:var(--muted); font-size:12px; line-height:1.5; margin-top:6px; }
+function ext(name = "") {
+  const parts = name.toLowerCase().split(".");
+  return parts.length > 1 ? parts.pop() : "";
+}
 
-    /* Footer links are now anchored in a stable row. No orbit/floating movement. */
-    .social-orbit {
-      width: auto;
-      min-width: 288px;
-      height: auto;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border: 1px solid rgba(118,255,122,.18);
-      border-radius: 999px;
-      background: rgba(255,255,255,.035);
-      box-shadow: inset 0 0 20px rgba(118,255,122,.035);
-      perspective: none;
-    }
-    .orbit-ring { display: none; }
-    .bubble {
-      position: relative;
-      top: auto; left: auto;
-      width: 42px; height: 42px; margin: 0;
-      border-radius: 50%; display:grid; place-items:center;
-      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.24), rgba(55,231,255,.12), rgba(0,0,0,.78));
-      border:1px solid rgba(118,255,122,.28);
-      box-shadow:0 0 18px rgba(55,231,255,.12);
-      transform: none;
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
-      animation: none;
-    }
-    .bubble:hover, .bubble:focus-visible {
-      transform: scale(1.12);
-      border-color:var(--yellow);
-      box-shadow:0 0 26px rgba(255,233,90,.24), 0 0 14px rgba(118,255,122,.18);
-      outline: none;
-    }
-    .bubble:active { transform: scale(.94); }
-    .bubble svg { width: 21px; height: 21px; fill: var(--white); filter: drop-shadow(0 0 6px rgba(118,255,122,.45)); }
-    .status-pill { display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border:1px solid rgba(118,255,122,.24); border-radius:999px; color:var(--neon); font-size:12px; font-weight:900; }
-    .status-pill i { width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow:0 0 12px var(--neon); }
+function slug(input = "mem-palace") {
+  return input.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "mem-palace";
+}
 
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-card { order: -1; min-height: 360px; }
-      .grid, .socket-grid { grid-template-columns: 1fr; }
-      .card, .wide, .half, .full { grid-column: 1; }
-      .footer-grid { grid-template-columns: 1fr; text-align:center; }
-      .social-orbit { margin:0 auto; min-width: 0; width: min(100%, 330px); flex-wrap: wrap; border-radius: 24px; }
-      .footer-grid > div:last-child { text-align:center !important; }
-    }
-    @media (max-width: 560px) {
-      .brand small { display:none; }
-      .hero h2 { font-size: 43px; }
-      .hero-card { min-height: 330px; }
-      .term-screen { font-size: 12px; }
-      .bubble { width:40px; height:40px; }
-      .bubble svg { width: 19px; height: 19px; }
-      .core-label { font-size: 9px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="scanline"></div>
+function cls(...parts) {
+  return parts.filter(Boolean).join(" ");
+}
 
-  <header class="topbar" id="topbar">
-    <a class="brand" href="./index.html" aria-label="Aurora Bridge home">
-      <div class="mark" aria-hidden="true"></div>
-      <div>
-        <h1>AURORA BRIDGE</h1>
-        <small>Civic Response Infrastructure</small>
-      </div>
-    </a>
-    <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" type="button"><span></span></button>
-  </header>
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
 
-  <nav class="menu" id="menu" aria-label="Aurora Bridge navigation menu">
-    <div class="menu-title">Aurora Service Modules</div>
-    <div id="menuItems">
-      <a href="./index.html"><span><b>Aurora Bridge Home</b><small>Civil response infrastructure landing page.</small></span><span class="pill">LIVE</span></a>
-      <a href="https://aol83.github.io/aurora-bridge-civic-response/"><span><b>Civic Response Upgrade</b><small>Future service page. May 404 until built.</small></span><span class="pill pending">SOCKET</span></a>
-      <a href="https://aol83.github.io/aurora-bridge-drone-towers/"><span><b>Drone Tower Infrastructure</b><small>Future service page. May 404 until built.</small></span><span class="pill pending">SOCKET</span></a>
+async function sha256File(file) {
+  const buffer = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest("SHA-256", buffer);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function downloadText(filename, text, type = "text/plain") {
+  const blob = new Blob([text], { type });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+function statusTone(status) {
+  if (status === "synced") return "green";
+  if (status === "out-of-sync" || status === "conflict") return "red";
+  if (status?.startsWith("missing")) return "red";
+  if (status === "legacy") return "purple";
+  return "blue";
+}
+
+function getPairStatus(gameCard, palCard) {
+  if (!gameCard && !palCard) return "unpaired";
+  if (!gameCard) return "missing-gamecard";
+  if (!palCard) return "missing-palcard";
+
+  const pairing = palCard.pairing || {};
+
+  if (!pairing.gameCardId || pairing.gameCardId !== gameCard.id) {
+    return "unpaired";
+  }
+
+  if (
+    pairing.gameSaveHash &&
+    gameCard.saveFile?.hash &&
+    pairing.gameSaveHash !== gameCard.saveFile.hash
+  ) {
+    return "out-of-sync";
+  }
+
+  return "synced";
+}
+
+function buildRouteFromNode(nodes, nodeId) {
+  const node = nodes.find((item) => item.id === nodeId);
+  if (!node) return [];
+
+  const route = [node.id];
+
+  for (const connection of node.connections || []) {
+    if (!route.includes(connection)) route.unshift(connection);
+    if (route.length >= 8) break;
+  }
+
+  return Array.from(new Set(route));
+}
+
+function inspectFiles(files, sourceType, packageName) {
+  const fileList = files.map((file) => ({
+    name: file.name,
+    path: file.path || file.webkitRelativePath || file.name,
+    size: file.size || 0,
+    type: file.type || "",
+    extension: ext(file.name),
+  }));
+
+  const folders = Array.from(
+    new Set(
+      fileList
+        .map((file) => file.path.split("/").slice(0, -1).join("/"))
+        .filter(Boolean)
+    )
+  );
+
+  const scripts = fileList.filter((file) => ["js", "ts", "mjs", "jsx", "tsx"].includes(file.extension));
+  const assets = fileList.filter((file) => ["png", "jpg", "jpeg", "webp", "gif", "svg", "mp3", "ogg", "wav", "mp4", "webm"].includes(file.extension));
+  const executables = fileList.filter((file) => ["exe", "bat", "cmd", "app"].includes(file.extension));
+  const htmlEntries = fileList.filter((file) => file.name.toLowerCase() === "index.html" || file.extension === "html");
+  const jsonFiles = fileList.filter((file) => file.extension === "json");
+
+  let runMode = "external-attach";
+  const warnings = [];
+
+  if (htmlEntries.length) {
+    runMode = "internal-html";
+  } else if (executables.length) {
+    runMode = "external-attach";
+    warnings.push("Native executables cannot be run inside the browser sandbox. Use External Attach Mode.");
+  } else {
+    runMode = "inspect-only";
+    warnings.push("No browser-runnable entry point was detected. Blueprint inspection is still available.");
+  }
+
+  return {
+    name: packageName,
+    sourceType,
+    runMode,
+    entryCandidates: [...htmlEntries.map((file) => file.path), ...executables.map((file) => file.path)],
+    detectedFolders: folders,
+    detectedFiles: fileList,
+    detectedScripts: scripts,
+    detectedAssets: assets,
+    detectedExecutables: executables,
+    detectedJson: jsonFiles,
+    warnings,
+    importReport: {
+      filesFound: fileList.length,
+      foldersFound: folders.length,
+      assetsFound: assets.length,
+      scriptsFound: scripts.length,
+      executablesFound: executables.length,
+      generatedAt: now(),
+    },
+  };
+}
+
+function createBlueprintFromPackage(pkg) {
+  const nodes = [
+    {
+      id: "pkg-root",
+      type: "package",
+      source: "package",
+      title: pkg.name || "Loaded Package",
+      description: `Source: ${pkg.sourceType}. Run mode: ${pkg.runMode}.`,
+      tags: ["package", pkg.sourceType, pkg.runMode].filter(Boolean),
+    },
+  ];
+
+  const edges = [];
+
+  for (const folder of pkg.detectedFolders || []) {
+    const id = `folder-${slug(folder)}`;
+    nodes.push({ id, type: "folder", source: "package", title: folder, description: "Detected package folder.", tags: ["folder"] });
+    edges.push({ id: `edge-root-${id}`, from: "pkg-root", to: id, label: "contains", source: "package" });
+  }
+
+  for (const file of pkg.detectedExecutables || []) {
+    const id = `exe-${slug(file.path)}`;
+    nodes.push({ id, type: "executable", source: "package", title: file.name, description: file.path, tags: ["executable"] });
+    edges.push({ id: `edge-root-${id}`, from: "pkg-root", to: id, label: "entry candidate", source: "package" });
+  }
+
+  for (const file of pkg.detectedScripts || []) {
+    const id = `script-${slug(file.path)}`;
+    nodes.push({ id, type: "script", source: "package", title: file.name, description: file.path, tags: ["script", file.extension] });
+    edges.push({ id: `edge-root-${id}`, from: "pkg-root", to: id, label: "script", source: "package" });
+  }
+
+  for (const file of (pkg.detectedAssets || []).slice(0, 40)) {
+    const id = `asset-${slug(file.path)}`;
+    nodes.push({ id, type: "asset", source: "package", title: file.name, description: file.path, tags: ["asset", file.extension] });
+    edges.push({ id: `edge-root-${id}`, from: "pkg-root", to: id, label: "asset", source: "package" });
+  }
+
+  return { nodes, edges };
+}
+
+function Button({ children, onClick, variant = "solid", disabled = false, className = "" }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={cls(
+        "inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition",
+        variant === "solid" && "bg-orange-400 text-black hover:bg-orange-300",
+        variant === "ghost" && "border border-orange-300/20 bg-black/20 text-orange-100 hover:bg-orange-300/10",
+        disabled && "cursor-not-allowed opacity-45",
+        className
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+function Field({ label, children }) {
+  return (
+    <label className="block text-sm">
+      <span className="mb-1 block text-orange-100/70">{label}</span>
+      {children}
+    </label>
+  );
+}
+
+function Card({ children, className = "" }) {
+  return (
+    <div
+      className={cls(
+        "rounded-2xl border border-orange-300/20 bg-black/30 p-4 shadow-xl shadow-black/20",
+        className
+      )}
+    >
+      {children}
     </div>
-  </nav>
+  );
+}
 
-  <section class="wrap hero">
-    <div>
-      <div class="eyebrow">Aurora Logistical Eco Holdings</div>
-      <h2>Connect. <span>Deliver.</span> Protect.</h2>
-      <p>
-        Aurora Bridge is a modular civil-response infrastructure concept: drone-ready towers, rooftop-safe routes,
-        emergency mesh communications, public-service telemetry, rapid kit delivery and postal logistics modernization
-        built around one federated control nest.
-      </p>
-      <div class="hero-actions">
-        <a class="btn" href="#civic-mission">Civil Service Upgrade</a>
-        <a class="btn alt" href="#infrastructure">Drone Tower Network</a>
-        <a class="btn" href="#page-sockets">Open Service Modules</a>
+function PairCreator({ gameCards, palCards, onPair }) {
+  const [gameCardId, setGameCardId] = useState("");
+  const [palCardId, setPalCardId] = useState("");
+
+  return (
+    <div className="grid gap-3 md:grid-cols-3">
+      <Field label="GameCard">
+        <select
+          value={gameCardId}
+          onChange={(event) => setGameCardId(event.target.value)}
+          className="w-full rounded-xl border border-orange-300/20 bg-black/40 p-2 text-orange-50"
+        >
+          <option value="">Choose GameCard</option>
+          {gameCards.map((card) => (
+            <option key={card.id} value={card.id}>
+              {card.slotTitle}
+            </option>
+          ))}
+        </select>
+      </Field>
+
+      <Field label="PALCard">
+        <select
+          value={palCardId}
+          onChange={(event) => setPalCardId(event.target.value)}
+          className="w-full rounded-xl border border-orange-300/20 bg-black/40 p-2 text-orange-50"
+        >
+          <option value="">Choose PALCard</option>
+          {palCards.map((card) => (
+            <option key={card.id} value={card.id}>
+              {card.title}
+            </option>
+          ))}
+        </select>
+      </Field>
+
+      <div className="flex items-end">
+        <Button
+          disabled={!gameCardId || !palCardId}
+          onClick={() => onPair(gameCardId, palCardId)}
+        >
+          Pair Cards
+        </Button>
       </div>
     </div>
+  );
+}
 
-    <div class="hero-card">
-      <div class="node-visual">
-        <svg class="fallback-network" viewBox="0 0 600 600" aria-hidden="true">
-          <defs>
-            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#ecfff3" stop-opacity="1"/>
-              <stop offset="35%" stop-color="#76ff7a" stop-opacity=".8"/>
-              <stop offset="100%" stop-color="#76ff7a" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <circle cx="300" cy="300" r="230" fill="none" stroke="rgba(118,255,122,.18)" stroke-width="2"/>
-          <circle cx="300" cy="300" r="175" fill="none" stroke="rgba(55,231,255,.16)" stroke-width="2"/>
-          <circle cx="300" cy="300" r="120" fill="none" stroke="rgba(255,233,90,.15)" stroke-width="2"/>
-          <line x1="300" y1="300" x2="120" y2="180" stroke="rgba(118,255,122,.55)" stroke-width="2"/>
-          <line x1="300" y1="300" x2="480" y2="180" stroke="rgba(118,255,122,.55)" stroke-width="2"/>
-          <line x1="300" y1="300" x2="120" y2="430" stroke="rgba(55,231,255,.45)" stroke-width="2"/>
-          <line x1="300" y1="300" x2="480" y2="430" stroke="rgba(55,231,255,.45)" stroke-width="2"/>
-          <line x1="120" y1="180" x2="480" y2="180" stroke="rgba(255,233,90,.3)" stroke-width="2" stroke-dasharray="8 9"/>
-          <line x1="120" y1="430" x2="480" y2="430" stroke="rgba(255,233,90,.3)" stroke-width="2" stroke-dasharray="8 9"/>
-          <circle cx="300" cy="300" r="78" fill="url(#coreGlow)"/>
-          <circle cx="300" cy="300" r="11" fill="#ecfff3"/>
-          <circle cx="120" cy="180" r="16" fill="#ffe95a"/>
-          <circle cx="480" cy="180" r="16" fill="#76ff7a"/>
-          <circle cx="120" cy="430" r="16" fill="#37e7ff"/>
-          <circle cx="480" cy="430" r="16" fill="#ff3159"/>
-        </svg>
-        <canvas id="orbCanvas" width="640" height="640" aria-label="Animated Aurora civic node network visual"></canvas>
-        <div class="core-label">CIVIC NODE / DRONE / MESH</div>
-      </div>
-    </div>
-  </section>
+function Pill({ children, tone = "orange" }) {
+  const tones = {
+    orange: "border-orange-300/30 bg-orange-300/10 text-orange-100",
+    green: "border-green-300/30 bg-green-300/10 text-green-100",
+    red: "border-red-300/30 bg-red-300/10 text-red-100",
+    blue: "border-sky-300/30 bg-sky-300/10 text-sky-100",
+    purple: "border-purple-300/30 bg-purple-300/10 text-purple-100",
+  };
 
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>DRONE TOWER NETWORK</span><span>-</span><span>CIVIC RESPONSE</span><span>-</span><span>EMERGENCY MESH</span><span>-</span><span>ROOFTOP SAFE ROUTES</span><span>-</span><span>POSTAL MODERNISATION</span><span>-</span><span>UTILITY SUPPORT</span><span>-</span>
-      <span>DRONE TOWER NETWORK</span><span>-</span><span>CIVIC RESPONSE</span><span>-</span><span>EMERGENCY MESH</span><span>-</span><span>ROOFTOP SAFE ROUTES</span><span>-</span><span>POSTAL MODERNISATION</span><span>-</span><span>UTILITY SUPPORT</span><span>-</span>
-    </div>
-  </div>
+  return (
+    <span className={cls("rounded-full border px-2 py-1 text-xs", tones[tone] || tones.orange)}>
+      {children}
+    </span>
+  );
+}
 
-  <main class="wrap">
-    <section id="civic-mission">
-      <div class="section-head">
-        <div class="eyebrow">The Civil-Service Wedge</div>
-        <h3>Build public value first. Let logistics dependency follow.</h3>
-        <p>
-          Aurora Bridge is positioned as a civic upgrade before it becomes a commercial logistics rail. The first value is helping
-          police, ambulance, fire, councils, civil engineers and utilities respond faster, communicate through disruption and move urgent payloads across controlled local corridors.
-        </p>
-      </div>
-      <div class="grid">
-        <article class="card wide"><h4>Core Concept</h4><p>Aurora turns modular towers, rooftop pads and local mesh nodes into an emergency-ready infrastructure layer. The same network that supports public-service response can later support postal returns, retail logistics, utility teams and secure neighbourhood delivery.</p></article>
-        <article class="card"><h4>Emergency Response</h4><p>Authenticated distress signals can trigger telemetry relay, aerial scene visibility, location marking and delivery of approved emergency kits.</p></article>
-        <article class="card"><h4>Public Servant Safety</h4><p>Police, council workers, engineers or medical staff can request support where ordinary comms are slow, unavailable or unsafe.</p></article>
-        <article class="card"><h4>Civil Disruption</h4><p>During outages, floods, road incidents or unrest, local nodes can preserve communications and provide situational awareness.</p></article>
-      </div>
-    </section>
+export default function MemPalaceGameTerminal() {
+  const [data, setData] = useState(seedProject);
+  const [activeTab, setActiveTab] = useState("load");
+  const [noteText, setNoteText] = useState("");
+  const [newNodeTitle, setNewNodeTitle] = useState("");
+  const [captureStream, setCaptureStream] = useState(null);
+  const [hasLoadedStoredProject, setHasLoadedStoredProject] = useState(false);
 
-    <section id="infrastructure" style="margin-top:42px">
-      <div class="section-head">
-        <div class="eyebrow">Physical Network Layer</div>
-        <h3>Drone towers become civic infrastructure furniture.</h3>
-        <p>
-          The tower is not just a delivery locker. It is a secure parcel vault, drone dock, telemetry relay, mesh communications point,
-          battery service location, emergency bulletin cache and controlled local logistics node.
-        </p>
-      </div>
-      <div class="grid">
-        <article class="card"><h4>Boundary Towers</h4><p>Shared household or street-corner modules for delivery, returns, emergency payloads and local signal relay.</p></article>
-        <article class="card"><h4>Rooftop Corridors</h4><p>Certified flat rooftops act as safe landing, charging, relay and controlled-failure zones to reduce street-level risk.</p></article>
-        <article class="card"><h4>Mesh Communications</h4><p>Local wireless routes keep core information moving when ordinary mobile or cloud systems degrade.</p></article>
-        <article class="card half"><h4>Business Expansion</h4><p>Once the civic network is installed, postal services, returns providers, retailers and utility firms can onboard because the infrastructure is already useful, trusted and locally positioned.</p></article>
-        <article class="card half"><h4>Platform Moat</h4><p>The value is not one drone. The value is the installed route network: towers, pads, telemetry, safety rules, local trust, service contracts and controlled access.</p></article>
-      </div>
-    </section>
+  const zipInputRef = useRef(null);
+  const folderInputRef = useRef(null);
+  const saveFileInputRef = useRef(null);
+  const memSaveInputRef = useRef(null);
+  const videoRef = useRef(null);
 
-    <section id="page-sockets" style="margin-top:42px">
-      <div class="section-head">
-        <div class="eyebrow">Federated Control Nest</div>
-        <h3>Each service becomes its own expandable module.</h3>
-        <p>The hamburger menu is the zero-point navigation layer. Every service page can become its own full GitHub Pages site while keeping the same Aurora Bridge identity.</p>
-      </div>
-      <div class="socket-grid" id="socketGrid"></div>
-    </section>
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("mem-palace-game-terminal-v1");
+      if (raw) setData(JSON.parse(raw));
+    } catch {
+      // Storage failed; continue with seed project.
+    } finally {
+      setHasLoadedStoredProject(true);
+    }
+  }, []);
 
-    <section id="build-map" style="margin-top:42px">
-      <div class="grid">
-        <article class="card wide"><h4>Build Map</h4><p>The master repository remains the gateway. Future repositories hold the deeper service pages: civic response, drone towers, emergency mesh, postal logistics, control terminal and partner portal.</p></article>
-        <article class="card"><h4>Expected 404s</h4><p>Future menu items may show 404 until their GitHub Pages repositories exist. That is not failure; it is a placeholder socket.</p></article>
-        <article class="card full"><div class="audit-note"><b>Audit note:</b> This page keeps working anchors and stable JavaScript enhancement. Footer icons are anchored in a fixed row and only pulse on hover/click.</div></article>
-      </div>
-    </section>
+  useEffect(() => {
+    if (!hasLoadedStoredProject) return;
 
-    <section id="terminal" style="margin-top:42px">
-      <div class="section-head">
-        <div class="eyebrow">Operational Demonstrator</div>
-        <h3>Aurora route map simulator.</h3>
-        <p>This terminal is visual only. It explains the infrastructure logic without executing commands.</p>
-      </div>
-      <section class="terminal">
-        <div class="term-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><strong style="margin-left:8px;color:var(--muted)">aurora-bridge://civic-infrastructure</strong></div>
-        <div class="term-screen" id="termScreen">Terminal booting...</div>
-      </section>
-    </section>
-  </main>
+    try {
+      localStorage.setItem("mem-palace-game-terminal-v1", JSON.stringify(data));
+    } catch {
+      // Captures may exceed localStorage later. IndexedDB is the adult solution, tragically.
+    }
+  }, [data, hasLoadedStoredProject]);
 
-  <footer>
-    <div class="wrap footer-grid">
-      <div class="foot-brand"><h3>AURORA BRIDGE</h3><p>Civil response infrastructure by Aurora Logistical Eco Holdings. Connect. Deliver. Protect.</p></div>
-      <div class="social-orbit" id="socialOrbit" aria-label="Social links"><div class="orbit-ring"></div></div>
-      <div style="text-align:right"><span class="status-pill"><i></i> INFRASTRUCTURE ONLINE</span><p class="foot-mini">GitHub Pages - Multi-repo - Mobile-first - EdgeRunner theme</p></div>
-    </div>
-  </footer>
+  const memoryCards = data.memoryCards || {
+    gameCards: [],
+    palCards: [],
+    pairs: [],
+    activePairId: "",
+  };
 
-  <script>
-    (function () {
-      "use strict";
+  const progressionDrawers = data.progressionDrawers || {
+    drawers: [],
+    activeDrawerId: "",
+    pinnedDrawerIds: [],
+  };
 
-      var githubOwner = "AOL83";
-      var navLinks = [
-        { title: "Aurora Bridge Home", tag: "LIVE", repo: "Aurora-Nest", path: "./index.html", description: "Civil response infrastructure landing page." },
-        { title: "Civic Response Upgrade", tag: "SOCKET", repo: "aurora-bridge-civic-response", description: "Police, ambulance, fire, councils, utilities and public-servant emergency support." },
-        { title: "Drone Tower Infrastructure", tag: "SOCKET", repo: "aurora-bridge-drone-towers", description: "Boundary towers, rooftop pads, parcel vaults, drone docks and safe corridors." },
-        { title: "Emergency Event Network", tag: "SOCKET", repo: "aurora-bridge-emergency-network", description: "Mesh communications, SOS routing, first-aid drops, family check-ins and outage resilience." },
-        { title: "Postal and Returns Logistics", tag: "SOCKET", repo: "aurora-bridge-postal-logistics", description: "Postal service, retail returns, last-mile delivery and secure handover flows." },
-        { title: "Control Terminal", tag: "SOCKET", repo: "aurora-bridge-control-terminal", description: "Operational dashboard, node telemetry, route status and deployment command view." },
-        { title: "Business and Partner Portal", tag: "SOCKET", repo: "aurora-bridge-partner-portal", description: "Partner onboarding, contract models, licensing, APIs and service integration." }
-      ];
-      var socialLinks = [
-        { name: "GitHub", icon: "github", url: "https://github.com/AOL83" },
-        { name: "Substack", icon: "substack", url: "https://waterfallslt.substack.com" },
-        { name: "LinkedIn", icon: "linkedin", url: "#" },
-        { name: "YouTube", icon: "youtube", url: "#" },
-        { name: "X", icon: "x", url: "#" },
-        { name: "Google Drive", icon: "drive", url: "#" }
-      ];
+  const currentNode = useMemo(
+    () => data.nodes.find((node) => node.id === data.currentNodeId) || data.nodes[0],
+    [data.nodes, data.currentNodeId]
+  );
 
-      function qs(selector) { return document.querySelector(selector); }
-      function pageUrl(link) { return link.path ? link.path : "https://" + githubOwner.toLowerCase() + ".github.io/" + link.repo + "/"; }
-      function clear(el) { while (el && el.firstChild) { el.removeChild(el.firstChild); } }
-      function text(tag, value, cls) { var el = document.createElement(tag); if (cls) { el.className = cls; } el.textContent = value; return el; }
-      function makeSvgIcon(name) {
-        var paths = {
-          github: "M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.6 1.8 3.4 1.3.1-.7.4-1.2.7-1.5-2.6-.3-5.4-1.3-5.4-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.4 5.9.4.4.8 1.1.8 2.2v3.2c0 .4.2.7.8.6A12 12 0 0 0 12 .5Z",
-          linkedin: "M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.3 8h4.4v14H.3V8Zm7 0h4.2v1.9h.1c.6-1.1 2-2.3 4.2-2.3 4.5 0 5.3 3 5.3 6.8V22h-4.4v-6.8c0-1.6 0-3.7-2.3-3.7-2.3 0-2.6 1.8-2.6 3.6V22H7.3V8Z",
-          youtube: "M23.5 6.2s-.2-1.7-.9-2.4c-.9-.9-1.9-.9-2.4-1C16.8 2.5 12 2.5 12 2.5s-4.8 0-8.2.3c-.5.1-1.5.1-2.4 1C.7 4.5.5 6.2.5 6.2S.2 8.2.2 10.3v1.9c0 2.1.3 4.1.3 4.1s.2 1.7.9 2.4c.9.9 2.1.9 2.6 1 1.9.2 8 .3 8 .3s4.8 0 8.2-.3c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.4.9-2.4s.3-2 .3-4.1v-1.9c0-2.1-.3-4.1-.3-4.1ZM9.7 14.8V7.9l6.3 3.5-6.3 3.4Z",
-          x: "M18.2 2h3.4l-7.4 8.5L23 22h-6.9l-5.4-7.1L4.5 22H1.1L9 12.9 1 2h7.1l4.9 6.5L18.2 2Zm-1.2 18h1.9L7.1 3.9h-2L17 20Z",
-          drive: "M8.1 2h7.8l7.9 13.8-3.9 6.2H4.1L.2 15.8 8.1 2Zm1.2 2.2L3.5 14.4h7.4l5.8-10.2H9.3Zm9.1 0-5.8 10.2h11.6L18.4 4.2ZM4.1 16.7 6 19.8h11.9l1.9-3.1H4.1Z",
-          substack: "M3 2h18v3H3V2Zm0 5h18v3H3V7Zm0 5h18v10l-9-5.2L3 22V12Z"
+  const pairViews = useMemo(() => {
+    return (memoryCards.pairs || []).map((pair) => {
+      const gameCard = (memoryCards.gameCards || []).find((card) => card.id === pair.gameCardId);
+      const palCard = (memoryCards.palCards || []).find((card) => card.id === pair.palCardId);
+      const status = getPairStatus(gameCard, palCard);
+
+      return {
+        ...pair,
+        gameCard,
+        palCard,
+        status,
+      };
+    });
+  }, [memoryCards]);
+
+  function updateData(updater) {
+    setData((prev) => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      return {
+        ...next,
+        project: {
+          ...next.project,
+          updatedAt: now(),
+        },
+      };
+    });
+  }
+
+  async function loadZip(file) {
+    if (!file) return;
+
+    const zip = await JSZip.loadAsync(await file.arrayBuffer());
+    const files = Object.values(zip.files)
+      .filter((entry) => !entry.dir)
+      .map((entry) => ({
+        name: entry.name.split("/").pop(),
+        path: entry.name,
+        size: entry._data?.uncompressedSize || 0,
+        type: "",
+      }));
+
+    const pkg = inspectFiles(files, "zip", file.name.replace(/\.zip$/i, ""));
+    const blueprint = createBlueprintFromPackage(pkg);
+
+    let runtime = {
+      status: "loaded",
+      runMode: pkg.runMode,
+      internalHtml: "",
+      internalEntry: pkg.entryCandidates[0] || "",
+      externalInstructions: pkg.warnings,
+    };
+
+    if (pkg.runMode === "internal-html") {
+      const entry = pkg.entryCandidates.find((candidate) => candidate.toLowerCase().endsWith(".html"));
+      const html = entry ? await zip.file(entry)?.async("string") : "";
+      runtime = { ...runtime, internalHtml: html || "<p>No HTML entry could be loaded.</p>", internalEntry: entry || "" };
+    }
+
+    updateData((prev) => ({
+      ...prev,
+      package: pkg,
+      runtime,
+      nodes: [
+        ...prev.nodes.filter((node) => node.source !== "package"),
+        ...blueprint.nodes,
+      ],
+      edges: [
+        ...prev.edges.filter((edge) => edge.source !== "package"),
+        ...blueprint.edges,
+      ],
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: now(),
+          nodeId: prev.currentNodeId,
+          type: "load",
+          title: `Loaded package: ${pkg.name}`,
+          summary: `Inspected ${pkg.importReport.filesFound} files and generated a hard blueprint.`,
+          tags: ["load", "package", pkg.sourceType],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab("inspect");
+  }
+
+  async function loadFolder(files) {
+    const list = Array.from(files || []);
+    if (!list.length) return;
+
+    const root = list[0].webkitRelativePath?.split("/")[0] || "Loaded Folder";
+    const pkg = inspectFiles(list, "folder", root);
+    const blueprint = createBlueprintFromPackage(pkg);
+
+    updateData((prev) => ({
+      ...prev,
+      package: pkg,
+      runtime: {
+        status: "loaded",
+        runMode: pkg.runMode,
+        internalHtml: "",
+        internalEntry: pkg.entryCandidates[0] || "",
+        externalInstructions: pkg.warnings,
+      },
+      nodes: [
+        ...prev.nodes.filter((node) => node.source !== "package"),
+        ...blueprint.nodes,
+      ],
+      edges: [
+        ...prev.edges.filter((edge) => edge.source !== "package"),
+        ...blueprint.edges,
+      ],
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: now(),
+          nodeId: prev.currentNodeId,
+          type: "load",
+          title: `Loaded folder: ${pkg.name}`,
+          summary: `Inspected ${pkg.importReport.filesFound} files and generated a hard blueprint.`,
+          tags: ["load", "folder"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab("inspect");
+  }
+
+  function addFastNode(type = "location") {
+    const title = newNodeTitle.trim() || `New ${type}`;
+    const id = slug(`${type}-${title}-${Date.now()}`);
+    const eventId = uid("evt");
+
+    const node = {
+      id,
+      type,
+      title,
+      description: `Captured ${type} node from the current session.`,
+      connections: currentNode ? [currentNode.id] : [],
+      characters: [],
+      items: [],
+      events: [eventId],
+      screenshots: [],
+      notes: [],
+      tags: [type],
+      createdAt: now(),
+    };
+
+    updateData((prev) => ({
+      ...prev,
+      currentNodeId: id,
+      nodes: [node, ...prev.nodes],
+      edges: currentNode
+        ? [{ id: uid("edge"), from: currentNode.id, to: id, label: "observed route" }, ...prev.edges]
+        : prev.edges,
+      timeline: [
+        {
+          id: eventId,
+          timestamp: now(),
+          nodeId: id,
+          type,
+          title: `New ${type}: ${title}`,
+          summary: `Created while mapping the loaded world.`,
+          tags: [type, "manual"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setNewNodeTitle("");
+  }
+
+  async function createGameCardFromSaveFile(file) {
+    if (!file) return;
+
+    const hash = await sha256File(file);
+    const nowTime = new Date().toISOString();
+
+    const slotGuess =
+      file.name
+        .replace(/\.[^.]+$/, "")
+        .replace(/[^a-z0-9_-]+/gi, "-")
+        .toLowerCase() || "slot-imported";
+
+    const card = {
+      cardType: "GameCard",
+      version: "0.1",
+      id: uid("gamecard"),
+      gameId: data.project?.id || "unknown-game",
+      gameTitle: data.project?.title || "Unknown Game",
+      slotId: slotGuess,
+      slotTitle: file.name,
+      createdAt: nowTime,
+      updatedAt: nowTime,
+      saveMode: "file-import-fingerprint",
+      saveFile: {
+        name: file.name,
+        relativePath: file.name,
+        hash,
+        sizeBytes: file.size,
+        lastModified: file.lastModified ? new Date(file.lastModified).toISOString() : nowTime,
+      },
+      gameRuntime: {
+        runMode: data.package?.runMode || "external-attach",
+        executableName: data.package?.detectedExecutables?.[0]?.name || "unknown",
+        packageId: data.project?.id || "unknown-package",
+      },
+    };
+
+    updateData((prev) => ({
+      ...prev,
+      memoryCards: {
+        ...(prev.memoryCards || { gameCards: [], palCards: [], pairs: [], activePairId: "" }),
+        gameCards: [card, ...(prev.memoryCards?.gameCards || [])],
+      },
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: nowTime,
+          nodeId: prev.currentNodeId,
+          type: "load",
+          title: `GameCard created: ${file.name}`,
+          summary: "Imported save file fingerprint. This stores the mechanical save-state identity.",
+          tags: ["GameCard", "save"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab("cards");
+  }
+
+  function createPALCardFromCurrentNode() {
+    if (!currentNode) return;
+
+    const nowTime = new Date().toISOString();
+    const capturesForNode = data.captures
+      .filter((capture) => capture.nodeId === currentNode.id)
+      .map((capture) => capture.id);
+
+    const eventsForNode = data.timeline
+      .filter((event) => event.nodeId === currentNode.id)
+      .map((event) => event.id);
+
+    const card = {
+      cardType: "PALCard",
+      version: "0.1",
+      id: uid("palcard"),
+      gameId: data.project?.id || "unknown-game",
+      title: `${currentNode.title} Palace Context`,
+      palaceNodeId: currentNode.id,
+      currentRoom: currentNode.title,
+      createdAt: nowTime,
+      updatedAt: nowTime,
+      thumbnail: capturesForNode[0] || null,
+      context: {
+        summary: currentNode.description || `Palace context for ${currentNode.title}.`,
+        route: buildRouteFromNode(data.nodes, currentNode.id),
+        tags: currentNode.tags || [],
+        notes: currentNode.notes || [],
+      },
+      linkedAssets: {
+        captures: capturesForNode,
+        blueprints: ["world-blueprint-v0"],
+        timelineEvents: eventsForNode,
+      },
+      pairing: {
+        gameCardId: null,
+        gameSaveHash: null,
+        pairStatus: "unpaired",
+      },
+    };
+
+    updateData((prev) => ({
+      ...prev,
+      memoryCards: {
+        ...(prev.memoryCards || { gameCards: [], palCards: [], pairs: [], activePairId: "" }),
+        palCards: [card, ...(prev.memoryCards?.palCards || [])],
+      },
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: nowTime,
+          nodeId: currentNode.id,
+          type: "note",
+          title: `PALCard created: ${card.title}`,
+          summary: "Created Palace Anchor Layer card from the current room.",
+          tags: ["PALCard", "memory"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab("cards");
+  }
+
+  function pairCards(gameCardId, palCardId) {
+    const gameCard = memoryCards.gameCards.find((card) => card.id === gameCardId);
+    const palCard = memoryCards.palCards.find((card) => card.id === palCardId);
+
+    if (!gameCard || !palCard) return;
+
+    const nowTime = new Date().toISOString();
+    const pairId = uid("pair");
+
+    const updatedPalCard = {
+      ...palCard,
+      updatedAt: nowTime,
+      pairing: {
+        gameCardId,
+        gameSaveHash: gameCard.saveFile?.hash || null,
+        pairStatus: "synced",
+      },
+    };
+
+    const status = getPairStatus(gameCard, updatedPalCard);
+
+    const pair = {
+      id: pairId,
+      title: `${gameCard.slotTitle} + ${palCard.currentRoom}`,
+      gameCardId,
+      palCardId,
+      status,
+      createdAt: nowTime,
+      updatedAt: nowTime,
+    };
+
+    updateData((prev) => ({
+      ...prev,
+      memoryCards: {
+        ...(prev.memoryCards || { gameCards: [], palCards: [], pairs: [], activePairId: "" }),
+        activePairId: pairId,
+        palCards: (prev.memoryCards?.palCards || []).map((card) =>
+          card.id === palCardId ? updatedPalCard : card
+        ),
+        pairs: [pair, ...(prev.memoryCards?.pairs || [])],
+      },
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: nowTime,
+          nodeId: palCard.palaceNodeId,
+          type: "note",
+          title: "MEM Save Pair created",
+          summary: `${gameCard.slotTitle} paired with ${palCard.currentRoom}.`,
+          tags: ["MEM Save Pair", "GameCard", "PALCard"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+  }
+
+  function autoPairLatestCards() {
+    const gameCard = memoryCards.gameCards?.[0];
+    const palCard = memoryCards.palCards?.[0];
+
+    if (!gameCard || !palCard) return;
+
+    pairCards(gameCard.id, palCard.id);
+  }
+
+  function loadPair(pair) {
+    if (!pair?.palCard?.palaceNodeId) return;
+
+    updateData((prev) => ({
+      ...prev,
+      currentNodeId: pair.palCard.palaceNodeId,
+      memoryCards: {
+        ...(prev.memoryCards || { gameCards: [], palCards: [], pairs: [], activePairId: "" }),
+        activePairId: pair.id,
+      },
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: new Date().toISOString(),
+          nodeId: pair.palCard.palaceNodeId,
+          type: "load",
+          title: "MEM Save Pair loaded",
+          summary: `Restored palace context for ${pair.palCard.currentRoom}.`,
+          tags: ["MEM Save Pair", "load"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab("blueprint");
+  }
+
+  function duplicatePair(pair) {
+    if (!pair) return;
+
+    const nowTime = new Date().toISOString();
+
+    const cleanPair = {
+      id: uid("pair"),
+      title: `${pair.title} Copy`,
+      gameCardId: pair.gameCardId,
+      palCardId: pair.palCardId,
+      status: pair.status,
+      createdAt: nowTime,
+      updatedAt: nowTime,
+    };
+
+    updateData((prev) => ({
+      ...prev,
+      memoryCards: {
+        ...(prev.memoryCards || { gameCards: [], palCards: [], pairs: [], activePairId: "" }),
+        pairs: [cleanPair, ...(prev.memoryCards?.pairs || [])],
+      },
+    }));
+  }
+
+  function unpairCards(pairId) {
+    updateData((prev) => ({
+      ...prev,
+      memoryCards: {
+        ...(prev.memoryCards || { gameCards: [], palCards: [], pairs: [], activePairId: "" }),
+        pairs: (prev.memoryCards?.pairs || []).filter((pair) => pair.id !== pairId),
+        activePairId: prev.memoryCards?.activePairId === pairId ? "" : prev.memoryCards?.activePairId || "",
+      },
+    }));
+  }
+
+  function exportPair(pair) {
+    if (!pair) return;
+
+    const manifest = {
+      memSaveVersion: "0.1",
+      savePairId: pair.id,
+      title: pair.title,
+      createdAt: pair.createdAt,
+      updatedAt: new Date().toISOString(),
+      gameCard: pair.gameCard,
+      palCard: pair.palCard,
+      pairing: {
+        status: pair.status,
+        gameSaveHash: pair.gameCard?.saveFile?.hash || null,
+        palaceNodeId: pair.palCard?.palaceNodeId || null,
+      },
+      palaceProject: data,
+    };
+
+    downloadText(
+      `${slug(pair.title) || "mem-save-pair"}.memsave.json`,
+      JSON.stringify(manifest, null, 2),
+      "application/json"
+    );
+  }
+
+  function exportAllPairs() {
+    const manifest = {
+      memSaveVersion: "0.1",
+      title: `${data.project.title} MEM Save Pairs`,
+      exportedAt: new Date().toISOString(),
+      memoryCards,
+      palaceProject: data,
+    };
+
+    downloadText(
+      `${data.project.id || "mem-palace"}-memsave.json`,
+      JSON.stringify(manifest, null, 2),
+      "application/json"
+    );
+  }
+
+  function importMemSave(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result));
+
+        if (parsed.sessionVersion && parsed.palaceSnapshot?.nodes) {
+          setData(parsed.palaceSnapshot);
+          setActiveTab("history");
+          return;
+        }
+
+        if (parsed.drawerArchiveVersion && parsed.progressionDrawers) {
+          updateData((prev) => ({
+            ...prev,
+            progressionDrawers: parsed.progressionDrawers,
+          }));
+          setActiveTab("history");
+          return;
+        }
+
+        if (parsed.drawerVersion && parsed.drawer) {
+          updateData((prev) => ({
+            ...prev,
+            progressionDrawers: {
+              ...(prev.progressionDrawers || { drawers: [], activeDrawerId: "", pinnedDrawerIds: [] }),
+              activeDrawerId: parsed.drawer.drawerId,
+              drawers: [parsed.drawer, ...(prev.progressionDrawers?.drawers || [])],
+            },
+          }));
+          setActiveTab("history");
+          return;
+        }
+
+        if (parsed.palaceProject?.nodes) {
+          setData(parsed.palaceProject);
+        } else if (parsed.memoryCards) {
+          updateData((prev) => ({ ...prev, memoryCards: parsed.memoryCards }));
+        }
+
+        setActiveTab("cards");
+      } catch {
+        alert("Could not import MEM Save Pair. The file format is not valid JSON.");
+      }
+    };
+
+    reader.readAsText(file);
+  }
+
+  function verifyPairs() {
+    updateData((prev) => {
+      const cards = prev.memoryCards || {
+        gameCards: [],
+        palCards: [],
+        pairs: [],
+        activePairId: "",
+      };
+
+      const pairs = (cards.pairs || []).map((pair) => {
+        const gameCard = cards.gameCards.find((card) => card.id === pair.gameCardId);
+        const palCard = cards.palCards.find((card) => card.id === pair.palCardId);
+
+        return {
+          ...pair,
+          status: getPairStatus(gameCard, palCard),
+          updatedAt: new Date().toISOString(),
         };
-        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("aria-hidden", "true");
-        var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", paths[name] || paths.github);
-        svg.appendChild(path);
-        return svg;
-      }
-      function buildMenu() {
-        var menuItems = qs("#menuItems");
-        if (!menuItems) { return; }
-        clear(menuItems);
-        navLinks.forEach(function (link) {
-          var a = document.createElement("a");
-          a.href = pageUrl(link);
-          var left = document.createElement("span");
-          left.appendChild(text("b", link.title));
-          left.appendChild(text("small", link.description));
-          a.appendChild(left);
-          a.appendChild(text("span", link.tag, "pill" + (link.tag === "SOCKET" ? " pending" : "")));
-          menuItems.appendChild(a);
-        });
-      }
-      function buildSockets() {
-        var socketGrid = qs("#socketGrid");
-        if (!socketGrid) { return; }
-        clear(socketGrid);
-        navLinks.forEach(function (link) {
-          if (link.path) { return; }
-          var a = document.createElement("a");
-          a.className = "socket";
-          a.href = pageUrl(link);
-          var left = document.createElement("span");
-          left.appendChild(text("b", link.title));
-          left.appendChild(text("small", link.repo));
-          left.appendChild(text("small", link.description));
-          a.appendChild(left);
-          a.appendChild(text("span", "404 UNTIL BUILT", "pill pending"));
-          socketGrid.appendChild(a);
-        });
-      }
-      function initSocials() {
-        var orbit = qs("#socialOrbit");
-        if (!orbit) { return; }
-        clear(orbit);
-        socialLinks.forEach(function (s) {
-          var a = document.createElement("a");
-          a.className = "bubble";
-          a.href = s.url;
-          a.target = "_blank";
-          a.rel = "noopener";
-          a.title = s.name;
-          a.setAttribute("aria-label", s.name);
-          a.appendChild(makeSvgIcon(s.icon));
-          orbit.appendChild(a);
-        });
-      }
-      function initTerminal() {
-        var screen = qs("#termScreen");
-        if (!screen) { return; }
-        screen.textContent = "";
-        var lines = [
-          "AURORA BRIDGE CIVIC INFRASTRUCTURE v1.2",
-          "Mission: connect, deliver, protect",
-          "Modules: civic response / drone towers / emergency mesh / postal logistics",
-          "GitHub owner configured as: " + githubOwner,
-          "Hamburger: active",
-          "Buttons: active anchors",
-          "Footer icons: anchored row",
-          "Node visual: active with SVG fallback",
-          "Expected behaviour: missing repos may return GitHub Pages 404 until created",
-          "Infrastructure state: ONLINE"
-        ];
-        var i = 0;
-        function writeLine() {
-          if (i < lines.length) {
-            screen.textContent += "> " + lines[i] + "
-";
-            i += 1;
-            window.setTimeout(writeLine, 170);
-          } else {
-            screen.textContent += "
-AURORA-BRIDGE:// awaiting service-module expansion";
-          }
+      });
+
+      return {
+        ...prev,
+        memoryCards: {
+          ...cards,
+          pairs,
+        },
+      };
+    });
+  }
+
+  function buildProgressionDrawer(titleOverride = "") {
+    const activePair =
+      pairViews.find((pair) => pair.id === memoryCards.activePairId) ||
+      pairViews[0] ||
+      null;
+
+    const lastCapture = data.captures?.[0] || null;
+    const lastEvent = data.timeline?.[0] || null;
+    const drawerId = uid("drawer");
+
+    const drawerTitle =
+      titleOverride.trim() ||
+      `${
+        data.package?.name && data.package.name !== "No package loaded"
+          ? data.package.name
+          : data.project.title
+      } - ${currentNode?.title || "Current Room"}`;
+
+    return {
+      drawerId,
+      title: drawerTitle,
+      type: "progression-drawer",
+      status: activePair ? activePair.status : "legacy",
+      createdAt: now(),
+      updatedAt: now(),
+      packageId: data.project?.id || "unknown-package",
+      packageName: data.package?.name || data.project.title,
+      runtimeMode: data.runtime?.runMode || "none",
+      activeTab,
+      currentNodeId: data.currentNodeId,
+      currentRoom: currentNode?.title || "Unknown Room",
+      activePairId: activePair?.id || memoryCards.activePairId || "",
+      gameCardId: activePair?.gameCardId || "",
+      palCardId: activePair?.palCardId || "",
+      lastCaptureId: lastCapture?.id || "",
+      timelineCursor: lastEvent?.id || "",
+      layout: {
+        leftPanel: data.runtime?.runMode === "internal-html" ? "internal-html" : "capture",
+        rightPanel: "blueprint",
+        sidePanel: "memoryCards",
+      },
+      summary: `Resume ${currentNode?.title || "the current room"} with package, palace, card, and timeline context.`,
+    };
+  }
+
+  function createProgressionDrawer(titleOverride = "") {
+    const drawer = buildProgressionDrawer(titleOverride);
+
+    updateData((prev) => ({
+      ...prev,
+      progressionDrawers: {
+        ...(prev.progressionDrawers || {
+          drawers: [],
+          activeDrawerId: "",
+          pinnedDrawerIds: [],
+        }),
+        activeDrawerId: drawer.drawerId,
+        drawers: [drawer, ...(prev.progressionDrawers?.drawers || [])],
+      },
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: now(),
+          nodeId: prev.currentNodeId,
+          type: "checkpoint",
+          title: "Progression Drawer created",
+          summary: `${drawer.title} saved as a resumable MEM Palace session drawer.`,
+          tags: ["drawer", "progression-history"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab("history");
+  }
+
+  function saveFullSession() {
+    const drawer = buildProgressionDrawer();
+
+    const nextProgressionDrawers = {
+      ...(progressionDrawers || {
+        drawers: [],
+        activeDrawerId: "",
+        pinnedDrawerIds: [],
+      }),
+      activeDrawerId: drawer.drawerId,
+      drawers: [drawer, ...(progressionDrawers.drawers || [])],
+    };
+
+    const nextData = {
+      ...data,
+      progressionDrawers: nextProgressionDrawers,
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: now(),
+          nodeId: data.currentNodeId,
+          type: "checkpoint",
+          title: "Full Session saved",
+          summary: `${drawer.title} saved as a full MEM Palace session.`,
+          tags: ["drawer", "full-session", "progression-history"],
+        },
+        ...data.timeline,
+      ],
+      project: {
+        ...data.project,
+        updatedAt: now(),
+      },
+    };
+
+    setData(nextData);
+
+    const payload = {
+      sessionVersion: "0.1",
+      exportedAt: now(),
+      project: nextData.project,
+      package: nextData.package,
+      runtime: nextData.runtime,
+      currentNode,
+      memoryCards: nextData.memoryCards,
+      progressionDrawers: nextProgressionDrawers,
+      activeDrawer: drawer,
+      palaceSnapshot: nextData,
+      browserBetaNote:
+        "This browser beta saves MEM Palace context, memory cards, progression drawers, captures, notes, and blueprint state. It does not freeze a native game process.",
+    };
+
+    downloadText(
+      `${slug(data.project.title)}-full-session.memsession.json`,
+      JSON.stringify(payload, null, 2),
+      "application/json"
+    );
+
+    setActiveTab("history");
+  }
+
+  function resumeDrawer(drawer) {
+    if (!drawer) return;
+
+    updateData((prev) => ({
+      ...prev,
+      currentNodeId: drawer.currentNodeId || prev.currentNodeId,
+      memoryCards: {
+        ...(prev.memoryCards || {
+          gameCards: [],
+          palCards: [],
+          pairs: [],
+          activePairId: "",
+        }),
+        activePairId: drawer.activePairId || prev.memoryCards?.activePairId || "",
+      },
+      progressionDrawers: {
+        ...(prev.progressionDrawers || {
+          drawers: [],
+          activeDrawerId: "",
+          pinnedDrawerIds: [],
+        }),
+        activeDrawerId: drawer.drawerId,
+        drawers: (prev.progressionDrawers?.drawers || []).map((item) =>
+          item.drawerId === drawer.drawerId ? { ...item, updatedAt: now() } : item
+        ),
+      },
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: now(),
+          nodeId: drawer.currentNodeId || prev.currentNodeId,
+          type: "load",
+          title: "Progression Drawer resumed",
+          summary: `Restored workspace drawer: ${drawer.title}.`,
+          tags: ["drawer", "resume"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setActiveTab(
+      drawer.activeTab && drawer.activeTab !== "history" ? drawer.activeTab : "palace"
+    );
+  }
+
+  function exportDrawer(drawer) {
+    if (!drawer) return;
+
+    const payload = {
+      drawerVersion: "0.1",
+      exportedAt: now(),
+      drawer,
+      linkedPair: pairViews.find((pair) => pair.id === drawer.activePairId) || null,
+      palaceSnapshot: data,
+      browserBetaNote:
+        "Browser Beta restores session context and save identity. Desktop Edition can relaunch/copy saves and reattach native runtimes.",
+    };
+
+    downloadText(
+      `${slug(drawer.title)}.memdrawer.json`,
+      JSON.stringify(payload, null, 2),
+      "application/json"
+    );
+  }
+
+  function deleteDrawer(drawerId) {
+    updateData((prev) => ({
+      ...prev,
+      progressionDrawers: {
+        ...(prev.progressionDrawers || {
+          drawers: [],
+          activeDrawerId: "",
+          pinnedDrawerIds: [],
+        }),
+        drawers: (prev.progressionDrawers?.drawers || []).filter(
+          (drawer) => drawer.drawerId !== drawerId
+        ),
+        pinnedDrawerIds: (prev.progressionDrawers?.pinnedDrawerIds || []).filter(
+          (id) => id !== drawerId
+        ),
+        activeDrawerId:
+          prev.progressionDrawers?.activeDrawerId === drawerId
+            ? ""
+            : prev.progressionDrawers?.activeDrawerId || "",
+      },
+    }));
+  }
+
+  function togglePinDrawer(drawerId) {
+    updateData((prev) => {
+      const drawers = prev.progressionDrawers || {
+        drawers: [],
+        activeDrawerId: "",
+        pinnedDrawerIds: [],
+      };
+
+      const existing = drawers.pinnedDrawerIds || [];
+
+      const pinnedDrawerIds = existing.includes(drawerId)
+        ? existing.filter((id) => id !== drawerId)
+        : [drawerId, ...existing];
+
+      return {
+        ...prev,
+        progressionDrawers: {
+          ...drawers,
+          pinnedDrawerIds,
+        },
+      };
+    });
+  }
+
+  function exportAllDrawers() {
+    const payload = {
+      drawerArchiveVersion: "0.1",
+      title: `${data.project.title} Progression Drawers`,
+      exportedAt: now(),
+      progressionDrawers,
+      project: data.project,
+      palaceSnapshot: data,
+    };
+
+    downloadText(
+      `${slug(data.project.title)}-drawers.memdrawer.json`,
+      JSON.stringify(payload, null, 2),
+      "application/json"
+    );
+  }
+
+  async function startCapture() {
+    if (!navigator.mediaDevices?.getDisplayMedia) {
+      alert("Screen capture is not available in this browser.");
+      return;
+    }
+
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: false,
+    });
+
+    setCaptureStream(stream);
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
+    }
+
+    const [track] = stream.getVideoTracks();
+
+    if (track) {
+      track.onended = () => {
+        setCaptureStream(null);
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
         }
-        writeLine();
-      }
-      function initOrb() {
-        var canvas = qs("#orbCanvas");
-        if (!canvas || !canvas.getContext) { return; }
-        var ctx = canvas.getContext("2d");
-        var nodes = [];
-        for (var i = 0; i < 62; i += 1) {
-          nodes.push({ x: Math.random(), y: Math.random(), z: Math.random(), vx: (Math.random() - 0.5) * 0.002, vy: (Math.random() - 0.5) * 0.002 });
-        }
-        function draw() {
-          var w = canvas.width, h = canvas.height;
-          var t = Date.now() * 0.001;
-          var cx = w / 2, cy = h / 2, r = w * 0.38;
-          ctx.clearRect(0, 0, w, h);
-          ctx.save();
-          ctx.translate(cx, cy);
-          ctx.rotate(t * 0.08);
-          ctx.strokeStyle = "rgba(118,255,122,.22)";
-          ctx.lineWidth = 2;
-          for (var ring = 0; ring < 5; ring += 1) { ctx.beginPath(); ctx.arc(0, 0, r * (0.24 + ring * 0.16), 0, Math.PI * 2); ctx.stroke(); }
-          ctx.restore();
-          var pts = [];
-          nodes.forEach(function (n) {
-            n.x += n.vx; n.y += n.vy;
-            if (n.x < 0 || n.x > 1) { n.vx *= -1; }
-            if (n.y < 0 || n.y > 1) { n.vy *= -1; }
-            var angle = (n.x * Math.PI * 2) + t * 0.12;
-            var rad = r * (0.2 + n.y * 0.78);
-            pts.push({ x: cx + Math.cos(angle) * rad, y: cy + Math.sin(angle) * rad * 0.74, z: n.z });
-          });
-          for (var a = 0; a < pts.length; a += 1) {
-            for (var b = a + 1; b < pts.length; b += 1) {
-              var dx = pts[a].x - pts[b].x, dy = pts[a].y - pts[b].y, d = Math.sqrt(dx * dx + dy * dy);
-              if (d < 110) { ctx.strokeStyle = "rgba(55,231,255," + ((1 - d / 110) * 0.36) + ")"; ctx.beginPath(); ctx.moveTo(pts[a].x, pts[a].y); ctx.lineTo(pts[b].x, pts[b].y); ctx.stroke(); }
-            }
-          }
-          pts.forEach(function (p, idx) { ctx.beginPath(); ctx.fillStyle = idx % 7 === 0 ? "rgba(255,233,90,.95)" : "rgba(118,255,122,.9)"; ctx.arc(p.x, p.y, 3 + p.z * 3, 0, Math.PI * 2); ctx.fill(); });
-          var grd = ctx.createRadialGradient(cx, cy, 4, cx, cy, 86);
-          grd.addColorStop(0, "rgba(255,255,255,.95)"); grd.addColorStop(0.22, "rgba(118,255,122,.75)"); grd.addColorStop(1, "rgba(118,255,122,0)");
-          ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(cx, cy, 86, 0, Math.PI * 2); ctx.fill();
-          window.requestAnimationFrame(draw);
-        }
-        draw();
-      }
-      function initMenuToggle() {
-        var hamburger = qs("#hamburger"), menu = qs("#menu");
-        if (!hamburger || !menu) { return; }
-        hamburger.addEventListener("click", function () {
-          var isOpen = !menu.classList.contains("open");
-          menu.classList.toggle("open", isOpen);
-          hamburger.classList.toggle("open", isOpen);
-          hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") { menu.classList.remove("open"); hamburger.classList.remove("open"); hamburger.setAttribute("aria-expanded", "false"); }
-        });
-        window.addEventListener("scroll", function () { var topbar = qs("#topbar"); if (topbar) { topbar.classList.toggle("scrolled", window.scrollY > 20); } });
-      }
-      function start() { buildMenu(); buildSockets(); initSocials(); initTerminal(); initOrb(); initMenuToggle(); }
-      if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", start); } else { start(); }
-    }());
-  </script>
-</body>
-</html>
+      };
+    }
+  }
+
+  function stopCapture() {
+    if (captureStream) {
+      captureStream.getTracks().forEach((track) => track.stop());
+    }
+
+    setCaptureStream(null);
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  }
+
+  function captureMoment() {
+    const video = videoRef.current;
+    if (!video || !video.videoWidth) {
+      alert("Start screen capture first. I know, shocking, the capture button requires a capture.");
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+    const dataUrl = canvas.toDataURL("image/webp", 0.82);
+    const captureId = uid("cap");
+    const eventId = uid("evt");
+
+    updateData((prev) => ({
+      ...prev,
+      captures: [
+        {
+          id: captureId,
+          nodeId: prev.currentNodeId,
+          screenshot: dataUrl,
+          createdAt: now(),
+          title: `Capture at ${currentNode?.title || "current room"}`,
+        },
+        ...prev.captures,
+      ],
+      nodes: prev.nodes.map((node) =>
+        node.id === prev.currentNodeId
+          ? { ...node, screenshots: [captureId, ...(node.screenshots || [])] }
+          : node
+      ),
+      timeline: [
+        {
+          id: eventId,
+          timestamp: now(),
+          nodeId: prev.currentNodeId,
+          type: "capture",
+          title: "Captured moment",
+          summary: `Screenshot attached to ${currentNode?.title || "current room"}.`,
+          tags: ["capture"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+  }
+
+  function addNote() {
+    if (!noteText.trim()) return;
+    const note = noteText.trim();
+
+    updateData((prev) => ({
+      ...prev,
+      nodes: prev.nodes.map((node) =>
+        node.id === prev.currentNodeId ? { ...node, notes: [note, ...(node.notes || [])] } : node
+      ),
+      timeline: [
+        {
+          id: uid("evt"),
+          timestamp: now(),
+          nodeId: prev.currentNodeId,
+          type: "note",
+          title: "Manual note",
+          summary: note,
+          tags: ["note"],
+        },
+        ...prev.timeline,
+      ],
+    }));
+
+    setNoteText("");
+  }
+
+  function exportProjectJson() {
+    downloadText(`${slug(data.project.title)}.mempalace.json`, JSON.stringify(data, null, 2), "application/json");
+  }
+
+  function exportHtmlGuide() {
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(data.project.title)}</title><style>body{font-family:system-ui;background:#110905;color:#ffe8ce;padding:32px}section{border:1px solid #c87935;padding:16px;border-radius:16px;margin:16px 0}code{color:#ffb36b}</style></head><body><h1>${escapeHtml(data.project.title)}</h1><p>${escapeHtml(data.project.subtitle)}</p>${data.nodes.map((node) => `<section><h2>${escapeHtml(node.title)}</h2><p>${escapeHtml(node.description || "")}</p><p><code>${escapeHtml(node.type)}</code> · ${(node.tags || []).map(escapeHtml).join(", ")}</p><ul>${(node.notes || []).map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul></section>`).join("")}</body></html>`;
+    downloadText(`${slug(data.project.title)}-guide.html`, html, "text/html");
+  }
+
+  function renderActiveTab() {
+    if (activeTab === "load") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid gap-4 lg:grid-cols-3">
+          <Card>
+            <h2 className="mb-2 text-lg font-bold">Load ZIP</h2>
+            <p className="mb-4 text-sm text-orange-100/65">Inspect a ZIP package and auto-build the first hard blueprint.</p>
+            <Button onClick={() => zipInputRef.current?.click()}><Archive className="h-4 w-4" /> Load ZIP</Button>
+            <input ref={zipInputRef} type="file" accept=".zip" className="hidden" onChange={(event) => loadZip(event.target.files?.[0])} />
+          </Card>
+
+          <Card>
+            <h2 className="mb-2 text-lg font-bold">Load Folder</h2>
+            <p className="mb-4 text-sm text-orange-100/65">Use browser folder permission to inspect local project/game files.</p>
+            <Button onClick={() => folderInputRef.current?.click()}><FolderOpen className="h-4 w-4" /> Load Folder</Button>
+            <input
+              ref={folderInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              webkitdirectory="true"
+              directory="true"
+              onChange={(event) => loadFolder(event.target.files)}
+            />
+          </Card>
+
+          <Card>
+            <h2 className="mb-2 text-lg font-bold">Import MEM File</h2>
+            <p className="mb-4 text-sm text-orange-100/65">
+              Reload a .memsave.json pair, .memdrawer.json drawer, .memsession.json full session, drawer archive, or project snapshot.
+            </p>
+            <Button onClick={() => memSaveInputRef.current?.click()}>
+              <FileJson className="h-4 w-4" /> Import MEM File
+            </Button>
+            <input
+              ref={memSaveInputRef}
+              type="file"
+              accept=".json,.memsave,.memdrawer,.memsession"
+              className="hidden"
+              onChange={(event) => importMemSave(event.target.files?.[0])}
+            />
+          </Card>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "inspect") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          <Card>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold">Package Inspector</h1>
+                <p className="text-orange-100/65">{data.package.name}</p>
+              </div>
+              <Pill tone={data.package.runMode === "internal-html" ? "green" : "blue"}>{data.package.runMode}</Pill>
+            </div>
+          </Card>
+
+          <div className="grid gap-4 md:grid-cols-4">
+            <Card><div className="text-orange-100/50">Files</div><div className="text-3xl font-bold">{data.package.importReport?.filesFound || 0}</div></Card>
+            <Card><div className="text-orange-100/50">Folders</div><div className="text-3xl font-bold">{data.package.importReport?.foldersFound || 0}</div></Card>
+            <Card><div className="text-orange-100/50">Scripts</div><div className="text-3xl font-bold">{data.package.importReport?.scriptsFound || 0}</div></Card>
+            <Card><div className="text-orange-100/50">Assets</div><div className="text-3xl font-bold">{data.package.importReport?.assetsFound || 0}</div></Card>
+          </div>
+
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Detected entries</h2>
+            <div className="space-y-2">
+              {(data.package.entryCandidates || []).map((entry) => <div key={entry} className="rounded-xl bg-black/30 p-2 font-mono text-sm">{entry}</div>)}
+              {!data.package.entryCandidates?.length && <p className="text-sm text-orange-100/60">No entry candidates detected.</p>}
+            </div>
+          </Card>
+
+          {!!data.package.warnings?.length && (
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">Warnings</h2>
+              <ul className="list-disc space-y-1 pl-6 text-sm text-orange-100/75">
+                {data.package.warnings.map((warning) => <li key={warning}>{warning}</li>)}
+              </ul>
+            </Card>
+          )}
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "play") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+          <Card>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-lg font-bold">Play / Attach View</h2>
+              <div className="flex gap-2">
+                <Button variant="ghost" onClick={startCapture}><Camera className="h-4 w-4" /> Attach Capture</Button>
+                <Button variant="ghost" onClick={stopCapture}>Stop Capture</Button>
+                <Button onClick={captureMoment}><Plus className="h-4 w-4" /> Capture Moment</Button>
+              </div>
+            </div>
+
+            {data.runtime.runMode === "internal-html" && data.runtime.internalHtml ? (
+              <iframe title="Internal HTML Game" srcDoc={data.runtime.internalHtml} sandbox="allow-scripts allow-same-origin" className="h-[480px] w-full rounded-xl border border-orange-300/20 bg-white" />
+            ) : (
+              <video ref={videoRef} autoPlay muted playsInline className="h-[480px] w-full rounded-xl border border-orange-300/20 bg-black object-contain" />
+            )}
+          </Card>
+
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Runtime Mode</h2>
+            <Pill tone={data.runtime.runMode === "internal-html" ? "green" : "blue"}>{data.runtime.runMode}</Pill>
+            <p className="mt-4 text-sm text-orange-100/65">Native PC games belong in External Attach Mode. Run the game normally, then attach screen/window capture. Yes, the browser is not a wizard in a trench coat.</p>
+            <p className="mt-3 text-sm text-orange-100/55">Internal HTML preview currently supports simple/self-contained HTML. ZIP asset rewriting comes later, because apparently files enjoy having relatives.</p>
+          </Card>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "cards") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          <Card>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold">Memory Card Bay</h1>
+                <p className="mt-1 text-sm text-orange-100/70">
+                  GameCard stores the mechanical save identity/hash in this browser beta. PALCard stores the palace context. Together they form the MEM Save Pair.
+                </p>
+                <p className="mt-2 text-xs text-orange-100/50">
+                  Browser Beta: save-file fingerprinting only. Desktop Edition: actual save restore/copy support.
+                </p>
+              </div>
+              <CreditCard className="h-10 w-10 text-orange-300" />
+            </div>
+          </Card>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">Create GameCard</h2>
+              <p className="mb-4 text-sm text-orange-100/65">Import a game save file. The terminal fingerprints it with SHA-256.</p>
+              <Button onClick={() => saveFileInputRef.current?.click()}><Upload className="h-4 w-4" /> Import Save File</Button>
+              <input ref={saveFileInputRef} type="file" className="hidden" onChange={(event) => createGameCardFromSaveFile(event.target.files?.[0])} />
+            </Card>
+
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">Create PALCard</h2>
+              <p className="mb-4 text-sm text-orange-100/65">Create a Palace Anchor Layer card from the current room, notes, captures, and timeline context.</p>
+              <Button onClick={createPALCardFromCurrentNode}><Plus className="h-4 w-4" /> Create From Current Node</Button>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">GameCards</h2>
+              <div className="space-y-3">
+                {(memoryCards.gameCards || []).map((card) => (
+                  <div key={card.id} className="rounded-xl border border-orange-300/15 bg-black/30 p-3">
+                    <div className="flex items-center justify-between gap-2"><b>{card.slotTitle}</b><Pill tone="blue">GameCard</Pill></div>
+                    <p className="mt-1 text-xs text-orange-100/55">{card.saveFile.name} · {card.saveFile.sizeBytes.toLocaleString()} bytes</p>
+                    <p className="mt-1 truncate font-mono text-xs text-orange-100/40">{card.saveFile.hash}</p>
+                  </div>
+                ))}
+                {!memoryCards.gameCards?.length && <p className="text-sm text-orange-100/60">No GameCards yet.</p>}
+              </div>
+            </Card>
+
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">PALCards</h2>
+              <div className="space-y-3">
+                {(memoryCards.palCards || []).map((card) => (
+                  <div key={card.id} className="rounded-xl border border-orange-300/15 bg-black/30 p-3">
+                    <div className="flex items-center justify-between gap-2"><b>{card.title}</b><Pill tone="orange">PALCard</Pill></div>
+                    <p className="mt-1 text-xs text-orange-100/55">Room: {card.currentRoom}</p>
+                    <p className="mt-1 text-xs text-orange-100/55">Pair status: {card.pairing?.pairStatus || "unpaired"}</p>
+                  </div>
+                ))}
+                {!memoryCards.palCards?.length && <p className="text-sm text-orange-100/60">No PALCards yet.</p>}
+              </div>
+            </Card>
+          </div>
+
+          <Card>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-bold">Create MEM Save Pair</h2>
+                <p className="text-sm text-orange-100/65">Choose one mechanical save card and one palace context card.</p>
+              </div>
+              <Button variant="ghost" disabled={!memoryCards.gameCards?.length || !memoryCards.palCards?.length} onClick={autoPairLatestCards}>Auto-pair latest</Button>
+            </div>
+            <PairCreator gameCards={memoryCards.gameCards || []} palCards={memoryCards.palCards || []} onPair={pairCards} />
+          </Card>
+
+          <Card>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-bold">MEM Save Pairs</h2>
+                <p className="text-sm text-orange-100/65">[GameCard] + [PALCard] = full restoration key.</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="ghost" onClick={verifyPairs}>Verify Pairs</Button>
+                <Button variant="ghost" onClick={exportAllPairs}><Download className="h-4 w-4" /> Export All</Button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {pairViews.map((pair) => (
+                <div key={pair.id} className="rounded-xl border border-orange-300/15 bg-black/30 p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2"><b>{pair.title}</b><Pill tone={statusTone(pair.status)}>{pair.status}</Pill></div>
+                      <p className="mt-1 text-xs text-orange-100/55">Game: {pair.gameCard?.slotTitle || "missing"} · PAL: {pair.palCard?.currentRoom || "missing"}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button variant="ghost" onClick={() => loadPair(pair)}>Load Pair</Button>
+                      <Button variant="ghost" onClick={() => duplicatePair(pair)}>Duplicate</Button>
+                      <Button variant="ghost" onClick={() => exportPair(pair)}>Export</Button>
+                      <Button variant="ghost" onClick={() => unpairCards(pair.id)}>Unpair</Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {!pairViews.length && <p className="text-sm text-orange-100/60">No paired cards yet.</p>}
+            </div>
+          </Card>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "history") {
+      const pinned = progressionDrawers.pinnedDrawerIds || [];
+      const sortedDrawers = [...(progressionDrawers.drawers || [])].sort((a, b) => {
+        const aPinned = pinned.includes(a.drawerId) ? 1 : 0;
+        const bPinned = pinned.includes(b.drawerId) ? 1 : 0;
+        if (aPinned !== bPinned) return bPinned - aPinned;
+        return String(b.updatedAt || b.createdAt).localeCompare(String(a.updatedAt || a.createdAt));
+      });
+
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          <Card>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold">Progression History Drawers</h1>
+                <p className="mt-1 text-sm text-orange-100/70">
+                  Normal browsers remember URLs. MEM Palace remembers the loaded world, current room, active cards, captures, notes, route, runtime mode, and workspace layout. Slightly more useful than a sad list of websites, astonishingly.
+                </p>
+                <p className="mt-2 text-xs text-orange-100/50">
+                  GameCard = where the game is. PALCard = what the player knows. Drawer = how the workspace was left.
+                </p>
+              </div>
+              <Archive className="h-10 w-10 text-orange-300" />
+            </div>
+          </Card>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <div className="text-orange-100/50">Drawers</div>
+              <div className="text-3xl font-bold">{progressionDrawers.drawers?.length || 0}</div>
+            </Card>
+            <Card>
+              <div className="text-orange-100/50">Pinned</div>
+              <div className="text-3xl font-bold">{progressionDrawers.pinnedDrawerIds?.length || 0}</div>
+            </Card>
+            <Card>
+              <div className="text-orange-100/50">Active Drawer</div>
+              <div className="truncate text-sm font-bold text-orange-200">{progressionDrawers.activeDrawerId || "none"}</div>
+            </Card>
+          </div>
+
+          <Card>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-bold">Create Drawer Checkpoint</h2>
+                <p className="text-sm text-orange-100/65">Freeze the current workspace arrangement: package, room, active MEM pair, timeline cursor, runtime mode, and layout.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => createProgressionDrawer()}><Plus className="h-4 w-4" /> Save Current Drawer</Button>
+                <Button variant="ghost" onClick={exportAllDrawers}><Download className="h-4 w-4" /> Export Drawers</Button>
+              </div>
+            </div>
+          </Card>
+
+          <div className="space-y-3">
+            {sortedDrawers.map((drawer) => {
+              const pair = pairViews.find((item) => item.id === drawer.activePairId);
+              const isPinned = pinned.includes(drawer.drawerId);
+
+              return (
+                <Card key={drawer.drawerId} className={drawer.drawerId === progressionDrawers.activeDrawerId ? "border-orange-300/50" : ""}>
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="text-lg font-bold">{drawer.title}</h2>
+                        <Pill tone={statusTone(drawer.status)}>{drawer.status}</Pill>
+                        {isPinned && <Pill tone="purple">pinned</Pill>}
+                      </div>
+                      <p className="mt-1 text-sm text-orange-100/60">Room: {drawer.currentRoom} · Runtime: {drawer.runtimeMode} · Tab: {drawer.activeTab}</p>
+                      <p className="mt-1 text-xs text-orange-100/45">Package: {drawer.packageName} · Pair: {pair?.title || drawer.activePairId || "none"}</p>
+                      <p className="mt-1 text-xs text-orange-100/45">Updated: {drawer.updatedAt || drawer.createdAt}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button variant="ghost" onClick={() => resumeDrawer(drawer)}>Resume Drawer</Button>
+                      <Button variant="ghost" onClick={() => togglePinDrawer(drawer.drawerId)}>{isPinned ? "Unpin" : "Pin"}</Button>
+                      <Button variant="ghost" onClick={() => exportDrawer(drawer)}>Export</Button>
+                      <Button variant="ghost" onClick={() => deleteDrawer(drawer.drawerId)}>Delete</Button>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
+            {!sortedDrawers.length && <Card><p className="text-sm text-orange-100/60">No drawers yet. Save a checkpoint when the workspace reaches a meaningful point, like Reactor 1 before the boss, not when you are staring into the void like a spreadsheet intern.</p></Card>}
+          </div>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "palace") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Palace Rooms</h2>
+            <div className="space-y-2">
+              {data.nodes.map((node) => (
+                <button key={node.id} onClick={() => updateData((prev) => ({ ...prev, currentNodeId: node.id }))} className={cls("w-full rounded-xl border p-3 text-left", node.id === currentNode?.id ? "border-orange-300 bg-orange-300/10" : "border-orange-300/10 bg-black/20")}> 
+                  <div className="flex items-center justify-between"><b>{node.title}</b><Pill>{node.type}</Pill></div>
+                  <p className="mt-1 text-sm text-orange-100/60">{node.description}</p>
+                </button>
+              ))}
+            </div>
+          </Card>
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Current Room</h2>
+            <h3 className="text-2xl font-bold text-orange-200">{currentNode?.title}</h3>
+            <p className="mt-2 text-orange-100/70">{currentNode?.description}</p>
+            <div className="mt-4 flex flex-wrap gap-2">{(currentNode?.tags || []).map((tag) => <Pill key={tag}>{tag}</Pill>)}</div>
+            <div className="mt-4 flex gap-2"><input value={newNodeTitle} onChange={(event) => setNewNodeTitle(event.target.value)} placeholder="New node title" className="min-w-0 flex-1 rounded-xl border border-orange-300/20 bg-black/40 p-2" /><Button onClick={() => addFastNode("location")}>New Location</Button><Button variant="ghost" onClick={() => addFastNode("battle")}>New Battle</Button></div>
+          </Card>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "blueprint") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Blueprint Graph</h2>
+            <div className="grid gap-3 md:grid-cols-3">
+              {data.nodes.slice(0, 60).map((node) => (
+                <div key={node.id} className="rounded-xl border border-orange-300/15 bg-black/30 p-3">
+                  <div className="flex items-center justify-between gap-2"><b>{node.title}</b><Pill tone={node.type === "package" ? "purple" : "orange"}>{node.type}</Pill></div>
+                  <p className="mt-1 text-xs text-orange-100/50">{(node.connections || []).length} connections</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Edges</h2>
+            <div className="space-y-2">{data.edges.map((edge) => <div key={edge.id} className="rounded-xl bg-black/30 p-2 font-mono text-xs">{edge.from} → {edge.to} · {edge.label}</div>)}</div>
+          </Card>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "timeline") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+          {data.timeline.map((event) => (
+            <Card key={event.id}>
+              <div className="flex flex-wrap items-center justify-between gap-2"><b>{event.title}</b><Pill tone="blue">{event.type}</Pill></div>
+              <p className="mt-1 text-sm text-orange-100/70">{event.summary}</p>
+              <p className="mt-2 text-xs text-orange-100/40">{event.timestamp} · {event.nodeId}</p>
+            </Card>
+          ))}
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "notes") {
+      return (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Add Note to {currentNode?.title}</h2>
+            <textarea value={noteText} onChange={(event) => setNoteText(event.target.value)} className="h-36 w-full rounded-xl border border-orange-300/20 bg-black/40 p-3" placeholder="What did the player learn here?" />
+            <Button className="mt-3" onClick={addNote}>Save Note</Button>
+          </Card>
+          <Card>
+            <h2 className="mb-3 text-lg font-bold">Room Notes</h2>
+            <div className="space-y-2">{(currentNode?.notes || []).map((note, index) => <div key={index} className="rounded-xl bg-black/30 p-3 text-sm">{note}</div>)}</div>
+          </Card>
+        </motion.div>
+      );
+    }
+
+    return (
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="grid gap-4 md:grid-cols-3">
+        <Card><h2 className="mb-3 text-lg font-bold">Export Project JSON</h2><Button onClick={exportProjectJson}><Download className="h-4 w-4" /> Export JSON</Button></Card>
+        <Card><h2 className="mb-3 text-lg font-bold">Export HTML Guide</h2><Button onClick={exportHtmlGuide}><Download className="h-4 w-4" /> Export HTML</Button></Card>
+        <Card><h2 className="mb-3 text-lg font-bold">Export MEM Save Pairs</h2><Button onClick={exportAllPairs}><Download className="h-4 w-4" /> Export Pairs</Button></Card>
+      </motion.div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#3b1d0b,#080403_45%,#030201)] p-4 text-orange-50">
+      <div className="mx-auto max-w-7xl space-y-4">
+        <header className="rounded-3xl border border-orange-300/20 bg-black/30 p-4 shadow-2xl shadow-black/30">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-3"><Gamepad2 className="h-8 w-8 text-orange-300" /><h1 className="text-2xl font-black tracking-tight">MEM Palace Game Terminal</h1></div>
+              <p className="mt-1 text-sm text-orange-100/65">LOAD → INSPECT → BLUEPRINT → RUN / ATTACH → OBSERVE → BUILD</p>
+            </div>
+            <Pill tone="purple">Dual-card save architecture</Pill>
+          </div>
+        </header>
+
+        <nav className="flex flex-wrap gap-2 rounded-3xl border border-orange-300/20 bg-black/30 p-2">
+          {tabs.map(([id, label, Icon]) => (
+            <button key={id} onClick={() => setActiveTab(id)} className={cls("inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-semibold transition", activeTab === id ? "bg-orange-400 text-black" : "text-orange-100 hover:bg-orange-300/10")}> 
+              <Icon className="h-4 w-4" /> {label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+          <aside className="space-y-4">
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">Project Stats</h2>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">Nodes</div><div className="text-2xl font-bold">{data.nodes.length}</div></div>
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">Events</div><div className="text-2xl font-bold">{data.timeline.length}</div></div>
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">Captures</div><div className="text-2xl font-bold">{data.captures.length}</div></div>
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">GameCards</div><div className="text-2xl font-bold">{memoryCards.gameCards?.length || 0}</div></div>
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">PALCards</div><div className="text-2xl font-bold">{memoryCards.palCards?.length || 0}</div></div>
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">Pairs</div><div className="text-2xl font-bold">{memoryCards.pairs?.length || 0}</div></div>
+                <div className="rounded-xl bg-black/30 p-3"><div className="text-orange-100/50">Drawers</div><div className="text-2xl font-bold">{progressionDrawers.drawers?.length || 0}</div></div>
+              </div>
+            </Card>
+
+            <Card>
+              <h2 className="mb-3 text-lg font-bold">Current Room</h2>
+
+              <b className="text-orange-200">{currentNode?.title}</b>
+
+              <p className="mt-1 text-sm text-orange-100/60">
+                {currentNode?.type}
+              </p>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                {(currentNode?.tags || []).map((tag) => (
+                  <Pill key={tag}>{tag}</Pill>
+                ))}
+              </div>
+
+              <Button
+                className="mt-4 w-full"
+                variant="ghost"
+                onClick={() => createProgressionDrawer()}
+              >
+                <Archive className="h-4 w-4" /> Save Drawer
+              </Button>
+
+              <Button
+                className="mt-2 w-full"
+                variant="ghost"
+                disabled={!progressionDrawers.activeDrawerId}
+                onClick={() => {
+                  const activeDrawer = progressionDrawers.drawers?.find(
+                    (drawer) => drawer.drawerId === progressionDrawers.activeDrawerId
+                  );
+
+                  if (activeDrawer) exportDrawer(activeDrawer);
+                }}
+              >
+                <Download className="h-4 w-4" /> Export Active Drawer
+              </Button>
+
+              <Button className="mt-2 w-full" onClick={saveFullSession}>
+                <Download className="h-4 w-4" /> Save Full Session
+              </Button>
+            </Card>
+          </aside>
+
+          <main>{renderActiveTab()}</main>
+        </div>
+      </div>
+    </div>
+  );
+}
