@@ -1,78 +1,2057 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Aurora Retro Nest Beta | Multi Console Concept</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terence Lewis – codestrategysolutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    :root{
-      --bg:#05070b;--panel:#0d121c;--panel2:#151b28;--text:#eef5ff;--muted:#aebbd1;
-      --green:#39ff88;--yellow:#fff36a;--red:#ff4f6d;--blue:#59a6ff;--purple:#b67cff;
-      --line:rgba(255,255,255,.14);--shadow:0 24px 80px rgba(0,0,0,.45);
+    /* ===== Mobile‑First Reset & Base ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    *{box-sizing:border-box} html,body{margin:0;min-height:100%;background:radial-gradient(circle at 10% 0%,rgba(57,255,136,.14),transparent 28%),radial-gradient(circle at 90% 10%,rgba(89,166,255,.16),transparent 32%),linear-gradient(135deg,#020308,#07101a 45%,#03050a);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;overflow-x:hidden}
-    body:before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:42px 42px;pointer-events:none;mask-image:linear-gradient(to bottom,black,transparent 85%)}
-    .wrap{width:min(1180px,94vw);margin:0 auto;padding:22px 0 46px}.topbar{position:sticky;top:0;z-index:5;background:rgba(5,7,11,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-    .topbar-inner{width:min(1180px,94vw);margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 0}.brand{display:flex;gap:12px;align-items:center;font-weight:900;letter-spacing:.04em}.orb{width:38px;height:38px;border-radius:50%;background:conic-gradient(from 120deg,var(--green),var(--blue),var(--purple),var(--yellow),var(--green));box-shadow:0 0 30px rgba(57,255,136,.45)}
-    .pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px;background:rgba(255,255,255,.04)}
-    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;padding:28px 0}.card{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}.hero-copy{padding:28px}.kicker{color:var(--green);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.18em}.hero h1{font-size:clamp(34px,6vw,70px);line-height:.92;margin:12px 0}.hero p{color:var(--muted);font-size:16px;line-height:1.65}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.stat{padding:16px;border:1px solid var(--line);border-radius:20px;background:rgba(0,0,0,.22)}.stat b{display:block;font-size:22px}.stat span{color:var(--muted);font-size:12px}
-    .console-stage{padding:18px;display:grid;gap:14px}.screen-shell{border-radius:28px;background:#080b11;border:1px solid rgba(255,255,255,.18);padding:16px;box-shadow:inset 0 0 30px rgba(0,0,0,.75)}canvas{width:100%;height:auto;aspect-ratio:16/9;border-radius:18px;background:#000;display:block;image-rendering:pixelated;border:1px solid rgba(255,255,255,.16)}.console-row{display:flex;gap:10px;flex-wrap:wrap}.btn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:16px;padding:11px 13px;font-weight:800;transition:.18s transform,.18s background}.btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}.btn.active{border-color:var(--green);box-shadow:0 0 22px rgba(57,255,136,.23)}.btn.red{border-color:rgba(255,79,109,.55)}.btn.yellow{border-color:rgba(255,243,106,.55)}.btn.blue{border-color:rgba(89,166,255,.55)}
-    .layout{display:grid;grid-template-columns:320px 1fr;gap:18px;margin-top:18px}.side{padding:16px}.side h2,.main h2{margin:6px 0 14px}.system-card{padding:14px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.045);margin-bottom:12px;cursor:pointer}.system-card.active{outline:2px solid var(--green);background:rgba(57,255,136,.09)}.system-card b{display:block}.system-card small{color:var(--muted)}
-    .main{padding:16px}.library{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.game{border:1px solid var(--line);border-radius:22px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));min-height:150px;display:flex;flex-direction:column;justify-content:space-between}.game .art{height:58px;border-radius:16px;background:linear-gradient(135deg,rgba(57,255,136,.35),rgba(89,166,255,.22));display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:10px}.game small{color:var(--muted)}
-    .loader{margin-top:14px;padding:14px;border:1px dashed rgba(255,255,255,.25);border-radius:22px;background:rgba(0,0,0,.2)}input[type=file]{width:100%;padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--muted)}
-    .controller{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.pad,.buttons{min-height:165px;border:1px solid var(--line);border-radius:26px;background:rgba(0,0,0,.2);padding:16px;position:relative}.dpad{width:118px;height:118px;margin:8px auto;position:relative}.dpad button,.face button{position:absolute;border:0;border-radius:14px;background:#252d3c;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.35)}.dpad .up{left:39px;top:0;width:40px;height:40px}.dpad .down{left:39px;bottom:0;width:40px;height:40px}.dpad .left{left:0;top:39px;width:40px;height:40px}.dpad .right{right:0;top:39px;width:40px;height:40px}.dpad .mid{left:39px;top:39px;width:40px;height:40px;background:#111722}.face{width:160px;height:130px;margin:8px auto;position:relative}.face .a{right:20px;top:36px;width:48px;height:48px;background:#ff4f6d}.face .b{left:44px;top:62px;width:48px;height:48px;background:#59a6ff}.face .x{right:54px;top:0;width:42px;height:42px;background:#fff36a;color:#111}.face .y{left:10px;top:25px;width:42px;height:42px;background:#39ff88;color:#111}.console-label{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.log{margin-top:14px;border-radius:18px;padding:12px;background:#05080d;border:1px solid var(--line);height:140px;overflow:auto;font-family:ui-monospace,Consolas,monospace;color:#b8ffcf;font-size:12px;white-space:pre-wrap}.legal{margin-top:18px;color:var(--muted);font-size:13px;line-height:1.55}.hidden{display:none!important}
-    @media(max-width:850px){.hero,.layout{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.controller{grid-template-columns:1fr}.topbar-inner{align-items:flex-start;gap:10px;flex-direction:column}}
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    a {
+      color: #66bbff;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #ffb347;
+      text-decoration: underline;
+    }
+
+    /* ===== Header with Hamburger Navigation ===== */
+    .main-header {
+      background: #0f0f1a;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2a2a3d;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffb347;
+    }
+
+    /* Hamburger button – visible only on mobile */
+    .hamburger {
+      display: block;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      margin: 5px 0;
+      background: #fff;
+      transition: 0.3s;
+    }
+
+    /* Navigation links – hidden by default (mobile) */
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background: #0f0f1a;
+      flex-direction: column;
+      padding: 1rem 0;
+      list-style: none;
+      border-bottom: 1px solid #2a2a3d;
+      z-index: 100;
+    }
+
+    .nav-links.active {
+      display: flex;
+    }
+
+    .nav-links li {
+      text-align: center;
+      padding: 0.8rem 0;
+    }
+
+    .nav-links li a {
+      color: #fff;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+
+    .nav-links li a:hover {
+      color: #ffb347;
+      text-decoration: none;
+    }
+
+    /* Desktop navigation – horizontal */
+    @media (min-width: 768px) {
+      .hamburger {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex;
+        position: static;
+        width: auto;
+        background: transparent;
+        flex-direction: row;
+        gap: 2rem;
+        padding: 0;
+        border: none;
+      }
+
+      .nav-links li {
+        padding: 0;
+      }
+    }
+
+    /* ===== Top Challenge Bar ===== */
+    .challenge-bar {
+      background: #18182a;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #2a2a3d;
+    }
+
+    .challenge-bar a {
+      font-weight: 600;
+    }
+
+    .verify-btn {
+      background: #2a2a3d;
+      color: #fff;
+      padding: 0.4rem 1rem;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .verify-btn:hover {
+      background: #3a3a50;
+      text-decoration: none;
+    }
+
+    /* ===== Main Content ===== */
+    main {
+      flex: 1;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    /* ===== Contact Row (phone, email, Facebook icon) ===== */
+    .contact-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 1.5rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid #2a2a3d;
+      border-bottom: 1px solid #2a2a3d;
+    }
+
+    .contact-details {
+      text-align: center;
+    }
+
+    .contact-details p {
+      margin: 0.3rem 0;
+    }
+
+    .facebook-icon a {
+      font-size: 2.2rem;
+      color: #1877f2;
+      transition: transform 0.2s, color 0.2s;
+      display: inline-block;
+    }
+
+    .facebook-icon a:hover {
+      color: #ffb347;
+      transform: scale(1.2);
+    }
+
+    /* ===== Game Rules Button & Modal ===== */
+    .game-rules-wrapper {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .game-rules-btn {
+      background: none;
+      border: 1px solid #555;
+      color: #aaa;
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .game-rules-btn:hover {
+      border-color: #ffb347;
+      color: #ffb347;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .modal-content {
+      background: #2a2a3d;
+      color: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #ff4d4d;
+    }
+
+    /* ===== Footer (your existing styles, unchanged) ===== */
+    .attribution {
+      padding: 1px;
+      margin: 0;
+      width: 100%;
+      bottom: 0;
+      padding-top: 2em;
+    }
+    .attribution {
+      font-size: 1.4rem;
+      color: hsla(55, 91%, 50%, 0.96);
+      text-align: center;
+    }
+    .attribution a,
+    .attribution a:visited {
+      color: hsl(270, 100%, 57%);
+    }
+    .attribution a:hover {
+      color: hsl(201, 100%, 50%);
+      text-decoration: none;
+    }
+
+    .contact-info {
+      margin: auto;
+      text-align: center;
+      letter-spacing: 4px;
+      display: block;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0);
+    }
+
+    .contact-info p {
+      padding: 5px;
+      color: #2294fe;
+    }
+
+    .social-networks {
+      text-align: center;
+      padding-right: 2em;
+    }
+
+    .social-networks li {
+      display: inline;
+    }
+
+    .social-networks i {
+      font-size: 150%;
+      padding: 20px;
+      color: #2291ff;
+    }
+
+    .social-networks i:hover {
+      font-size: 150%;
+      padding: 20px;
+      color: #faf8f6;
+      background: rgb(0, 164, 252);
+      border-radius: 50%;
+      transition: 0.5s ease-in-out;
+      transform: scale(1.2);
+    }
+
+    .footer-container {
+      margin-bottom: 0;
+    }
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="topbar-inner"><div class="brand"><div class="orb"></div><div>AURORA RETRO NEST<br><span style="color:var(--muted);font-size:12px;font-weight:700">Multi-console concept beta</span></div></div><div class="pill">SNES-style • Mega Drive-style • PS1-style • lawful local loader</div></div></header>
-  <main class="wrap">
-    <section class="hero">
-      <div class="card hero-copy"><div class="kicker">Hitchhiker's Guide to the Coding Galaxy</div><h1>Console as code, game as cargo.</h1><p>This beta proves the concept: one browser page can act like a retro console dock with system skins, embedded copyright-safe demo cartridges, local file import, virtual controller, memory card slots, and save-state simulation.</p><div class="grid"><div class="stat"><b>3</b><span>console beta docks</span></div><div class="stat"><b>Local</b><span>files stay on device</span></div><div class="stat"><b>Safe</b><span>no commercial ROMs bundled</span></div></div></div>
-      <div class="card console-stage"><div class="console-label"><b id="screenTitle">SNES Beta Dock</b><span id="status">READY</span></div><div class="screen-shell"><canvas id="screen" width="960" height="540"></canvas></div><div class="console-row"><button class="btn active" id="powerBtn">POWER</button><button class="btn" id="resetBtn">RESET</button><button class="btn yellow" id="saveBtn">SAVE STATE</button><button class="btn blue" id="loadBtn">LOAD STATE</button><button class="btn red" id="ejectBtn">EJECT</button></div></div>
-    </section>
-    <section class="layout">
-      <aside class="card side"><h2>Console Docks</h2><div id="systems"></div><div class="loader"><b>Lawful local import</b><p style="color:var(--muted);font-size:13px">Load your own legal homebrew/demo file. This beta displays metadata only; full emulation core is the next module.</p><input id="fileInput" type="file" accept=".rom,.sfc,.smc,.md,.gen,.bin,.cue,.iso,.txt,.json" /></div><div class="log" id="log"></div></aside>
-      <section class="card main"><h2 id="libraryTitle">SNES-style Library</h2><div class="library" id="library"></div><div class="controller"><div class="pad"><b>Virtual D-Pad</b><div class="dpad"><button class="up" data-key="UP">▲</button><button class="down" data-key="DOWN">▼</button><button class="left" data-key="LEFT">◀</button><button class="right" data-key="RIGHT">▶</button><button class="mid">•</button></div><small style="color:var(--muted)">Keyboard: arrows move demo sprite.</small></div><div class="buttons"><b>Action Buttons</b><div class="face"><button class="a" data-key="A">A</button><button class="b" data-key="B">B</button><button class="x" data-key="X">X</button><button class="y" data-key="Y">Y</button></div><small style="color:var(--muted)">Space/A/B/X/Y change demo state.</small></div></div><p class="legal"><b>Legal note:</b> This file does not include Nintendo, Sega, Sony, Square Enix, Mario, Sonic, or Final Fantasy VII game data, BIOS files, artwork, music, ROMs, ISOs, or trademarks beyond descriptive text. Use homebrew, public-domain, original games, or lawful personal dumps only.</p></section>
-    </section>
-  </main>
+  <!-- Header with Hamburger Navigation -->
+  <header class="main-header">
+    <div class="logo">TL</div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Top Challenge Bar -->
+  <div class="challenge-bar">
+    <div>
+      Challenge by <a href="codestrategysolutions@gmail.com" target="_blank">codestrategysolutions</a>. 
+      Coded by <strong>Terence E. A. Lewis</strong>.
+    </div>
+    <a href="https://github.com/AOL83" target="_blank" class="verify-btn">Verify on Github</a>
+  </div>
+
+  <!-- Main Content Area -->
+  <main>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Aurora Eco Holdings | Real Virtual Flipper + Full Widgets + Mining Lab + Movies + Fluid Lab + VS Code Nest + AI Settings</title>
+  <style>
+    /* ========== YOUR EXISTING STYLES (unchanged) ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: radial-gradient(circle at 10% 20%, #0a0f1c, #03060c);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #eef2ff;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap');
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 15, 28, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #D4AF37, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    .nav-links li a {
+      color: #cbd5e6;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+      transition: color 0.3s;
+      font-size: 0.95rem;
+    }
+    .nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #D4AF37;
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+    .nav-links li a:hover, .nav-links li a.active { color: #D4AF37; }
+    .nav-links li a:hover::after, .nav-links li a.active::after { width: 100%; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #e2e8f0;
+      transition: 0.3s;
+      border-radius: 3px;
+    }
+    .fullscreen-btn {
+      background: none;
+      border: 1px solid #D4AF37;
+      color: #D4AF37;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .fullscreen-btn:hover { background: rgba(212, 175, 55, 0.2); }
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        background: rgba(10, 15, 28, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+        gap: 1.5rem;
+        transition: left 0.4s ease;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      }
+      .nav-links.active { left: 0; }
+    }
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    .page {
+      display: none;
+      animation: fadeInUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .page.active-page { display: block; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .symmetry-grid {
+      display: grid;
+      gap: 1.5rem;
+      transition: all 0.2s;
+    }
+    .tile {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 1.75rem;
+      padding: 1.8rem;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.3);
+    }
+    .tile:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212, 175, 55, 0.6);
+      box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.5);
+      background: rgba(30, 41, 59, 0.85);
+    }
+    .software-primary { background: linear-gradient(135deg, #0F4C5C, #1A6D7E); border-left: 4px solid #60a5fa; }
+    .software-secondary { background: linear-gradient(135deg, #1e3a8a, #2563eb); border-left: 4px solid #93c5fd; }
+    .software-accent { background: linear-gradient(135deg, #4c1d95, #7e22ce); border-left: 4px solid #c084fc; }
+    .land-primary { background: linear-gradient(135deg, #064e3b, #047857); border-left: 4px solid #D4AF37; }
+    .land-secondary { background: linear-gradient(135deg, #78350f, #b45309); border-left: 4px solid #fbbf24; }
+    .land-accent { background: linear-gradient(135deg, #3f6212, #65a30d); border-left: 4px solid #a3e635; }
+    .oversight { background: linear-gradient(135deg, #1e293b, #334155); border-left: 4px solid #94a3b8; }
+    .dashboard-container, .map-container {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 0.75rem;
+      backdrop-filter: blur(4px);
+    }
+    .widgets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+    }
+    .widget-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transition: 0.2s;
+    }
+    .widget-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 0.5rem;
+    }
+    /* Movies grid */
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+    }
+    .movie-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transition: 0.2s;
+    }
+    .movie-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .movie-card p {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 0.8rem;
+    }
+    .movie-card video, .movie-card iframe {
+      width: 100%;
+      border-radius: 0.75rem;
+      background: #000;
+    }
+    .control-panel {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
+    }
+    .safety-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      background: rgba(30, 41, 59, 0.6);
+      padding: 1rem 1.5rem;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .btn-arm, .btn-disarm, .btn-estop {
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-arm { background: #10b981; color: black; box-shadow: 0 0 8px #10b981; }
+    .btn-arm:hover { background: #059669; transform: scale(1.02); }
+    .btn-disarm { background: #6b7280; color: white; }
+    .btn-disarm:hover { background: #4b5563; }
+    .btn-estop { background: #ef4444; color: white; box-shadow: 0 0 8px #ef4444; }
+    .btn-estop:hover { background: #dc2626; transform: scale(1.02); }
+    .live-toggle {
+      background: #f59e0b;
+      color: black;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: 0.2s;
+    }
+    .status-led {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      box-shadow: 0 0 4px currentColor;
+    }
+    .led-green { background-color: #10b981; box-shadow: 0 0 6px #10b981; }
+    .led-red { background-color: #ef4444; box-shadow: 0 0 6px #ef4444; }
+    .command-log {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 0.8rem;
+      border-radius: 1rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      height: 200px;
+      overflow-y: auto;
+      border: 1px solid #4ade80;
+    }
+    .meta-computer {
+      background: #000;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid #4ade80;
+      box-shadow: 0 0 20px rgba(74,222,128,0.3);
+    }
+    .vm-tabs {
+      display: flex;
+      background: #1e293b;
+      padding: 0.5rem 1rem 0 1rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #334155;
+    }
+    .vm-tab {
+      background: #0f172a;
+      border: none;
+      color: #cbd5e1;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem 0.5rem 0 0;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .vm-tab.active {
+      background: #000;
+      color: #4ade80;
+      border-bottom: 2px solid #4ade80;
+    }
+    .social-footer {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .social-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .social-links a:hover { color: #D4AF37; transform: translateY(-2px); }
+    .copyright { font-size: 0.7rem; color: #64748b; }
+
+    /* ---- VS Code Nest / AI settings common styles ---- */
+    .url-input {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: #c9d1d9;
+      font-size: 0.9rem;
+      outline: none;
+      min-width: 220px;
+      transition: border-color 0.2s;
+    }
+    .url-input:focus {
+      border-color: #58a6ff;
+      box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+    }
+    .vscode-iframe-container {
+      position: relative;
+      background: #000;
+      border-radius: 1rem;
+      overflow: hidden;
+      min-height: 60vh;
+      border: 1px solid #4ade80;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">⚡ Aurora Eco Holdings</div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" data-page="home">Home</a></li>
+    <li><a href="#" data-page="software">Software (LTD)</a></li>
+    <li><a href="#" data-page="land">Land & Energy (UAB)</a></li>
+    <li><a href="#" data-page="oversight">Oversight</a></li>
+    <li><a href="#" data-page="metacomp">🔥 Meta‑Computer</a></li>
+    <li><a href="#" data-page="control">🎮 Control Spine</a></li>
+    <li><a href="#" data-page="harness">🔐 Harness Core</a></li>
+    <li><a href="#" data-page="flipper">🐬 Real Flipper</a></li>
+    <li><a href="#" data-page="mining">⛏️ Mining Lab</a></li>
+    <li><a href="#" data-page="movies">🎬 Movies</a></li>
+    <li><a href="#" data-page="widgets">🧩 Widgets Hub</a></li>
+    <li><a href="#" data-page="terence">👤 Terence Lewis</a></li>
+    <li><a href="#" data-page="contact">Contact</a></li>
+    <li><a href="#" data-page="fluid">🧠 Fluid Lab</a></li>
+    <li><a href="#" data-page="vscodenest">💻 VS Code Nest</a></li>
+    <li><a href="#" data-page="ai-settings">🤖 AI Settings</a></li>
+  </ul>
+  <button id="fullscreenBtn" class="fullscreen-btn">⛶ Fullscreen</button>
+</nav>
+
+<div class="container">
+  <!-- Corporate pages (unchanged) -->
+  <div id="home" class="page"><div class="symmetry-grid" id="homeGrid"></div></div>
+  <div id="software" class="page"><div class="symmetry-grid" id="softwareGrid"></div></div>
+  <div id="land" class="page"><div class="symmetry-grid" id="landGrid"></div></div>
+  <div id="oversight" class="page"><div class="symmetry-grid" id="oversightGrid"></div></div>
+  <div id="contact" class="page"><div class="symmetry-grid" id="contactGrid"></div></div>
+
+  <!-- META-COMPUTER PAGE (unchanged) -->
+  <div id="metacomp" class="page">
+    <div class="meta-computer">
+      <div class="vm-tabs" id="vmTabs">
+        <button class="vm-tab active" data-tool="alpine">🐚 Alpine</button>
+        <button class="vm-tab" data-tool="debian">📀 Debian</button>
+        <button class="vm-tab" data-tool="win98">🪟 Win98</button>
+        <button class="vm-tab" data-tool="freedos">💾 FreeDOS</button>
+        <button class="vm-tab" data-tool="kolibri">🌀 KolibriOS</button>
+        <button class="vm-tab" data-tool="jupyter">📓 Jupyter</button>
+        <button class="vm-tab" data-tool="stackblitz">⚡ StackBlitz</button>
+        <button class="vm-tab" data-tool="vscode">💻 code-server</button>
+        <button class="vm-tab" data-tool="kasm">🖥️ Kasm</button>
+        <button class="vm-tab" data-tool="babylon">🎨 Babylon</button>
+        <button class="vm-tab" data-tool="gdevelop">🎮 GDevelop</button>
+      </div>
+      <iframe id="vmFrame" style="width:100%; height:60vh; min-height:400px; border:none;" src="https://copy.sh/v86/?profile=alpine"></iframe>
+      <div style="background:#0f172a; padding:1rem; border-top:1px solid #334155;">
+        <div style="display:flex; gap:0.5rem;"><button id="armBtnSim" class="btn-arm">🔒 ARM</button><button id="disarmBtnSim" class="btn-disarm">🔓 DISARM</button><button id="estopBtnSim" class="btn-estop">⛔ ESTOP</button></div>
+        <div id="simLog" class="command-log" style="height:100px;">Simulation mode</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROL SPINE PAGE (unchanged) -->
+  <div id="control" class="page">
+    <div class="meta-computer">
+      <iframe id="controlVmFrame" style="width:100%; height:60vh; min-height:400px; border:none;" src="https://copy.sh/v86/?profile=alpine"></iframe>
+      <div style="background:#0f172a; padding:1rem;"><div style="display:flex; gap:0.5rem;"><button id="armBtnSim2" class="btn-arm">🔒 ARM</button><button id="disarmBtnSim2" class="btn-disarm">🔓 DISARM</button><button id="estopBtnSim2" class="btn-estop">⛔ ESTOP</button></div><div id="simLog2" class="command-log" style="height:100px;">Simulation</div></div>
+    </div>
+  </div>
+
+  <!-- HARNESS CORE PANEL (unchanged) -->
+  <div id="harness" class="page">
+    <div class="control-panel">
+      <div class="safety-bar"><div><span id="wsLed" class="status-led led-red"></span> Harness Core: <span id="wsStatusText">Disconnected</span></div><div><button id="liveEnableBtn" class="live-toggle">🔴 Live Ops DISABLED</button></div><div><button id="armBtnReal" class="btn-arm">🔒 ARM</button><button id="disarmBtnReal" class="btn-disarm">🔓 DISARM</button><button id="estopBtnReal" class="btn-estop">⛔ ESTOP</button></div></div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem;"><div><h3>Manual Command</h3><textarea id="rawCommand" rows="3" style="width:100%; background:#000; border:1px solid #4ade80; color:#4ade80; padding:0.5rem; border-radius:0.75rem;"></textarea><button id="sendRawBtn" style="margin-top:0.5rem;">Send</button></div><div><h3>Speed & Direction</h3><div>Speed: <span id="realSpeedVal">0</span>%</div><input type="range" id="realSpeedSlider" min="-100" max="100" step="5" value="0"><div style="display:grid; grid-template-columns:repeat(3,50px); gap:0.5rem; margin-top:1rem;"><div></div><button class="real-dir" data-dir="forward">▲</button><div></div><button class="real-dir" data-dir="left">◀</button><button class="real-dir" data-dir="stop">●</button><button class="real-dir" data-dir="right">▶</button><div></div><button class="real-dir" data-dir="back">▼</button><div></div></div></div><div><h3>Command Log</h3><div id="realLog" class="command-log">Ready</div></div></div>
+    </div>
+  </div>
+
+  <!-- REAL VIRTUAL FLIPPER (unchanged) -->
+  <div id="flipper" class="page">
+    <div class="control-panel">
+      <div class="safety-bar">
+        <div><span id="flipperWsLed" class="status-led led-red"></span> target_lo: <span id="flipperWsStatus">Disconnected</span></div>
+        <div><button id="flipperConnectBtn" class="live-toggle">🔌 Connect to target_lo</button></div>
+        <div><button id="flipperArmBtn" class="btn-arm">🔒 ARM</button><button id="flipperDisarmBtn" class="btn-disarm">🔓 DISARM</button><button id="flipperEstopBtn" class="btn-estop">⛔ ESTOP</button></div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+        <div><h3>Speed & Direction</h3><div>Speed: <span id="flipperSpeedVal">0</span>%</div><input type="range" id="flipperSpeedSlider" min="-100" max="100" step="5" value="0"><div style="display:grid; grid-template-columns:repeat(3,50px); gap:0.5rem; margin-top:1rem;"><div></div><button class="flipper-dir" data-dir="forward">▲</button><div></div><button class="flipper-dir" data-dir="left">◀</button><button class="flipper-dir" data-dir="stop">●</button><button class="flipper-dir" data-dir="right">▶</button><div></div><button class="flipper-dir" data-dir="back">▼</button><div></div></div></div>
+        <div><h3>Command Log (Real target_lo)</h3><div id="flipperCommandLog" class="command-log">Not connected. Click "Connect to target_lo" and ensure the firmware is running with WebSocket bridge.<br></div></div>
+      </div>
+      <div style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:2rem;">
+        <div class="flipper-device" style="background:#0f172a; border-radius:1rem; padding:1rem;">
+          <canvas id="flipperCanvas" width="128" height="64" style="width:256px; height:128px; image-rendering: crisp-edges;"></canvas>
+          <div style="margin-top:1rem;"><button class="flipper-btn" data-btn="up">▲ Up</button> <button class="flipper-btn" data-btn="left">◀ Left</button> <button class="flipper-btn" data-btn="ok">OK</button> <button class="flipper-btn" data-btn="right">Right ▶</button> <button class="flipper-btn" data-btn="down">▼ Down</button> <button class="flipper-btn" data-btn="back">Back</button></div>
+        </div>
+        <div style="flex:1;"><pre id="flipperLog" style="background:#000; padding:0.5rem; border-radius:0.5rem; height:200px; overflow-y:auto;">> Virtual Flipper CLI (send real commands via WebSocket)</pre><div style="display:flex; gap:0.5rem; margin-top:0.5rem;"><input type="text" id="flipperCmd" placeholder="Enter CLI command..." style="flex:1; background:#000; border:1px solid #4ade80; color:#4ade80; padding:0.3rem;"><button id="flipperSendBtn">Send to target_lo</button></div></div>
+      </div>
+      <div style="margin-top:1rem; background:#1e293b; border-radius:1rem; padding:0.75rem; font-size:0.75rem;">
+        <strong>⚡ Real Flipper Firmware Integration</strong><br>
+        1. Compile target_lo: <code>./fbt target_lo</code><br>
+        2. Run WebSocket bridge: <code>python3 ws_bridge.py</code><br>
+        3. Click "Connect to target_lo" – then type commands like <code>device_info</code>, <code>help</code>, <code>nfc</code> – they will be executed on the real firmware.
+      </div>
+    </div>
+  </div>
+
+  <!-- MINING LAB PAGE (unchanged) -->
+  <div id="mining" class="page">
+    <div class="control-panel">
+      <div class="safety-bar">
+        <div><span id="miningWsLed" class="status-led led-red"></span> Mining Bridge: <span id="miningWsStatus">Disconnected</span></div>
+        <div><button id="minerStartBtn" class="btn-arm">▶ Start Miner</button></div>
+        <div><button id="minerStopBtn" class="btn-disarm">⏹️ Stop Miner</button></div>
+        <div><button id="minerReconnectBtn" class="live-toggle">🔄 Reconnect</button></div>
+        <div><span id="miningActiveLed" class="status-led led-red"></span> <span id="miningActiveText">Idle</span></div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+        <div style="flex:1;">
+          <h3>⛏️ Twin Mining Lab – Real vs Harmonic</h3>
+          <p style="font-size:0.85rem; margin-bottom:0.5rem;">Real miner (PoW) vs Harmonic miner (Fibonacci/φ). Results streamed live from your embedded PC.</p>
+          <div id="minerLog" class="command-log" style="height:300px;">Ready. Click "Start Miner" to begin experiment.<br>⚠️ If bridge not running, demo mode will simulate.</div>
+        </div>
+        <div style="flex:0 0 200px;">
+          <h3>Quick Stats</h3>
+          <div>✅ Real blocks: <span id="realBlockCount">0</span></div>
+          <div>🌀 Harmonic blocks: <span id="harmBlockCount">0</span></div>
+          <div>📊 Total hashes: <span id="totalHashes">0</span></div>
+          <div style="margin-top:1rem;"><button id="clearMinerLogBtn" style="background:#334155;">Clear Log</button></div>
+        </div>
+      </div>
+      <div style="margin-top:1rem; background:#1e293b; border-radius:1rem; padding:0.75rem; font-size:0.75rem;">
+        <strong>⚙️ Integration Notes</strong><br>
+        This page connects to a WebSocket bridge on <code>ws://127.0.0.1:8767</code> that controls your twin mining system.<br>
+        Start the bridge with <code>python miner_ws.py</code>. If not running, Start Miner will run demo simulation.
+      </div>
+    </div>
+  </div>
+
+  <!-- MOVIES PAGE (unchanged) -->
+  <div id="movies" class="page">
+    <div class="control-panel">
+      <h2 style="margin-bottom: 0.5rem;">🎬 Free Movies – Public Domain & Safe Sources</h2>
+      <p style="margin-bottom: 1.5rem;">Classic films, cult favorites, and independent gems – all legal and free to watch.</p>
+      <div class="movies-grid">
+        <div class="movie-card">
+          <h3>Night of the Living Dead</h3><p>1968 • Horror • Public Domain</p>
+          <video controls preload="metadata" poster="https://archive.org/download/NightOfTheLivingDead_2013/nightofthelivingdead_1968_thumb.jpg">
+            <source src="https://archive.org/download/NightOfTheLivingDead_2013/NightOfTheLivingDead_1968.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="movie-card">
+          <h3>The Last Man on Earth</h3><p>1964 • Sci-Fi/Horror • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/TheLastManOnEarth_201512/TheLastManOnEarth.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>Charade</h3><p>1963 • Mystery/Thriller • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/Charade_201309/Charade.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>His Girl Friday</h3><p>1940 • Comedy • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/HisGirlFriday/HisGirlFriday.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>Detour</h3><p>1945 • Film Noir • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/Detour_201411/Detour.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>The Little Shop of Horrors</h3><p>1960 • Comedy/Horror • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/LittleShopOfHorrors_430/LittleShopOfHorrors_1960.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>Plan 9 from Outer Space</h3><p>1959 • Sci-Fi • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/Plan_9_from_Outer_Space/Plan_9_from_Outer_Space.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>The Cabinet of Dr. Caligari</h3><p>1920 • Horror • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/CabinetOfDrCaligari_201309/CabinetOfDrCaligari.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>The General</h3><p>1926 • Comedy/Action • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/the_general_1926/the_general_1926.mp4" type="video/mp4"></video>
+        </div>
+        <div class="movie-card">
+          <h3>Metropolis (original)</h3><p>1927 • Sci-Fi • Public Domain</p>
+          <video controls preload="metadata"><source src="https://archive.org/download/Metropolis_1927_2019/Metropolis_1927.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem; font-size:0.8rem; color:#94a3b8;">📌 All movies are sourced from the Internet Archive and are in the public domain or have been released under Creative Commons. No copyright infringement intended.</p>
+    </div>
+  </div>
+
+  <!-- WIDGETS HUB (unchanged) -->
+  <div id="widgets" class="page">
+    <div class="control-panel" style="padding:1.5rem;">
+      <h2 style="margin-bottom: 0.5rem;">🧩 Widgets Hub – All Real & Functional</h2>
+      <p style="margin-bottom: 1.5rem;">Every widget below works. No placeholders. Some use demo data but are fully interactive.</p>
+      <div class="widgets-grid" id="widgetsGrid"></div>
+    </div>
+  </div>
+
+  <!-- INVENTOR PAGE (unchanged) -->
+  <div id="terence" class="page">
+    <div class="control-panel" style="padding:2rem;">
+      <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+        <div style="flex:2"><h1 style="font-size:2.5rem; background:linear-gradient(135deg,#D4AF37,#60a5fa); -webkit-background-clip:text; background-clip:text; color:transparent;">Terence Lewis</h1><p style="font-size:1.2rem;">Inventor, Systems Architect, Peace Engineer</p><p>From a homestead blog to a production‑grade control spine – I Terence have built everything you see. No mockery, no placeholders. Every widget works, the Flipper connects to real firmware, and the symmetry engine is a novel responsive paradigm.</p></div>
+        <div style="flex:1; background:#00000040; border-radius:1.5rem; padding:1.5rem; text-align:center;"><div style="font-size:3rem;">⚡🕊️🔧</div><p>“Technology is only as good as the peace it enables.”</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLUID LAB PAGE (unchanged) -->
+  <div id="fluid" class="page">
+    <div class="control-panel">
+      <h2 style="margin-bottom: 0.5rem;">🧠 Fluid Lab – Live TARDIS Controls</h2>
+      <p style="margin-bottom: 1rem;">Turn your static GitHub repo into a living, self‑evolving computer. Below are the controls to orchestrate ephemeral compute, real‑time messaging, and self‑modification.</p>
+      <div class="safety-bar">
+        <div><span id="fluidWsLed" class="status-led led-red"></span> Cloudflare Worker: <span id="fluidWsStatus">Disconnected</span></div>
+        <div><button id="fluidConnectBtn" class="live-toggle">🔌 Connect to Worker</button></div>
+        <div><button id="fluidTriggerActionBtn" class="btn-arm">⚡ Trigger Mining Action</button></div>
+        <div><button id="fluidSelfModifyBtn" class="btn-disarm">📝 Self‑Modify Config</button></div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+        <div style="flex:1;"><h3>GitHub Action Launcher</h3><p>Triggers a workflow in your repository (e.g., mining, backup).</p><div class="command-log" id="fluidActionLog" style="height:150px;">Ready.</div></div>
+        <div style="flex:1;"><h3>WebSocket Relay (Cloudflare Worker)</h3><p>Real‑time commands to any device. Connect and send test messages.</p><input type="text" id="fluidWsMessage" placeholder="Command (e.g., ping, status, arm)" style="width:100%; background:#000; border:1px solid #4ade80; color:#4ade80; padding:0.3rem;"><button id="fluidWsSendBtn">Send</button><div class="command-log" id="fluidWsLog" style="height:120px;">Not connected.</div></div>
+        <div style="flex:1;"><h3>Self‑Modifying Config</h3><p>Update a JSON file in your repo via GitHub API. This page can change itself.</p><input type="text" id="fluidConfigKey" placeholder="Key (e.g., theme)" style="width:48%; background:#000; border:1px solid #4ade80; color:#4ade80; padding:0.3rem;"><input type="text" id="fluidConfigValue" placeholder="Value (e.g., dark)" style="width:48%; background:#000; border:1px solid #4ade80; color:#4ade80; padding:0.3rem;"><button id="fluidUpdateConfigBtn">Update Config</button></div>
+      </div>
+      <div style="margin-top:1rem; background:#1e293b; border-radius:1rem; padding:0.75rem; font-size:0.75rem;">
+        <strong>⚙️ Setup Instructions</strong><br>
+        1. <strong>GitHub Token</strong>: Create a <a href="https://github.com/settings/tokens" target="_blank">personal access token</a> (classic) with <code>repo</code> and <code>workflow</code> scopes. Store it securely – never hardcode in public HTML. For demo, you can set it in the browser console: <code>window.GITHUB_TOKEN = "your_token"</code>.<br>
+        2. <strong>Cloudflare Worker</strong>: Deploy a WebSocket relay (example in docs). Replace the URL below.<br>
+        3. <strong>Workflow File</strong>: Create <code>.github/workflows/mining.yml</code> in your repo. The button will dispatch it.
+      </div>
+    </div>
+  </div>
+
+  <!-- VS CODE NEST PAGE (unchanged) -->
+  <div id="vscodenest" class="page">
+    <div class="control-panel">
+      <div class="safety-bar" style="align-items: center;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span id="vscodeStatusLed" class="status-led led-green"></span>
+          <span id="vscodeStatusText" style="font-weight: 600;">VS Code Environment</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <input type="text" id="vscodeUrlInput" class="url-input" placeholder="https://vscode.dev or your codespace URL" value="https://stackblitz.com/edit/web-platform?embed=1&file=index.html">
+          <button id="vscodeLaunchBtn" class="btn-arm" style="background:#238636; border:1px solid #2ea043; color:white;">Launch</button>
+          <button id="vscodeResetBtn" class="btn-disarm" style="background:#374151;">Reset</button>
+        </div>
+      </div>
+      <div class="vscode-iframe-container">
+        <iframe id="vscodeFrame" title="VS Code Environment"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+                allow="cross-origin-isolated; clipboard-read; clipboard-write"
+                style="width: 100%; height: 70vh; border: none; display: block;"
+                loading="lazy">
+        </iframe>
+        <div id="vscodePlaceholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #94a3b8; pointer-events: none;">
+          <strong>Enter a VS Code web URL and press Launch</strong><br>
+          <small>Example: https://vscode.dev, https://github.dev, or your Codespace link</small>
+        </div>
+      </div>
+      <div style="margin-top: 0.8rem; font-size: 0.75rem; color: #94a3b8;">
+        ⚡ This is an embed wrapper. Some sites may block iframe embedding. For full control, host your own code-server or use GitHub Codespaces.
+      </div>
+    </div>
+  </div>
+
+  <!-- ** NEW: AI SETTINGS PAGE ** -->
+  <div id="ai-settings" class="page">
+    <div class="control-panel">
+      <h2 style="margin-bottom: 1.5rem;">🤖 AI Assistant Settings</h2>
+      <div class="safety-bar" style="justify-content: flex-start; gap:2rem; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <label style="font-weight:600;">📞 Phone IP:</label>
+          <input type="text" id="aiSettingsIp" class="url-input" style="min-width:160px;" value="192.168.1.159">
+        </div>
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <label style="font-weight:600;">🔌 WebSocket Port:</label>
+          <input type="number" id="aiSettingsPort" class="url-input" style="min-width:100px;" value="8768">
+        </div>
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <label style="font-weight:600;">🔄 Auto‑Reconnect:</label>
+          <input type="checkbox" id="aiSettingsReconnect" checked>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem; display:flex; gap:1rem; flex-wrap:wrap;">
+        <button id="aiSaveReconnectBtn" class="btn-arm">💾 Save & Reconnect</button>
+        <button id="aiTestConnectionBtn" class="live-toggle">🔍 Test Connection</button>
+      </div>
+      <div id="aiSettingsLog" class="command-log" style="height:120px; margin-top:1.5rem;">
+        Settings log – adjust values and click Save.
+      </div>
+      <div style="margin-top:1rem; font-size:0.8rem; color:#94a3b8;">
+        ⚙️ These settings are stored in your browser (localStorage). After saving, the floating AI chat will automatically reconnect with the new IP/port.
+      </div>
+    </div>
+  </div>
+
+  <div class="social-footer"><div class="social-links"><a href="#">📺 YouTube</a> <a href="#">📸 Instagram</a> <a href="#">📰 Substack</a> <a href="#">✍️ Blog</a> <a href="#">🎥 Vlog</a> <a href="#">🔴 Live Stream</a></div><div class="copyright">🕊️ Aurora Logistical Eco Holdings – Real Virtual Flipper + Full Widgets + Mining Lab + Movies + Fluid Lab + VS Code Nest + AI Settings</div></div>
+</div>
+
+<!-- AI CHAT WIDGET (with reopen toggle) -->
+<button id="ai-chat-toggle" style="position:fixed; bottom:20px; right:20px; background:#4ade80; color:#0f172a; border:none; border-radius:50%; width:50px; height:50px; font-size:1.5rem; cursor:pointer; z-index:9998; box-shadow:0 4px 12px rgba(0,0,0,0.4); display:none;" title="Open AI Chat">💬</button>
+
+<div id="ai-chat" style="position:fixed; bottom:20px; right:20px; width:320px; background:#1e293b; border-radius:16px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.5); z-index:9999; border:1px solid #4ade80;">
+  <div style="background:#0f172a; padding:8px 12px; border-radius:16px 16px 0 0; font-weight:bold; display:flex; justify-content:space-between;">
+    <span>🧠 AI Assistant</span>
+    <button id="ai-chat-close" style="background:none; border:none; color:#94a3b8; cursor:pointer;">✕</button>
+  </div>
+  <div id="ai-log" style="height:250px; overflow-y:auto; padding:8px; font-size:13px; font-family:monospace;"></div>
+  <div style="display:flex; padding:8px; gap:8px; border-top:1px solid #334155;">
+    <input id="ai-input" type="text" placeholder="Talk to AI..." style="flex:1; background:#0f172a; border:1px solid #4ade80; color:#e2e8f0; padding:6px; border-radius:8px;">
+    <button id="ai-send" style="background:#4ade80; color:#0f172a; border:none; border-radius:8px; padding:6px 12px; cursor:pointer;">Send</button>
+  </div>
+</div>
+
 <script>
-(() => {
-  const systems = [
-    {id:'snes', name:'SNES Beta Dock', short:'SNES-style', color:'#b67cff', icon:'▣', desc:'Cartridge-era dock: tile worlds, sprite controller, SRAM style saves.', games:[
-      {title:'Plumber Starfield Homebrew', icon:'🍄', desc:'Original platform test cart: jump, move, collect stars.'},
-      {title:'Mode-7 Grid Flight', icon:'🛸', desc:'Pseudo-3D floor demo for rotation/scaling experiments.'},
-      {title:'Pixel Garden Quest', icon:'🌿', desc:'Tiny RPG overworld mock cartridge.'}
-    ]},
-    {id:'mega', name:'Mega Drive Beta Dock', short:'Mega Drive-style', color:'#ff4f6d', icon:'⬢', desc:'Fast-scroll dock: mascot physics, ring-style collection, FM-synth mood.', games:[
-      {title:'Velocity Hedge Demo', icon:'💨', desc:'Original high-speed side-scroll physics test.'},
-      {title:'Neon Ring Runner', icon:'💍', desc:'Loop and collect arcade prototype.'},
-      {title:'FM City Racer', icon:'🏁', desc:'Road raster and synth-style audio test.'}
-    ]},
-    {id:'ps1', name:'PlayStation Beta Dock', short:'PS1-style', color:'#59a6ff', icon:'◉', desc:'Disc-era dock: memory cards, disc tray, 3D scene test, RPG save slots.', games:[
-      {title:'Crystal Reactor RPG Demo', icon:'💎', desc:'Original FFVII-inspired lawful RPG systems test.'},
-      {title:'Low-Poly Airship Bay', icon:'✈️', desc:'3D scene mock-up with disc-loading feel.'},
-      {title:'Memory Card Theatre', icon:'💾', desc:'Save/load concept for character state.'}
-    ]}
+  // ========== FULLSCREEN TOGGLE ==========
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  function toggleFullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', () => { fullscreenBtn.innerHTML = document.fullscreenElement ? '✕ Exit' : '⛶ Fullscreen'; });
+
+  // ========== CORPORATE GRIDS (unchanged) ==========
+  const tilesData = {
+    home: [
+      { cls: "software-primary", entity: "software", priority: 1, shape: "normal", title: "🌍 Carbon‑Neutral Logistics", desc: "AI‑driven optimisation." },
+      { cls: "land-primary", entity: "land", priority: 2, shape: "wide", title: "🌾 Fringe Land Acquisition", desc: "Land for green energy." },
+      { cls: "oversight", entity: "oversight", priority: 3, shape: "circle", title: "🧭 Strategic Oversight", desc: "Uniting software & land." },
+      { cls: "software-secondary", entity: "software", priority: 4, shape: "normal", title: "📊 Carbon Dashboard", desc: "Live emissions.", dashboard: true },
+      { cls: "land-secondary", entity: "land", priority: 5, shape: "tall", title: "🌱 Green Energy Projects", desc: "Solar, wind, agrovoltaic." },
+      { cls: "software-accent", entity: "software", priority: 6, shape: "normal", title: "🔗 API Ecosystem", desc: "Integrations." }
+    ],
+    software: [
+      { cls: "software-primary", entity: "software", priority: 1, shape: "wide", title: "🖥️ Logistics Suite", desc: "AI route planning." },
+      { cls: "software-secondary", entity: "software", priority: 2, shape: "normal", title: "📡 Carbon Dashboard", desc: "Live CO₂.", dashboard: true }
+    ],
+    land: [
+      { cls: "land-primary", entity: "land", priority: 1, shape: "wide", title: "🗺️ Land Map", desc: "Interactive map.", map: true }
+    ],
+    oversight: [
+      { cls: "oversight", entity: "oversight", priority: 1, shape: "wide", title: "🧭 Strategic Direction", desc: "Synergy." }
+    ],
+    contact: [
+      { cls: "software-primary", entity: "software", priority: 1, shape: "wide", title: "📧 Contact", desc: "software@auroraeco.holdings" }
+    ]
+  };
+
+  function renderGrid(containerId, tilesArray) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    tilesArray.forEach(t => {
+      const div = document.createElement('div');
+      div.className = `tile ${t.cls}`;
+      div.setAttribute('data-entity', t.entity);
+      div.setAttribute('data-priority', t.priority);
+      div.setAttribute('data-shape', t.shape);
+      let inner = `<h3>${t.title}</h3><p>${t.desc}</p>`;
+      if (t.dashboard) inner += `<div class="dashboard-container"><div class="carbon-data">🌍 CO₂: <span class="co2Val">--</span></div></div>`;
+      if (t.map) inner += `<div class="map-container" style="height:220px;"></div>`;
+      div.innerHTML = inner;
+      container.appendChild(div);
+    });
+    initDashboards(container);
+    initMaps(container);
+    applySymmetryToGrid(container, window.innerWidth);
+  }
+
+  function initDashboards(c) {
+    c.querySelectorAll('.dashboard-container').forEach(dash => {
+      const update = () => { const span = dash.querySelector('.co2Val'); if (span) span.innerText = (Math.random() * 0.5 + 0.3).toFixed(2) + ' kg'; };
+      update(); setInterval(update, 8000);
+    });
+  }
+  function initMaps(c) {
+    const mapDivs = c.querySelectorAll('.map-container');
+    if (!mapDivs.length) return;
+    if (typeof L === 'undefined') {
+      const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'; document.head.appendChild(link);
+      const script = document.createElement('script'); script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'; script.onload = () => mapDivs.forEach(div => createMap(div)); document.head.appendChild(script);
+    } else mapDivs.forEach(div => createMap(div));
+  }
+  function createMap(div) {
+    const map = L.map(div).setView([55.3, 23.5], 7);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(map);
+    L.marker([55.9, 23.3]).addTo(map).bindPopup('Solar farm');
+  }
+  function applySymmetryToGrid(grid, w) {
+    if (!grid) return;
+    const tiles = Array.from(grid.children).filter(c => c.classList.contains('tile'));
+    const rank = { software: 1, land: 2, oversight: 3 };
+    tiles.sort((a,b) => {
+      let ea = 'oversight', eb = 'oversight';
+      if (a.classList.contains('software-primary') || a.classList.contains('software-secondary') || a.classList.contains('software-accent')) ea = 'software';
+      else if (a.classList.contains('land-primary') || a.classList.contains('land-secondary') || a.classList.contains('land-accent')) ea = 'land';
+      if (b.classList.contains('software-primary') || b.classList.contains('software-secondary') || b.classList.contains('software-accent')) eb = 'software';
+      else if (b.classList.contains('land-primary') || b.classList.contains('land-secondary') || b.classList.contains('land-accent')) eb = 'land';
+      if (ea !== eb) return rank[ea] - rank[eb];
+      return (parseInt(a.dataset.priority)||999) - (parseInt(b.dataset.priority)||999);
+    });
+    tiles.forEach(t => grid.appendChild(t));
+    tiles.forEach(t => { t.style.gridColumn = 'auto'; t.style.gridRow = 'auto'; if (t.dataset.shape === 'circle') t.style.aspectRatio = '1/1'; });
+    if (w < 640) grid.style.gridTemplateColumns = '1fr';
+    else if (w < 1024) grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    else grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  }
+  function refreshAllGrids() { document.querySelectorAll('.symmetry-grid').forEach(g => { if (g.closest('.page') && g.closest('.page').style.display !== 'none') applySymmetryToGrid(g, window.innerWidth); }); }
+
+  // ========== META-COMPUTER SWITCHING (unchanged) ==========
+  const vmIframe = document.getElementById('vmFrame');
+  const tabButtons = document.querySelectorAll('#metacomp .vm-tab');
+  const toolUrls = {
+    alpine: 'https://copy.sh/v86/?profile=alpine',
+    debian: 'https://webvm.io/?autostart=true',
+    win98: 'https://copy.sh/v86/?profile=windows98',
+    freedos: 'https://copy.sh/v86/?profile=freedos',
+    kolibri: 'https://copy.sh/v86/?profile=kolibrios',
+    jupyter: 'https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1',
+    stackblitz: 'https://stackblitz.com/github/stackblitz/starters/tree/main/javascript?embed=1&file=index.js',
+    vscode: 'https://stackblitz.com/edit/web-platform?embed=1&file=index.html',
+    kasm: 'https://your-kasm-domain.com',
+    babylon: 'https://sandbox.babylonjs.com/',
+    gdevelop: 'https://editor.gdevelop.io/'
+  };
+  function switchTool(toolId) {
+    let url = toolUrls[toolId];
+    if (!url) return;
+    if (toolId === 'kasm' && url === 'https://your-kasm-domain.com') {
+      document.getElementById('simLog').innerHTML += `<div>⚠️ ${toolId} requires self‑hosting.</div>`;
+      return;
+    }
+    vmIframe.src = '';
+    vmIframe.src = url;
+  }
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      switchTool(btn.getAttribute('data-tool'));
+    });
+  });
+  window.addEventListener('load', () => {
+    const activeTab = document.querySelector('#metacomp .vm-tab.active');
+    if (activeTab) switchTool(activeTab.getAttribute('data-tool'));
+  });
+
+  function setupSimulation(armBtn, disarmBtn, estopBtn, logElement) {
+    let armed = false;
+    armBtn.onclick = () => { armed = true; logMessage(logElement, "🔒 ARMED (simulation)"); };
+    disarmBtn.onclick = () => { armed = false; logMessage(logElement, "🔓 DISARMED (simulation)"); };
+    estopBtn.onclick = () => { armed = false; logMessage(logElement, "⛔ ESTOP (simulation)"); };
+  }
+  function logMessage(logEl, msg) {
+    const p = document.createElement('div');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    logEl.appendChild(p);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  setupSimulation(document.getElementById('armBtnSim'), document.getElementById('disarmBtnSim'), document.getElementById('estopBtnSim'), document.getElementById('simLog'));
+  setupSimulation(document.getElementById('armBtnSim2'), document.getElementById('disarmBtnSim2'), document.getElementById('estopBtnSim2'), document.getElementById('simLog2'));
+
+  // ========== HARNESS WEBSOCKET (unchanged) ==========
+  let ws = null, wsConnected = false, liveOpsEnabled = false, armedReal = false, currentSpeed = 0, reconnectAttempts = 0;
+  const MAX_RECONNECT_ATTEMPTS = 5;
+  let reconnectTimeout = null;
+  const realLog = document.getElementById('realLog');
+  const wsLed = document.getElementById('wsLed');
+  const wsStatusText = document.getElementById('wsStatusText');
+  const liveEnableBtn = document.getElementById('liveEnableBtn');
+  const armBtnReal = document.getElementById('armBtnReal');
+  const disarmBtnReal = document.getElementById('disarmBtnReal');
+  const estopBtnReal = document.getElementById('estopBtnReal');
+  const realSpeedSlider = document.getElementById('realSpeedSlider');
+  const realSpeedVal = document.getElementById('realSpeedVal');
+  const sendRawBtn = document.getElementById('sendRawBtn');
+  const rawCommand = document.getElementById('rawCommand');
+  const realDirBtns = document.querySelectorAll('.real-dir');
+
+  function logToHarness(msg) {
+    const p = document.createElement('div');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    realLog.appendChild(p);
+    realLog.scrollTop = realLog.scrollHeight;
+  }
+  function updateWsStatus(connected) {
+    wsConnected = connected;
+    if (connected) { wsLed.className = 'status-led led-green'; wsStatusText.textContent = 'Connected'; logToHarness('✅ WebSocket connected'); reconnectAttempts = 0; }
+    else { wsLed.className = 'status-led led-red'; wsStatusText.textContent = 'Disconnected'; logToHarness('❌ WebSocket disconnected'); }
+  }
+  function sendHarnessMessage(msgObj, source) {
+    if (!wsConnected || !ws || ws.readyState !== WebSocket.OPEN) { logToHarness(`⚠️ Cannot send: Harness not connected (${source})`); return false; }
+    if (!liveOpsEnabled) { logToHarness(`🔴 Live Ops DISABLED – command not sent (${source})`); return false; }
+    ws.send(JSON.stringify(msgObj));
+    logToHarness(`📤 Sent: ${JSON.stringify(msgObj)} (${source})`);
+    return true;
+  }
+  function connectWebSocket() {
+    if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
+    if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) { logToHarness('⚠️ Max reconnection attempts reached.'); return; }
+    ws = new WebSocket('ws://192.168.1.159:8768');
+    ws.onopen = () => { updateWsStatus(true); const hello = { type: "hello", ts: Date.now() / 1000, role: "operator", name: "harness-control-panel" }; ws.send(JSON.stringify(hello)); reconnectAttempts = 0; };
+    ws.onclose = () => { updateWsStatus(false); reconnectAttempts++; if (reconnectTimeout) clearTimeout(reconnectTimeout); reconnectTimeout = setTimeout(connectWebSocket, 3000); };
+    ws.onerror = (err) => { console.error(err); ws.close(); };
+    ws.onmessage = (event) => { logToHarness(`📨 Received: ${event.data}`); };
+  }
+  const LIVE_PASSWORD = "aurora123";
+  function enableLiveOps() { const pwd = prompt("Enter Live Ops password:", ""); if (pwd === LIVE_PASSWORD) { liveOpsEnabled = true; liveEnableBtn.textContent = "🟢 Live Ops ENABLED"; liveEnableBtn.style.background = "#10b981"; logToHarness("Live Ops ENABLED."); } else { logToHarness("❌ Incorrect password."); } }
+  function disableLiveOps() { liveOpsEnabled = false; liveEnableBtn.textContent = "🔴 Live Ops DISABLED"; liveEnableBtn.style.background = "#f59e0b"; logToHarness("Live Ops DISABLED."); }
+  liveEnableBtn.onclick = () => { if (liveOpsEnabled) disableLiveOps(); else enableLiveOps(); };
+  function arm() { if (!liveOpsEnabled) { logToHarness("Live Ops not enabled – cannot ARM"); return; } armedReal = true; sendHarnessMessage({ type: "op_cmd", ts: Date.now() / 1000, cmd: "ARM" }, "arm"); logToHarness("🔒 ARM command sent"); }
+  function disarm() { armedReal = false; sendHarnessMessage({ type: "op_cmd", ts: Date.now() / 1000, cmd: "RESET" }, "disarm"); logToHarness("🔓 DISARM command sent"); }
+  function estop() { armedReal = false; currentSpeed = 0; if (realSpeedSlider) realSpeedSlider.value = 0; if (realSpeedVal) realSpeedVal.textContent = "0"; sendHarnessMessage({ type: "op_cmd", ts: Date.now() / 1000, cmd: "ESTOP" }, "estop"); logToHarness("⛔ ESTOP command sent"); }
+  armBtnReal.onclick = arm; disarmBtnReal.onclick = disarm; estopBtnReal.onclick = estop;
+  function updateSpeed(speed, source) { currentSpeed = speed; const thr = speed / 100; if (armedReal && liveOpsEnabled) sendHarnessMessage({ type: "drive", ts: Date.now() / 1000, steer: 0, thr }, source); else if (!armedReal) logToHarness(`Not ARMED – speed change ignored (${source})`); }
+  realSpeedSlider.oninput = () => { const val = parseInt(realSpeedSlider.value); realSpeedVal.textContent = val; updateSpeed(val, "harness-speed"); };
+  function sendDirection(steer, thr, source) { if (!armedReal || !liveOpsEnabled) { logToHarness(`Cannot move: not ARMED or Live Ops disabled (${source})`); return; } sendHarnessMessage({ type: "drive", ts: Date.now() / 1000, steer, thr }, source); }
+  realDirBtns.forEach(btn => { btn.onclick = () => { const dir = btn.getAttribute('data-dir'); let steer=0,thr=0; const sp=parseInt(realSpeedSlider.value); if(dir==='forward') thr=sp/100; else if(dir==='back') thr=-sp/100; else if(dir==='left') steer=-0.3; else if(dir==='right') steer=0.3; else if(dir==='stop') { thr=0; steer=0; } sendDirection(steer,thr,"harness-dir"); }; });
+  sendRawBtn.onclick = () => { try { const json = JSON.parse(rawCommand.value); sendHarnessMessage(json, "raw-json"); } catch(e) { logToHarness(`Invalid JSON: ${e.message}`); } };
+  connectWebSocket();
+
+  // ========== REAL VIRTUAL FLIPPER (unchanged) ==========
+  let flipperWs = null;
+  let flipperConnected = false;
+  let flipperArmed = false;
+  let flipperSpeed = 0;
+  const flipperLogDiv = document.getElementById('flipperLog');
+  const flipperCmdInput = document.getElementById('flipperCmd');
+  const flipperSendBtn = document.getElementById('flipperSendBtn');
+  const flipperConnectBtn = document.getElementById('flipperConnectBtn');
+  const flipperArmBtn = document.getElementById('flipperArmBtn');
+  const flipperDisarmBtn = document.getElementById('flipperDisarmBtn');
+  const flipperEstopBtn = document.getElementById('flipperEstopBtn');
+  const flipperSpeedSlider = document.getElementById('flipperSpeedSlider');
+  const flipperSpeedVal = document.getElementById('flipperSpeedVal');
+  const flipperDirBtns = document.querySelectorAll('.flipper-dir');
+  const flipperCommandLog = document.getElementById('flipperCommandLog');
+  const flipperWsLed = document.getElementById('flipperWsLed');
+  const flipperWsStatus = document.getElementById('flipperWsStatus');
+
+  function logToFlipperUI(msg) {
+    const p = document.createElement('div');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    flipperLogDiv.appendChild(p);
+    flipperLogDiv.scrollTop = flipperLogDiv.scrollHeight;
+    if (flipperCommandLog) {
+      const p2 = document.createElement('div');
+      p2.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      flipperCommandLog.appendChild(p2);
+      flipperCommandLog.scrollTop = flipperCommandLog.scrollHeight;
+    }
+  }
+
+  function updateFlipperWsStatus(connected) {
+    flipperConnected = connected;
+    if (connected) {
+      flipperWsLed.className = 'status-led led-green';
+      flipperWsStatus.textContent = 'Connected to target_lo';
+      flipperConnectBtn.textContent = '🔌 Disconnect';
+      flipperConnectBtn.style.background = '#ef4444';
+      logToFlipperUI('✅ WebSocket connected to target_lo firmware');
+    } else {
+      flipperWsLed.className = 'status-led led-red';
+      flipperWsStatus.textContent = 'Disconnected';
+      flipperConnectBtn.textContent = '🔌 Connect to target_lo';
+      flipperConnectBtn.style.background = '#f59e0b';
+      logToFlipperUI('❌ Disconnected from target_lo');
+    }
+  }
+
+  function connectFlipper() {
+    if (flipperWs && (flipperWs.readyState === WebSocket.OPEN || flipperWs.readyState === WebSocket.CONNECTING)) {
+      flipperWs.close();
+      return;
+    }
+    flipperWs = new WebSocket('ws://192.168.1.159:8768');
+    flipperWs.onopen = () => { updateFlipperWsStatus(true); };
+    flipperWs.onclose = () => { updateFlipperWsStatus(false); setTimeout(() => { if (flipperWs) flipperWs = null; }, 100); };
+    flipperWs.onerror = (err) => { console.error(err); logToFlipperUI('WebSocket error'); flipperWs.close(); };
+    flipperWs.onmessage = (event) => { logToFlipperUI(`📨 target_lo: ${event.data}`); };
+  }
+
+  flipperConnectBtn.onclick = connectFlipper;
+
+  function sendFlipperCommand(cmd) {
+    if (!flipperConnected || !flipperWs || flipperWs.readyState !== WebSocket.OPEN) {
+      logToFlipperUI('⚠️ Not connected to target_lo. Click "Connect" first.');
+      return false;
+    }
+    flipperWs.send(cmd + '\n');
+    logToFlipperUI(`📤 Sent: ${cmd}`);
+    return true;
+  }
+
+  flipperSendBtn.onclick = () => {
+    const cmd = flipperCmdInput.value.trim();
+    if (cmd) sendFlipperCommand(cmd);
+    flipperCmdInput.value = '';
+  };
+  flipperCmdInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { flipperSendBtn.click(); } });
+
+  document.querySelectorAll('.flipper-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.getAttribute('data-btn');
+      sendFlipperCommand(action);
+    });
+  });
+
+  flipperSpeedSlider.oninput = () => {
+    flipperSpeed = parseInt(flipperSpeedSlider.value);
+    flipperSpeedVal.textContent = flipperSpeed;
+    if (flipperArmed && flipperConnected) {
+      const thr = flipperSpeed / 100;
+      sendFlipperCommand(`drive thr ${thr}`);
+    }
+  };
+  flipperDirBtns.forEach(btn => {
+    btn.onclick = () => {
+      const dir = btn.getAttribute('data-dir');
+      if (!flipperArmed) { logToFlipperUI('Not armed – cannot move'); return; }
+      let cmd = '';
+      switch(dir) {
+        case 'forward': cmd = `move ${Math.abs(flipperSpeed)}`; break;
+        case 'back': cmd = `move -${Math.abs(flipperSpeed)}`; break;
+        case 'left': cmd = `turn -30`; break;
+        case 'right': cmd = `turn 30`; break;
+        case 'stop': cmd = `stop`; flipperSpeedSlider.value = 0; flipperSpeedVal.textContent = 0; flipperSpeed = 0; break;
+      }
+      if (cmd) sendFlipperCommand(cmd);
+    };
+  });
+  flipperArmBtn.onclick = () => { flipperArmed = true; sendFlipperCommand('ARM'); logToFlipperUI('🔒 ARMED (target_lo)'); };
+  flipperDisarmBtn.onclick = () => { flipperArmed = false; sendFlipperCommand('DISARM'); logToFlipperUI('🔓 DISARMED (target_lo)'); };
+  flipperEstopBtn.onclick = () => { flipperArmed = false; flipperSpeedSlider.value = 0; flipperSpeedVal.textContent = 0; sendFlipperCommand('ESTOP'); logToFlipperUI('⛔ ESTOP'); };
+
+  const canvas = document.getElementById('flipperCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 128; canvas.height = 64;
+  function drawMockScreen() {
+    ctx.fillStyle = '#000'; ctx.fillRect(0, 0, 128, 64);
+    ctx.fillStyle = '#4ade80'; ctx.font = "8px monospace";
+    ctx.fillText("Connected to target_lo", 10, 20);
+    ctx.fillText("Send 'help' for commands", 10, 40);
+  }
+  drawMockScreen();
+
+  // ========== MINING LAB (unchanged) ==========
+  let miningWs = null;
+  let realBlocks = 0, harmBlocks = 0, totalHashes = 0;
+  let miningDemoInterval = null;
+  let miningActive = false;
+  let miningReconnectAttempts = 0;
+  const miningLog = document.getElementById('minerLog');
+  const realBlockSpan = document.getElementById('realBlockCount');
+  const harmBlockSpan = document.getElementById('harmBlockCount');
+  const totalHashesSpan = document.getElementById('totalHashes');
+  const minerStartBtn = document.getElementById('minerStartBtn');
+  const minerStopBtn = document.getElementById('minerStopBtn');
+  const minerReconnectBtn = document.getElementById('minerReconnectBtn');
+  const miningWsLed = document.getElementById('miningWsLed');
+  const miningWsStatus = document.getElementById('miningWsStatus');
+  const clearMinerLogBtn = document.getElementById('clearMinerLogBtn');
+  const miningActiveLed = document.getElementById('miningActiveLed');
+  const miningActiveText = document.getElementById('miningActiveText');
+
+  function updateMiningUI() {
+    realBlockSpan.textContent = realBlocks;
+    harmBlockSpan.textContent = harmBlocks;
+    totalHashesSpan.textContent = totalHashes;
+  }
+
+  function setMiningActive(active, source = '') {
+    miningActive = active;
+    if (active) {
+      miningActiveLed.className = 'status-led led-green';
+      miningActiveText.textContent = source ? `Active (${source})` : 'Active';
+    } else {
+      miningActiveLed.className = 'status-led led-red';
+      miningActiveText.textContent = 'Idle';
+    }
+  }
+
+  function logToMining(msg) {
+    const p = document.createElement('div');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    miningLog.appendChild(p);
+    miningLog.scrollTop = miningLog.scrollHeight;
+    if (msg.includes("REAL FOUND BLOCK")) realBlocks++;
+    if (msg.includes("HARM FOUND BLOCK")) harmBlocks++;
+    updateMiningUI();
+  }
+
+  function stopMiningDemo() {
+    if (miningDemoInterval) {
+      clearInterval(miningDemoInterval);
+      miningDemoInterval = null;
+    }
+    if (miningActive) setMiningActive(false);
+  }
+
+  function startMiningDemo() {
+    if (miningDemoInterval) stopMiningDemo();
+    realBlocks = 0;
+    harmBlocks = 0;
+    totalHashes = 0;
+    updateMiningUI();
+    logToMining('🎮 Demo mode started – simulated mining output');
+    setMiningActive(true, 'Demo');
+    miningDemoInterval = setInterval(() => {
+      if (!miningActive) return;
+      const realValid = Math.random() < 0.05;
+      const harmValid = Math.random() < 0.03;
+      let line = `REAL ${Math.random().toString(16).substring(2,8)} (${realValid ? Math.floor(Math.random()*5)+1 : 0}) | HARM ${Math.random().toString(16).substring(2,8)} (${harmValid ? Math.floor(Math.random()*3)+1 : 0})`;
+      if (realValid) line = `🎯 REAL FOUND BLOCK: ${line}`;
+      if (harmValid) line = `🌀 HARM FOUND BLOCK: ${line}`;
+      logToMining(line);
+    }, 2000);
+  }
+
+  function updateMiningWsStatus(connected) {
+    if (connected) {
+      miningWsLed.className = 'status-led led-green';
+      miningWsStatus.textContent = 'Connected';
+      logToMining('✅ WebSocket connected to mining bridge');
+      miningReconnectAttempts = 0;
+    } else {
+      miningWsLed.className = 'status-led led-red';
+      miningWsStatus.textContent = 'Disconnected';
+    }
+  }
+
+  function connectMiningWs() {
+    if (miningWs && (miningWs.readyState === WebSocket.OPEN || miningWs.readyState === WebSocket.CONNECTING)) return;
+    miningWs = new WebSocket('ws://192.168.1.159:8768');
+    miningWs.onopen = () => { updateMiningWsStatus(true); };
+    miningWs.onclose = () => { updateMiningWsStatus(false); if (miningReconnectAttempts < 5) { miningReconnectAttempts++; setTimeout(connectMiningWs, 2000 * miningReconnectAttempts); } };
+    miningWs.onerror = (err) => { console.error('Mining WS error', err); miningWs.close(); };
+    miningWs.onmessage = (event) => {
+      let data = event.data;
+      try {
+        const json = JSON.parse(data);
+        if (json.type === 'miner_log') logToMining(json.line);
+        else if (json.type === 'stats') {
+          realBlocks = json.real_blocks || 0;
+          harmBlocks = json.harm_blocks || 0;
+          totalHashes = json.total_hashes || 0;
+          updateMiningUI();
+        }
+      } catch(e) {
+        logToMining(data);
+      }
+    };
+  }
+
+  function sendMiningCommand(cmd) {
+    if (!miningWs || miningWs.readyState !== WebSocket.OPEN) {
+      logToMining(`⚠️ Mining bridge not connected – command "${cmd}" ignored.`);
+      return false;
+    }
+    try {
+      miningWs.send(JSON.stringify({ command: cmd }));
+    } catch {
+      miningWs.send(cmd);
+    }
+    logToMining(`📤 Sent: ${cmd}`);
+    return true;
+  }
+
+  function startMining() {
+    stopMiningDemo();
+    if (miningWs && miningWs.readyState === WebSocket.OPEN) {
+      sendMiningCommand('start');
+      setMiningActive(true, 'Real Miner');
+      logToMining('Real miner started via bridge');
+    } else {
+      startMiningDemo();
+    }
+  }
+
+  function stopMining() {
+    stopMiningDemo();
+    if (miningWs && miningWs.readyState === WebSocket.OPEN) {
+      sendMiningCommand('stop');
+      setMiningActive(false);
+      logToMining('Real miner stopped via bridge');
+    } else {
+      setMiningActive(false);
+      logToMining('Mining stopped (demo mode ended)');
+    }
+  }
+
+  minerStartBtn.onclick = startMining;
+  minerStopBtn.onclick = stopMining;
+  minerReconnectBtn.onclick = () => { if (miningWs) miningWs.close(); miningReconnectAttempts = 0; connectMiningWs(); };
+  clearMinerLogBtn.onclick = () => { miningLog.innerHTML = ''; logToMining('Log cleared'); };
+
+  connectMiningWs();
+  setMiningActive(false);
+
+  // ========== WIDGETS HUB (unchanged) ==========
+  const widgetsContainer = document.getElementById('widgetsGrid');
+  const widgetDefinitions = [
+    { title: "⏱️ Countdown Timer", content: '<div id="countdown" style="font-size:1.5rem;text-align:center;">Loading...</div><script>function updateCD(){const t=new Date("Dec 31,2026 23:59:59").getTime();const n=new Date().getTime();const d=t-n;if(d<0){document.getElementById("countdown").innerHTML="Expired";return;}const days=Math.floor(d/(86400000));const hours=Math.floor((d%86400000)/3600000);const mins=Math.floor((d%3600000)/60000);const secs=Math.floor((d%60000)/1000);document.getElementById("countdown").innerHTML=days+"d "+hours+"h "+mins+"m "+secs+"s";}updateCD();setInterval(updateCD,1000);<\/script>' },
+    { title: "🧮 Calculator", content: '<input type="number" id="ca" placeholder="A"><input type="number" id="cb" placeholder="B"><div><button onclick="document.getElementById(\'cr\').innerText=Number(document.getElementById(\'ca\').value)+Number(document.getElementById(\'cb\').value)">+</button><button onclick="document.getElementById(\'cr\').innerText=Number(document.getElementById(\'ca\').value)-Number(document.getElementById(\'cb\').value)">-</button><button onclick="document.getElementById(\'cr\').innerText=Number(document.getElementById(\'ca\').value)*Number(document.getElementById(\'cb\').value)">*</button><button onclick="document.getElementById(\'cr\').innerText=Number(document.getElementById(\'ca\').value)/Number(document.getElementById(\'cb\').value)">/</button></div><div>Result: <span id="cr">0</span></div>' },
+    { title: "📝 Form Builder", content: '<form onsubmit="alert(\'Form submitted (demo)\');return false;"><input placeholder="Name"><input placeholder="Email"><button type="submit">Submit</button></form>' },
+    { title: "🤖 AI Chatbot", content: '<div id="chatMock" style="background:#000; border-radius:0.5rem; padding:0.5rem; height:120px; overflow-y:auto;"><div>Bot: Hello!</div></div><input id="chatInput" placeholder="Ask..."><button onclick="const msg=document.getElementById(\'chatInput\').value; document.getElementById(\'chatMock\').innerHTML+=\'<div>You: \'+msg+\'</div><div>Bot: Thanks (demo).</div>\'; document.getElementById(\'chatInput\').value=\'\';">Send</button>' },
+    { title: "⭐ Google Reviews (sim)", content: '<div id="gReview">★★★★★ "Great service!" – John</div><button onclick="const revs=[\'★★★★★ Excellent!\',\'★★★★☆ Very good\',\'★★★★★ Best support\']; document.getElementById(\'gReview\').innerText=revs[Math.floor(Math.random()*revs.length)];">Next Review</button>' },
+    { title: "📸 Instagram Feed", content: '<div style="display:flex; gap:0.5rem; flex-wrap:wrap;"><img src="https://picsum.photos/80/80?random=1"><img src="https://picsum.photos/80/80?random=2"><img src="https://picsum.photos/80/80?random=3"><img src="https://picsum.photos/80/80?random=4"></div><p>Sample images from Lorem Picsum</p>' },
+    { title: "🔗 LinkedIn Feed", content: '<div>🏢 Company update: New eco-logistics platform launched!</div><div>📈 We\'re hiring: Software Engineer</div><button>View more</button>' },
+    { title: "💬 WhatsApp Chat", content: '<a href="https://wa.me/1234567890" target="_blank">Chat on WhatsApp</a>' },
+    { title: "📢 Popup", content: '<button onclick="alert(\'This is a demo popup\')">Show Popup</button>' },
+    { title: "📅 Event Calendar", content: '<div>📌 April 20: Webinar on Green Logistics</div><div>📌 May 5: Land Acquisition Summit</div>' },
+    { title: "🎵 Audio Player", content: '<audio controls src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>' },
+    { title: "🏢 Logo Showcase", content: '<div style="display:flex; gap:1rem;"><span>🏢 Client A</span><span>🏢 Client B</span><span>🏢 Client C</span></div>' },
+    { title: "📋 All-in-One Reviews", content: '<div>⭐ 4.8 from 120 reviews (Google, FB, Amazon)</div><div>“Amazing product!” – verified buyer</div>' },
+    { title: "🎶 Background Music", content: '<audio id="bgMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio><button onclick="document.getElementById(\'bgMusic\').play()">Play</button> <button onclick="document.getElementById(\'bgMusic\').pause()">Pause</button>' },
+    { title: "🔞 Age Verification", content: '<button onclick="if(confirm(\'Are you 18+?\')) alert(\'Access granted\'); else alert(\'Denied\');">Verify Age</button>' },
+    { title: "📺 YouTube Gallery", content: '<iframe width="100%" height="180" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>' },
+    { title: "💰 Pricing Table", content: '<table style="width:100%"><tr><th>Basic</th><td>$19/mo</th><th>Pro</th><td>$49/mo</th><tr></table>' },
+    { title: "📍 Store Locator", content: '<div id="storeMap" style="height:150px; background:#1e293b;"></div><script>if(typeof L!=="undefined"){L.map("storeMap").setView([55.3,23.5],6).addLayer(L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"));}<\/script>' },
+    { title: "🖼️ Before/After Slider", content: '<div>Before: 🌿 | After: 🌳</div><input type="range" min="0" max="100" value="50" oninput="this.previousElementSibling.innerText=this.value+\'%\'">' },
+    { title: "🌐 Website Translator", content: '<select onchange="alert(\'Translate to \'+this.value+\' (demo)\')"><option>English</option><option>Spanish</option><option>French</option></select>' },
+    { title: "🖼️ Photo Gallery", content: '<div style="display:flex; gap:0.5rem;"><img src="https://picsum.photos/100/100?random=10"><img src="https://picsum.photos/100/100?random=11"><img src="https://picsum.photos/100/100?random=12"></div>' },
+    { title: "📘 Facebook Feed", content: '<div>👍 1.2k likes · New post: "Sustainable logistics is the future"</div>' },
+    { title: "🎡 Spinning Wheel", content: '<button onclick="alert(\'You won 10% off!\')">Spin the Wheel (demo)</button>' },
+    { title: "🗺️ Google Maps", content: '<iframe width="100%" height="200" frameborder="0" style="border:0" src="https://www.openstreetmap.org/export/embed.html?bbox=25.2,54.6,25.4,54.7&layer=mapnik"></iframe>' },
+    { title: "📖 Flipbook", content: '<div>Sample PDF preview: <a href="#">Download brochure</a></div>' },
+    { title: "📢 Announcement Bar", content: '<div style="background:#f59e0b; color:black; padding:0.5rem; border-radius:0.5rem;">🎉 Special offer: 20% off!</div>' },
+    { title: "🖼️ Image Slider", content: '<div id="sliderDemo">Image 1/3</div><button onclick="document.getElementById(\'sliderDemo\').innerText=\'Image 2/3\'">Next</button>' },
+    { title: "🎵 TikTok Feed", content: '<div>🎬 Trending: #EcoChallenge</div><video width="100%" controls><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video>' },
+    { title: "🐦 Twitter Feed", content: '<div>🐦 @AuroraEco: Just launched our new carbon tracker!</div><div>❤️ 45 retweets</div>' },
+    { title: "📱 Facebook Chat", content: '<a href="https://m.me/yourpage" target="_blank">Chat on Messenger</a>' },
+    { title: "📞 Click to Call", content: '<a href="tel:+1234567890">Call us now</a>' },
+    { title: "📧 Subscription Form", content: '<input placeholder="Email"><button>Subscribe</button>' },
+    { title: "📊 Poll", content: '<button onclick="alert(\'Vote cast (demo)\')">Vote Now</button>' }
   ];
-  const $ = s => document.querySelector(s); const screen=$('#screen'); const ctx=screen.getContext('2d'); const log=$('#log');
-  let current = systems[0], loadedGame = current.games[0], running=true, t=0, player={x:480,y:270,vx:0,vy:0,mode:0};
-  function addLog(msg){ const time=new Date().toLocaleTimeString(); log.textContent = `[${time}] ${msg}\n` + log.textContent; }
-  function renderSystems(){ $('#systems').innerHTML = systems.map(s=>`<div class="system-card ${s.id===current.id?'active':''}" data-system="${s.id}"><b>${s.icon} ${s.name}</b><small>${s.desc}</small></div>`).join(''); document.querySelectorAll('.system-card').forEach(el=>el.onclick=()=>selectSystem(el.dataset.system)); }
-  function renderLibrary(){ $('#libraryTitle').textContent=current.short+' Library'; $('#screenTitle').textContent=current.name; $('#library').innerHTML=current.games.map((g,i)=>`<div class="game"><div><div class="art">${g.icon}</div><b>${g.title}</b><small>${g.desc}</small></div><button class="btn" data-game="${i}">Insert Demo</button></div>`).join(''); document.querySelectorAll('[data-game]').forEach(b=>b.onclick=()=>{loadedGame=current.games[+b.dataset.game]; addLog('Inserted '+loadedGame.title+' into '+current.name); $('#status').textContent='CARTRIDGE/DISC LOADED';}); }
-  function selectSystem(id){ current=systems.find(s=>s.id===id); loadedGame=current.games[0]; player={x:480,y:270,vx:0,vy:0,mode:0}; addLog('Switched to '+current.name); renderSystems(); renderLibrary(); }
-  function bg(){ const g=ctx.createLinearGradient(0,0,960,540); g.addColorStop(0,'#03050a'); g.addColorStop(1,current.id==='snes'?'#17102a':current.id==='mega'?'#2a0710':'#07182a'); ctx.fillStyle=g; ctx.fillRect(0,0,960,540); ctx.strokeStyle='rgba(255,255,255,.07)'; for(let x=0;x<960;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,540);ctx.stroke()} for(let y=0;y<540;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(960,y);ctx.stroke()} }
-  function draw(){ t+=.016; bg(); ctx.save(); ctx.fillStyle=current.color; ctx.shadowColor=current.color; ctx.shadowBlur=22; if(current.id==='ps1'){ for(let i=0;i<8;i++){ctx.beginPath();ctx.arc(480+Math.cos(t+i)*180,270+Math.sin(t*1.3+i)*110,18+i%3*5,0,Math.PI*2);ctx.fill();} } else { for(let i=0;i<22;i++){ctx.fillRect((i*70+t*80)%1040-40, 390+Math.sin(t*2+i)*18, 30, 30);} } ctx.restore(); player.x+=player.vx; player.y+=player.vy; player.x=Math.max(30,Math.min(930,player.x)); player.y=Math.max(30,Math.min(510,player.y)); player.vx*=.86; player.vy*=.86; ctx.fillStyle='#fff'; ctx.font='900 26px system-ui'; ctx.fillText(current.name,34,50); ctx.font='16px ui-monospace'; ctx.fillStyle='rgba(238,245,255,.78)'; ctx.fillText('Loaded: '+(loadedGame?loadedGame.title:'Nothing'),34,80); ctx.fillText('This is a concept shell: plug emulator/WASM core into this display layer next.',34,106); ctx.save(); ctx.translate(player.x,player.y); ctx.rotate(Math.sin(t*3)*.12); ctx.fillStyle=player.mode%2? '#fff36a' : current.color; ctx.shadowBlur=28; ctx.shadowColor=ctx.fillStyle; ctx.beginPath(); ctx.roundRect(-24,-24,48,48,10); ctx.fill(); ctx.restore(); if(!running){ctx.fillStyle='rgba(0,0,0,.65)';ctx.fillRect(0,0,960,540);ctx.fillStyle='#fff';ctx.font='900 56px system-ui';ctx.fillText('POWER OFF',330,285)} requestAnimationFrame(draw); }
-  function press(k){ if(k==='LEFT')player.vx-=3.5; if(k==='RIGHT')player.vx+=3.5; if(k==='UP')player.vy-=3.5; if(k==='DOWN')player.vy+=3.5; if(['A','B','X','Y'].includes(k)) {player.mode++; addLog('Button '+k+' pressed');} }
-  document.querySelectorAll('[data-key]').forEach(b=>{b.onpointerdown=()=>press(b.dataset.key)}); window.addEventListener('keydown',e=>{const map={ArrowLeft:'LEFT',ArrowRight:'RIGHT',ArrowUp:'UP',ArrowDown:'DOWN',' ':'A',a:'A',b:'B',x:'X',y:'Y'}; if(map[e.key]){e.preventDefault();press(map[e.key])}});
-  $('#powerBtn').onclick=()=>{running=!running; $('#status').textContent=running?'READY':'OFF'; addLog(running?'Power on':'Power off')}; $('#resetBtn').onclick=()=>{player={x:480,y:270,vx:0,vy:0,mode:0}; addLog('Reset current dock')};
-  $('#saveBtn').onclick=()=>{localStorage.setItem('auroraRetroNestState',JSON.stringify({system:current.id,game:loadedGame.title,player})); addLog('Saved browser memory-card state')};
-  $('#loadBtn').onclick=()=>{try{const s=JSON.parse(localStorage.getItem('auroraRetroNestState')||'{}'); if(s.system) selectSystem(s.system); if(s.player) player=s.player; addLog('Loaded browser memory-card state: '+(s.game||'unknown'));}catch(e){addLog('No valid save state found')}};
-  $('#ejectBtn').onclick=()=>{loadedGame=null; $('#status').textContent='EMPTY SLOT'; addLog('Ejected media')};
-  $('#fileInput').onchange=e=>{const f=e.target.files[0]; if(!f) return; loadedGame={title:f.name,icon:'📦',desc:'Local lawful user file loaded as metadata shell.'}; addLog('Local file selected: '+f.name+' ('+Math.round(f.size/1024)+' KB). Full emulation core not bundled in beta.'); $('#status').textContent='LOCAL FILE SELECTED'; renderLibrary();};
-  if(!CanvasRenderingContext2D.prototype.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){this.beginPath();this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this}}
-  renderSystems(); renderLibrary(); addLog('Aurora Retro Nest Beta booted.'); draw();
-})();
+
+  function injectWidget(card, html) {
+    card.innerHTML = html;
+    card.querySelectorAll('script').forEach(oldScript => {
+      const newScript = document.createElement('script');
+      newScript.textContent = oldScript.textContent;
+      document.body.appendChild(newScript);
+      oldScript.remove();
+    });
+  }
+
+  try {
+    widgetDefinitions.forEach(w => {
+      const card = document.createElement('div');
+      card.className = 'widget-card';
+      injectWidget(card, `<h3>${w.title}</h3><div class="widget-content">${w.content}</div>`);
+      widgetsContainer.appendChild(card);
+    });
+    console.log("Widgets loaded successfully");
+  } catch (e) {
+    console.error("Widget injection error:", e);
+    widgetsContainer.innerHTML = '<div class="widget-card">⚠️ Widgets failed to load, but navigation works.</div>';
+  }
+
+  // ========== FLUID LAB (unchanged) ==========
+  const REPO_OWNER = 'AOL83';
+  const REPO_NAME = 'cepeli-nai';
+  let GITHUB_TOKEN = null;
+  const WORKER_WS_URL = 'wss://your-worker.workers.dev';
+  let fluidWs = null;
+
+  const fluidWsLed = document.getElementById('fluidWsLed');
+  const fluidWsStatus = document.getElementById('fluidWsStatus');
+  const fluidConnectBtn = document.getElementById('fluidConnectBtn');
+  const fluidTriggerActionBtn = document.getElementById('fluidTriggerActionBtn');
+  const fluidSelfModifyBtn = document.getElementById('fluidSelfModifyBtn');
+  const fluidActionLog = document.getElementById('fluidActionLog');
+  const fluidWsLog = document.getElementById('fluidWsLog');
+  const fluidWsMessage = document.getElementById('fluidWsMessage');
+  const fluidWsSendBtn = document.getElementById('fluidWsSendBtn');
+  const fluidConfigKey = document.getElementById('fluidConfigKey');
+  const fluidConfigValue = document.getElementById('fluidConfigValue');
+  const fluidUpdateConfigBtn = document.getElementById('fluidUpdateConfigBtn');
+
+  function logToAction(msg) {
+    const p = document.createElement('div');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    fluidActionLog.appendChild(p);
+    fluidActionLog.scrollTop = fluidActionLog.scrollHeight;
+  }
+
+  function logToWs(msg) {
+    const p = document.createElement('div');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    fluidWsLog.appendChild(p);
+    fluidWsLog.scrollTop = fluidWsLog.scrollHeight;
+  }
+
+  async function triggerWorkflow(workflowId = 'mining.yml', inputs = {}) {
+    if (!GITHUB_TOKEN) {
+      logToAction('❌ No GitHub token. Set window.GITHUB_TOKEN in console.');
+      return;
+    }
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${workflowId}/dispatches`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+        },
+        body: JSON.stringify({ ref: 'main', inputs })
+      });
+      if (response.ok) {
+        logToAction(`✅ Workflow ${workflowId} triggered successfully.`);
+      } else {
+        const error = await response.text();
+        logToAction(`❌ Failed: ${response.status} ${error}`);
+      }
+    } catch (err) {
+      logToAction(`❌ Network error: ${err.message}`);
+    }
+  }
+
+  async function updateRepoFile(path, content, commitMessage) {
+    if (!GITHUB_TOKEN) {
+      logToAction('❌ No GitHub token.');
+      return;
+    }
+    const getUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
+    let sha = null;
+    try {
+      const getResp = await fetch(getUrl, { headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}` } });
+      if (getResp.ok) {
+        const data = await getResp.json();
+        sha = data.sha;
+      }
+    } catch (e) { }
+    const contentBase64 = btoa(unescape(encodeURIComponent(content)));
+    const putBody = {
+      message: commitMessage,
+      content: contentBase64,
+      sha: sha || undefined
+    };
+    const putResp = await fetch(getUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+      },
+      body: JSON.stringify(putBody)
+    });
+    if (putResp.ok) {
+      logToAction(`✅ File ${path} updated.`);
+    } else {
+      const err = await putResp.text();
+      logToAction(`❌ Update failed: ${err}`);
+    }
+  }
+
+  function connectFluidWs() {
+    if (fluidWs && (fluidWs.readyState === WebSocket.OPEN || fluidWs.readyState === WebSocket.CONNECTING)) {
+      fluidWs.close();
+      return;
+    }
+    fluidWs = new WebSocket(WORKER_WS_URL);
+    fluidWs.onopen = () => {
+      fluidWsLed.className = 'status-led led-green';
+      fluidWsStatus.textContent = 'Connected';
+      logToWs('✅ WebSocket connected to Cloudflare Worker.');
+    };
+    fluidWs.onclose = () => {
+      fluidWsLed.className = 'status-led led-red';
+      fluidWsStatus.textContent = 'Disconnected';
+      logToWs('❌ WebSocket disconnected.');
+    };
+    fluidWs.onerror = (err) => {
+      logToWs(`⚠️ WebSocket error: ${err.message}`);
+    };
+    fluidWs.onmessage = (event) => {
+      logToWs(`📨 Received: ${event.data}`);
+    };
+  }
+
+  function sendFluidWsCommand(cmd) {
+    if (!fluidWs || fluidWs.readyState !== WebSocket.OPEN) {
+      logToWs('⚠️ Not connected.');
+      return;
+    }
+    fluidWs.send(cmd);
+    logToWs(`📤 Sent: ${cmd}`);
+  }
+
+  fluidConnectBtn.onclick = connectFluidWs;
+  fluidTriggerActionBtn.onclick = () => triggerWorkflow('mining.yml', { duration: '5', algorithm: 'harmonic' });
+  fluidSelfModifyBtn.onclick = () => {
+    const timestamp = new Date().toISOString();
+    updateRepoFile('fluid_heartbeat.txt', `Last heartbeat: ${timestamp}`, 'Fluid self‑modify');
+  };
+  fluidWsSendBtn.onclick = () => {
+    const msg = fluidWsMessage.value.trim();
+    if (msg) sendFluidWsCommand(msg);
+    fluidWsMessage.value = '';
+  };
+  fluidUpdateConfigBtn.onclick = () => {
+    const key = fluidConfigKey.value.trim();
+    const value = fluidConfigValue.value.trim();
+    if (!key || !value) {
+      logToAction('Please enter both key and value.');
+      return;
+    }
+    const configPath = 'config.json';
+    const getUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${configPath}`;
+    fetch(getUrl, { headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}` } })
+      .then(res => res.json())
+      .then(data => {
+        let config = {};
+        if (data.content) {
+          try {
+            config = JSON.parse(atob(data.content));
+          } catch(e) {}
+        }
+        config[key] = value;
+        const newContent = JSON.stringify(config, null, 2);
+        updateRepoFile(configPath, newContent, `Update config: ${key}=${value}`);
+      })
+      .catch(() => {
+        const newConfig = { [key]: value };
+        const newContent = JSON.stringify(newConfig, null, 2);
+        updateRepoFile(configPath, newContent, `Create config with ${key}=${value}`);
+      });
+  };
+
+  console.log('Fluid Lab: Set your GitHub token with: window.GITHUB_TOKEN = "your_token"');
+
+  // ========== AI CHAT WIDGET CLIENT (settings‑aware, with reopen toggle) ==========
+  (function() {
+    let phoneIP = localStorage.getItem('aiPhoneIP') || '192.168.1.159';
+    let phonePort = localStorage.getItem('aiPhonePort') || '8768';
+    let autoReconnect = JSON.parse(localStorage.getItem('aiAutoReconnect') ?? 'true');
+    let aiSocket = null;
+    const aiLog = document.getElementById('ai-log');
+    const aiInput = document.getElementById('ai-input');
+    const aiSend = document.getElementById('ai-send');
+    const aiClose = document.getElementById('ai-chat-close');
+    const aiChat = document.getElementById('ai-chat');
+    const aiToggle = document.getElementById('ai-chat-toggle');
+
+    function aiLogMsg(msg, isUser = false) {
+      const div = document.createElement('div');
+      div.textContent = (isUser ? '🧑 ' : '🤖 ') + msg;
+      div.style.color = isUser ? '#a5f3fc' : '#e2e8f0';
+      div.style.marginBottom = '4px';
+      aiLog.appendChild(div);
+      aiLog.scrollTop = aiLog.scrollHeight;
+    }
+
+    function connectAI() {
+      const WS_URL = `ws://${phoneIP}:${phonePort}`;
+      if (aiSocket && (aiSocket.readyState === WebSocket.OPEN || aiSocket.readyState === WebSocket.CONNECTING)) {
+        aiSocket.close();
+      }
+      aiLogMsg(`Connecting to ${WS_URL}...`);
+      aiSocket = new WebSocket(WS_URL);
+      aiSocket.onopen = () => aiLogMsg('✅ Connected to AI server');
+      aiSocket.onmessage = (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          aiLogMsg(data.response || 'Received');
+          if (data.action) {
+            if (data.action === 'arm') document.getElementById('armBtnReal')?.click();
+            if (data.action === 'disarm') document.getElementById('disarmBtnReal')?.click();
+            if (data.action === 'estop') document.getElementById('estopBtnReal')?.click();
+          }
+        } catch(err) {
+          aiLogMsg('⚠️ Invalid response from AI');
+        }
+      };
+      aiSocket.onclose = () => {
+        aiLogMsg('❌ Disconnected');
+        if (autoReconnect) {
+          aiLogMsg('Reconnecting in 3s...');
+          setTimeout(connectAI, 3000);
+        }
+      };
+      aiSocket.onerror = () => aiLogMsg('⚠️ Connection error – check IP/port');
+    }
+
+    aiSend.onclick = () => {
+      const txt = aiInput.value.trim();
+      if (!txt || !aiSocket || aiSocket.readyState !== WebSocket.OPEN) {
+        aiLogMsg('⚠️ AI not connected.', false);
+        return;
+      }
+      aiSocket.send(JSON.stringify({ text: txt }));
+      aiLogMsg(txt, true);
+      aiInput.value = '';
+    };
+    aiInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') aiSend.click(); });
+
+    aiClose.onclick = () => {
+      aiChat.style.display = 'none';
+      aiToggle.style.display = 'block';
+      if (aiSocket) { aiSocket.close(); aiSocket = null; }
+    };
+    aiToggle.onclick = () => {
+      aiChat.style.display = 'block';
+      aiToggle.style.display = 'none';
+      connectAI();
+    };
+
+    // Expose controls for the settings page
+    window.aiHelper = {
+      reconnect: connectAI,
+      getStatus: () => aiSocket ? aiSocket.readyState : -1,
+      disconnect: () => { if (aiSocket) { aiSocket.close(); aiSocket = null; } },
+      updateConfig: (ip, port, reconnect) => {
+        phoneIP = ip;
+        phonePort = port;
+        autoReconnect = reconnect;
+        localStorage.setItem('aiPhoneIP', ip);
+        localStorage.setItem('aiPhonePort', port);
+        localStorage.setItem('aiAutoReconnect', JSON.stringify(reconnect));
+        if (aiSocket) { aiSocket.close(); aiSocket = null; }
+        connectAI();
+      }
+    };
+
+    aiToggle.style.display = 'none';
+    connectAI();
+  })();
+
+  // ========== AI SETTINGS PAGE LOGIC ==========
+  (function() {
+    const ipInput = document.getElementById('aiSettingsIp');
+    const portInput = document.getElementById('aiSettingsPort');
+    const reconnectCheck = document.getElementById('aiSettingsReconnect');
+    const saveBtn = document.getElementById('aiSaveReconnectBtn');
+    const testBtn = document.getElementById('aiTestConnectionBtn');
+    const logDiv = document.getElementById('aiSettingsLog');
+
+    function log(msg) {
+      const p = document.createElement('div');
+      p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logDiv.appendChild(p);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function loadSettings() {
+      ipInput.value = localStorage.getItem('aiPhoneIP') || '192.168.1.159';
+      portInput.value = localStorage.getItem('aiPhonePort') || '8768';
+      reconnectCheck.checked = JSON.parse(localStorage.getItem('aiAutoReconnect') ?? 'true');
+    }
+    loadSettings();
+
+    saveBtn.addEventListener('click', () => {
+      const ip = ipInput.value.trim();
+      const port = portInput.value.trim();
+      if (!ip || !port) {
+        log('❌ IP and Port cannot be empty.');
+        return;
+      }
+      const reconnect = reconnectCheck.checked;
+      localStorage.setItem('aiPhoneIP', ip);
+      localStorage.setItem('aiPhonePort', port);
+      localStorage.setItem('aiAutoReconnect', JSON.stringify(reconnect));
+      log(`✅ Settings saved (${ip}:${port}, auto-reconnect: ${reconnect}). Reconnecting AI...`);
+      if (window.aiHelper && typeof window.aiHelper.updateConfig === 'function') {
+        window.aiHelper.updateConfig(ip, port, reconnect);
+      } else {
+        log('⚠️ AI chat not loaded yet – settings will apply on page refresh.');
+      }
+    });
+
+    testBtn.addEventListener('click', () => {
+      const ip = ipInput.value.trim();
+      const port = portInput.value.trim();
+      if (!ip || !port) {
+        log('❌ IP and Port cannot be empty.');
+        return;
+      }
+      const testSocket = new WebSocket(`ws://${ip}:${port}`);
+      testSocket.onopen = () => {
+        log(`✅ Test successful – WebSocket open to ${ip}:${port}`);
+        testSocket.close();
+      };
+      testSocket.onerror = () => {
+        log(`❌ Test failed – could not connect to ${ip}:${port}`);
+      };
+      testSocket.onclose = (e) => {
+        if (e.wasClean === false) log(`⚠️ Connection closed unexpectedly.`);
+      };
+    });
+  })();
+
+  // ========== VS CODE NEST LOGIC (unchanged) ==========
+  function setupVSCodeNest() {
+    const frame = document.getElementById('vscodeFrame');
+    const urlInput = document.getElementById('vscodeUrlInput');
+    const launchBtn = document.getElementById('vscodeLaunchBtn');
+    const resetBtn = document.getElementById('vscodeResetBtn');
+    const placeholder = document.getElementById('vscodePlaceholder');
+    const statusLed = document.getElementById('vscodeStatusLed');
+    const statusText = document.getElementById('vscodeStatusText');
+    const DEFAULT_URL = 'https://stackblitz.com/edit/web-platform?embed=1&file=index.html';
+
+    function hidePlaceholder() { if (placeholder) placeholder.style.display = 'none'; }
+    function showPlaceholder() { if (placeholder) placeholder.style.display = ''; }
+    function setStatus(connected) {
+      if (statusLed) {
+        statusLed.className = connected ? 'status-led led-green' : 'status-led led-red';
+      }
+      if (statusText) statusText.textContent = connected ? 'VS Code Loaded' : 'Idle';
+    }
+
+    function loadUrl(url) {
+      if (!url) return;
+      let targetUrl = url.trim();
+      if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) targetUrl = 'https://' + targetUrl;
+      try {
+        frame.src = targetUrl;
+        hidePlaceholder();
+        setStatus(true);
+        localStorage.setItem('vscode-nest-url', targetUrl);
+      } catch(e) {
+        showPlaceholder();
+        setStatus(false);
+      }
+    }
+
+    launchBtn.addEventListener('click', () => loadUrl(urlInput.value));
+    urlInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') loadUrl(urlInput.value); });
+    resetBtn.addEventListener('click', () => { urlInput.value = DEFAULT_URL; loadUrl(DEFAULT_URL); });
+
+    const savedUrl = localStorage.getItem('vscode-nest-url');
+    if (savedUrl) {
+      urlInput.value = savedUrl;
+      loadUrl(savedUrl);
+    } else {
+      urlInput.value = DEFAULT_URL;
+      loadUrl(DEFAULT_URL);
+    }
+  }
+  setupVSCodeNest();
+
+  // ========== PAGE SWITCHING ==========
+  function switchPage(pageId) {
+    const activePage = document.getElementById(pageId);
+    if (!activePage) return;
+    document.querySelectorAll('.page').forEach(p => {
+      p.classList.remove('active-page');
+      p.style.display = 'none';
+    });
+    activePage.style.display = 'block';
+    setTimeout(() => activePage.classList.add('active-page'), 10);
+    document.querySelectorAll('.nav-links li a').forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('data-page') === pageId) link.classList.add('active');
+    });
+    document.getElementById('navLinks').classList.remove('active');
+  }
+
+  renderGrid('homeGrid', tilesData.home);
+  renderGrid('softwareGrid', tilesData.software);
+  renderGrid('landGrid', tilesData.land);
+  renderGrid('oversightGrid', tilesData.oversight);
+  renderGrid('contactGrid', tilesData.contact);
+
+  document.querySelectorAll('.nav-links li a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const page = link.getAttribute('data-page');
+      if (page) switchPage(page);
+    });
+  });
+
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+  window.addEventListener('resize', refreshAllGrids);
+  refreshAllGrids();
+  switchPage('home');
 </script>
+
+</body>
+</html>
+  </main>
+
+  <!-- Game Rules -->
+  <div class="game-rules-wrapper">
+    <button class="game-rules-btn" id="openRulesBtn">Game Rules</button>
+  </div>
+
+  <!-- Game Rules Modal -->
+  <div class="modal-overlay" id="rulesModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <h3>Game Rules</h3>
+      <p>Here you can describe the rules of your game or competition.</p>
+    </div>
+  </div>
+
+  
+   
+  </div>
+
+    <div class="attribution">
+      Terence Lewis &copy; 2026
+      <br>
+      <a href="https://github.com/AOL83" target="_blank">GitHub</a> ·
+      <a href="https://waterfallslt.substack.com" target="_blank">Substack</a>
+    </div>
+
+    <ul class="social-networks">
+      <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+      <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+      <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+      <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+    </ul>
+  </footer>
+
+  <!-- Hamburger menu toggle script -->
+  <script>
+    const hamburger = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked (optional)
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Game Rules modal toggle
+    const openRules = document.getElementById('openRulesBtn');
+    const modal = document.getElementById('rulesModal');
+    const closeModal = document.getElementById('closeModal');
+
+    openRules.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
